@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=3 uid="uid://b3qp3qb4jcf0"]
+
+[ext_resource type="Script" uid="uid://dk22owod4u4k2" path="res://main.gd" id="1_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://dtvvs8dam0hdb" path="res://feed.tscn" id="1_ig7tw"]
+[ext_resource type="Shader" uid="uid://de2dvj8kxib8f" path="res://main.gdshader" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://fb2km1l0442p" path="res://player.tscn" id="3_h2yge"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0xm2m"]
+shader = ExtResource("2_0xm2m")
+shader_parameter/brightness = 1.10000005225
+shader_parameter/contrast = 1.7
+shader_parameter/saturation = 1.0
+shader_parameter/gamma = 1.0000000409802299
+shader_parameter/curvature = 0.0
+shader_parameter/corner_soften = 0.06
+shader_parameter/vignette = 0.0010000000475
+shader_parameter/scanline_strength = 0.06
+shader_parameter/scanline_density = 1.15
+shader_parameter/interlace_strength = 0.17
+shader_parameter/mask_strength = 0.0
+shader_parameter/mask_scale = 0.0
+shader_parameter/chroma_offset_px = 0.2
+shader_parameter/luma_smear_px = 2.0
+shader_parameter/jitter_px = 0.50000002375
+shader_parameter/wobble_px = 1.0000000475
+shader_parameter/tape_noise = 0.22
+shader_parameter/tape_lines = 0.35
+shader_parameter/roll_speed = 0.010000000475
+shader_parameter/roll_strength = 0.02000000095
+shader_parameter/glow_strength = 1.30000006175
+shader_parameter/glow_threshold = 0.30000001425
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_1bvp3")
+
+[node name="CRTFilterLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CRTFilterLayer"]
+material = SubResource("ShaderMaterial_0xm2m")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Feed" parent="." instance=ExtResource("1_ig7tw")]
+
+[node name="Player" parent="." instance=ExtResource("3_h2yge")]
+
+[connection signal="draw_hand" from="Feed" to="Player" method="_populate_hand"]
+[connection signal="hide_hand" from="Feed" to="Player" method="_hide_hand"]

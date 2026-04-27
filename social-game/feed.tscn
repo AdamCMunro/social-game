@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://dtvvs8dam0hdb"]
+
+[ext_resource type="Script" uid="uid://pv2oskm6sq5c" path="res://feed.gd" id="1_j7o2i"]
+[ext_resource type="Texture2D" uid="uid://epawnamf4d4y" path="res://assets/Feed_Background.png" id="2_insad"]
+[ext_resource type="Script" uid="uid://du6rui0tgp2f3" path="res://new_post_button.gd" id="3_j7o2i"]
+[ext_resource type="Texture2D" uid="uid://clmicxk60kuy4" path="res://assets/New_Post_Button.png" id="3_n6tdq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_insad"]
+size = Vector2(128, 128)
+
+[node name="Feed" type="Node2D"]
+script = ExtResource("1_j7o2i")
+
+[node name="FeedBackground" type="Sprite2D" parent="."]
+position = Vector2(577, 325)
+scale = Vector2(1.15, 1.15)
+texture = ExtResource("2_insad")
+
+[node name="NewPostButton" type="Area2D" parent="."]
+position = Vector2(875, 42)
+scale = Vector2(0.5, 0.5)
+script = ExtResource("3_j7o2i")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="NewPostButton"]
+texture = ExtResource("3_n6tdq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NewPostButton"]
+shape = SubResource("RectangleShape2D_insad")
+
+[connection signal="draw_hand" from="NewPostButton" to="." method="_on_new_post_button_draw_hand"]
+[connection signal="hide_hand" from="NewPostButton" to="." method="_on_new_post_button_hide_hand"]
+[connection signal="input_event" from="NewPostButton" to="NewPostButton" method="_on_input_event"]
+[connection signal="mouse_entered" from="NewPostButton" to="NewPostButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="NewPostButton" to="NewPostButton" method="_on_mouse_exited"]

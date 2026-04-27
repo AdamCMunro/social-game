@@ -1,0 +1,106 @@
+[gd_scene load_steps=13 format=3 uid="uid://b4djinuuqlbj"]
+
+[ext_resource type="Script" uid="uid://1plxumusirxc" path="res://comment_button.gd" id="1_u2spa"]
+[ext_resource type="Texture2D" uid="uid://m47ywmioiara" path="res://assets/Comment_Button.png" id="2_deta0"]
+[ext_resource type="Script" uid="uid://coooqpgf2gxhv" path="res://send_button.gd" id="3_cf0ci"]
+[ext_resource type="Texture2D" uid="uid://b3ni0fmmhs0nq" path="res://assets/Send_Button.png" id="4_p6qol"]
+[ext_resource type="Script" uid="uid://f6ah2cxlrfp7" path="res://like_button.gd" id="5_tlynb"]
+[ext_resource type="Texture2D" uid="uid://ddtc811vmup8v" path="res://assets/Like_Button.png" id="6_rtyvd"]
+[ext_resource type="Texture2D" uid="uid://dc5ls2uprn7yt" path="res://assets/Post.png" id="8_va8nc"]
+[ext_resource type="Texture2D" uid="uid://bv7kp8r2220md" path="res://assets/Square_Selection.png" id="9_y7urt"]
+[ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="10_deta0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_efxa6"]
+size = Vector2(64, 58.666687)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kek77"]
+size = Vector2(55.999954, 55.99997)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4c57u"]
+size = Vector2(51.99997, 57.333374)
+
+[node name="Post" type="Node2D"]
+scale = Vector2(1.13, 1.13)
+metadata/_edit_group_ = true
+
+[node name="PostBody" type="Area2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="PostBody"]
+texture = ExtResource("8_va8nc")
+
+[node name="LikeButton" type="Area2D" parent="PostBody"]
+z_index = 1
+position = Vector2(-130, 105)
+scale = Vector2(0.59999996, 0.59999996)
+script = ExtResource("5_tlynb")
+
+[node name="Sprite2D" type="Sprite2D" parent="PostBody/LikeButton"]
+texture = ExtResource("6_rtyvd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PostBody/LikeButton"]
+shape = SubResource("RectangleShape2D_efxa6")
+
+[node name="SquareSelection" type="Area2D" parent="PostBody"]
+visible = false
+z_index = 2
+position = Vector2(98.39999, 47.199993)
+scale = Vector2(0.59999996, 0.59999996)
+
+[node name="Sprite2D" type="Sprite2D" parent="PostBody/SquareSelection"]
+texture = ExtResource("9_y7urt")
+
+[node name="CommentButton" type="Area2D" parent="PostBody"]
+z_index = 1
+position = Vector2(-40, 104)
+scale = Vector2(0.59999996, 0.59999996)
+script = ExtResource("1_u2spa")
+
+[node name="Sprite2D" type="Sprite2D" parent="PostBody/CommentButton"]
+texture = ExtResource("2_deta0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PostBody/CommentButton"]
+position = Vector2(-1.333313, 1.333252)
+shape = SubResource("RectangleShape2D_kek77")
+
+[node name="SendButton" type="Area2D" parent="PostBody"]
+z_index = 1
+position = Vector2(-85, 105)
+scale = Vector2(0.59999996, 0.59999996)
+script = ExtResource("3_cf0ci")
+
+[node name="Sprite2D" type="Sprite2D" parent="PostBody/SendButton"]
+texture = ExtResource("4_p6qol")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PostBody/SendButton"]
+position = Vector2(-0.66674805, -0.666687)
+shape = SubResource("RectangleShape2D_4c57u")
+
+[node name="Username" type="Label" parent="PostBody"]
+offset_left = -150.0
+offset_top = -260.0
+offset_right = -40.0
+offset_bottom = -214.0
+theme_override_fonts/font = ExtResource("10_deta0")
+theme_override_font_sizes/font_size = 24
+text = "Username"
+
+[node name="Caption" type="Label" parent="PostBody"]
+offset_left = -142.5
+offset_top = 140.0
+offset_right = -66.5
+offset_bottom = 175.0
+scale = Vector2(1.25, 1.25)
+theme_override_fonts/font = ExtResource("10_deta0")
+theme_override_font_sizes/font_size = 12
+text = "Caption..."
+autowrap_mode = 2
+
+[connection signal="input_event" from="PostBody/LikeButton" to="PostBody/LikeButton" method="_on_input_event"]
+[connection signal="mouse_entered" from="PostBody/LikeButton" to="PostBody/LikeButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="PostBody/LikeButton" to="PostBody/LikeButton" method="_on_mouse_exited"]
+[connection signal="input_event" from="PostBody/CommentButton" to="PostBody/CommentButton" method="_on_input_event"]
+[connection signal="mouse_entered" from="PostBody/CommentButton" to="PostBody/CommentButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="PostBody/CommentButton" to="PostBody/CommentButton" method="_on_mouse_exited"]
+[connection signal="input_event" from="PostBody/SendButton" to="PostBody/SendButton" method="_on_input_event"]
+[connection signal="mouse_entered" from="PostBody/SendButton" to="PostBody/SendButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="PostBody/SendButton" to="PostBody/SendButton" method="_on_mouse_exited"]

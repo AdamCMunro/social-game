@@ -1,0 +1,109 @@
+[gd_scene load_steps=5 format=3 uid="uid://fb2km1l0442p"]
+
+[ext_resource type="Script" uid="uid://b4ekba7qr4od4" path="res://player.gd" id="1_hqtel"]
+[ext_resource type="Texture2D" uid="uid://cvx5xocxtioa1" path="res://assets/Stat_Block.png" id="1_onrkg"]
+[ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="2_i3pqv"]
+[ext_resource type="Script" uid="uid://djrw57m5yd1q1" path="res://hand.gd" id="4_sweqy"]
+
+[node name="Player" type="Node2D"]
+script = ExtResource("1_hqtel")
+
+[node name="StatBlock" type="Area2D" parent="."]
+position = Vector2(5, 5)
+scale = Vector2(0.75, 0.75)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="StatBlock"]
+position = Vector2(140, 110)
+texture = ExtResource("1_onrkg")
+
+[node name="EnergyLabel" type="RichTextLabel" parent="StatBlock"]
+offset_left = 23.0
+offset_top = 28.0
+offset_right = 148.0
+offset_bottom = 77.0
+theme_override_fonts/normal_font = ExtResource("2_i3pqv")
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "[wave amp=11.0 freq=2.5 connected=0]Energy:[/wave]
+"
+
+[node name="Energy" type="RichTextLabel" parent="StatBlock"]
+offset_left = 178.0
+offset_top = 34.0
+offset_right = 270.0
+offset_bottom = 83.0
+theme_override_colors/default_color = Color(0.9254902, 0.8901961, 0.2784314, 1)
+theme_override_fonts/normal_font = ExtResource("2_i3pqv")
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "[wave amp=11.0 freq=2.5 connected=0]0000[/wave]"
+
+[node name="MentalHealthLabel" type="RichTextLabel" parent="StatBlock"]
+offset_left = 23.0
+offset_top = 62.0
+offset_right = 148.0
+offset_bottom = 111.0
+theme_override_fonts/normal_font = ExtResource("2_i3pqv")
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "[wave amp=11.0 freq=2.5 connected=0]Health:[/wave]
+"
+
+[node name="MentalHealth" type="RichTextLabel" parent="StatBlock"]
+offset_left = 178.0
+offset_top = 67.0
+offset_right = 270.0
+offset_bottom = 116.0
+theme_override_colors/default_color = Color(1, 0, 0.4745098, 1)
+theme_override_fonts/normal_font = ExtResource("2_i3pqv")
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "[wave amp=11.0 freq=2.5 connected=0]0000[/wave]"
+
+[node name="FollowersLabel" type="RichTextLabel" parent="StatBlock"]
+offset_left = 23.0
+offset_top = 94.0
+offset_right = 168.0
+offset_bottom = 143.0
+theme_override_fonts/normal_font = ExtResource("2_i3pqv")
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "[wave amp=11.0 freq=2.5 connected=0]Stalkers:[/wave]
+"
+
+[node name="Followers" type="RichTextLabel" parent="StatBlock"]
+offset_left = 178.0
+offset_top = 100.0
+offset_right = 270.0
+offset_bottom = 149.0
+theme_override_colors/default_color = Color(0, 0.44705883, 1, 1)
+theme_override_fonts/normal_font = ExtResource("2_i3pqv")
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "[wave amp=11.0 freq=2.5 connected=0]0000[/wave]"
+
+[node name="MoneyLabel" type="RichTextLabel" parent="StatBlock"]
+offset_left = 23.0
+offset_top = 126.0
+offset_right = 168.0
+offset_bottom = 175.0
+theme_override_fonts/normal_font = ExtResource("2_i3pqv")
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "[wave amp=11.0 freq=2.5 connected=0]Money:[/wave]
+"
+
+[node name="Money" type="RichTextLabel" parent="StatBlock"]
+offset_left = 178.0
+offset_top = 133.0
+offset_right = 270.0
+offset_bottom = 182.0
+theme_override_colors/default_color = Color(0.41960785, 1, 0.41568628, 1)
+theme_override_fonts/normal_font = ExtResource("2_i3pqv")
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "[wave amp=11.0 freq=2.5 connected=0]0000[/wave]"
+
+[node name="Hand" type="Node2D" parent="."]
+script = ExtResource("4_sweqy")
