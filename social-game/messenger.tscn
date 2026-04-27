@@ -5,3 +5,7 @@
 [node name="MessengerBody" type="Area2D" parent="." unique_id=377509894]
 
 [node name="Sprite2D" type="Sprite2D" parent="MessengerBody" unique_id=970300752]
+
+[node name="SendButton" type="Area2D" parent="MessengerBody" unique_id=186149192]
+
+[node name="Sprite2D" type="Sprite2D" parent="MessengerBody/SendButton" unique_id=1442369735]
