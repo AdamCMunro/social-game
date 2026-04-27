@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bbf22kjn4rw6"]
+
+[node name="Messenger" type="Node2D" unique_id=563844369]
+
+[node name="MessengerBody" type="Area2D" parent="." unique_id=377509894]
+
+[node name="Sprite2D" type="Sprite2D" parent="MessengerBody" unique_id=970300752]
