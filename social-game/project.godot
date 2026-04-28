@@ -18,3 +18,10 @@ config/name="social_game"
 run/main_scene="uid://b3qp3qb4jcf0"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1160
+window/size/viewport_height=670
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
