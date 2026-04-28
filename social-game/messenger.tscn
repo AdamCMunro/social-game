@@ -1,11 +1,90 @@
 [gd_scene format=3 uid="uid://bbf22kjn4rw6"]
 
+[ext_resource type="Texture2D" uid="uid://wdetlss0c3ti" path="res://assets/Messenger_Background.png" id="1_m0kps"]
+[ext_resource type="Texture2D" uid="uid://6j8u0l3vsjc4" path="res://assets/Messenger.png" id="2_tpcxp"]
+[ext_resource type="Texture2D" uid="uid://cj5uveejvi17t" path="res://assets/Send_Message_Button.png" id="3_dj5lq"]
+[ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="4_dj5lq"]
+[ext_resource type="Texture2D" uid="uid://dp1txt5oc6mfh" path="res://assets/Contacts.png" id="5_75sbr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_75sbr"]
+size = Vector2(129.79382, 129.79346)
+
 [node name="Messenger" type="Node2D" unique_id=563844369]
 
+[node name="MessengerBackground" type="Sprite2D" parent="." unique_id=2025585928]
+position = Vector2(583, 335.00003)
+scale = Vector2(1.176, 1.1928446)
+texture = ExtResource("1_m0kps")
+
 [node name="MessengerBody" type="Area2D" parent="." unique_id=377509894]
+position = Vector2(587, 329)
+scale = Vector2(1.13, 1.13)
 
 [node name="Sprite2D" type="Sprite2D" parent="MessengerBody" unique_id=970300752]
+texture = ExtResource("2_tpcxp")
 
 [node name="SendButton" type="Area2D" parent="MessengerBody" unique_id=186149192]
+position = Vector2(215.04425, 135.39824)
+scale = Vector2(0.3, 0.3)
+metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="MessengerBody/SendButton" unique_id=1442369735]
+texture = ExtResource("3_dj5lq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MessengerBody/SendButton" unique_id=1334323720]
+position = Vector2(-0.00024414063, 0)
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_75sbr")
+
+[node name="Recipient" type="Label" parent="MessengerBody" unique_id=1599201810]
+offset_left = -225.66374
+offset_top = -265.48676
+offset_right = -185.66374
+offset_bottom = -242.48676
+theme_override_fonts/font = ExtResource("4_dj5lq")
+theme_override_font_sizes/font_size = 24
+text = "Username"
+
+[node name="SendingText" type="Label" parent="MessengerBody" unique_id=417421513]
+offset_left = -231.85843
+offset_top = 166.3717
+offset_right = 230.0885
+offset_bottom = 196.3717
+theme_override_fonts/font = ExtResource("4_dj5lq")
+theme_override_font_sizes/font_size = 24
+text = "Option 1..."
+
+[node name="Option1" type="Label" parent="MessengerBody" unique_id=1923035371]
+offset_left = -230.97345
+offset_top = 120.35399
+offset_right = 189.38055
+offset_bottom = 150.35399
+theme_override_fonts/font = ExtResource("4_dj5lq")
+theme_override_font_sizes/font_size = 24
+text = "Sending Text"
+
+[node name="Option2" type="Label" parent="MessengerBody" unique_id=888915625]
+offset_left = -232.74336
+offset_top = 201.76993
+offset_right = 231.85847
+offset_bottom = 231.76993
+theme_override_fonts/font = ExtResource("4_dj5lq")
+theme_override_font_sizes/font_size = 24
+text = "Option 2..."
+
+[node name="Option3" type="Label" parent="MessengerBody" unique_id=509663925]
+offset_left = -232.74336
+offset_top = 235.39825
+offset_right = 233.62837
+offset_bottom = 265.39825
+theme_override_fonts/font = ExtResource("4_dj5lq")
+theme_override_font_sizes/font_size = 24
+text = "Option 3..."
+
+[node name="Contacts" type="Area2D" parent="." unique_id=1220270471]
+position = Vector2(157, 325)
+scale = Vector2(0.8, 0.8)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Contacts" unique_id=593490741]
+texture = ExtResource("5_75sbr")
