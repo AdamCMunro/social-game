@@ -41,6 +41,7 @@ func _process(delta: float) -> void:
 func _instaniate_post(post_data):
 	var new_post = post_scene.instantiate()
 	new_post.position = viewport_centre
+	
 	#new_post.user = post_data.user
 	#new_post.caption = post_data.caption
 	add_child(new_post)
@@ -103,11 +104,3 @@ func _reset_post(post):
 	for b in button_arr:
 		if b and b.pressed:
 			b._unpress()
-
-
-func _on_new_post_button_draw_hand() -> void:
-	draw_hand.emit()
-
-
-func _on_new_post_button_hide_hand() -> void:
-	hide_hand.emit()

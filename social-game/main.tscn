@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://b3qp3qb4jcf0"]
+[gd_scene format=3 uid="uid://b3qp3qb4jcf0"]
 
 [ext_resource type="Script" uid="uid://dk22owod4u4k2" path="res://main.gd" id="1_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://dtvvs8dam0hdb" path="res://feed.tscn" id="1_ig7tw"]
 [ext_resource type="Shader" uid="uid://de2dvj8kxib8f" path="res://main.gdshader" id="2_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://fb2km1l0442p" path="res://player.tscn" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://cu5ri8vy7twcm" path="res://feed_button.gd" id="5_lquwl"]
+[ext_resource type="Script" uid="uid://wfvhgnvpmors" path="res://messenger_button.gd" id="6_7mycd"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0xm2m"]
 shader = ExtResource("2_0xm2m")
@@ -30,12 +31,13 @@ shader_parameter/roll_strength = 0.02000000095
 shader_parameter/glow_strength = 1.30000006175
 shader_parameter/glow_threshold = 0.30000001425
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" unique_id=1804974650]
 script = ExtResource("1_1bvp3")
 
-[node name="CRTFilterLayer" type="CanvasLayer" parent="."]
+[node name="CRTFilterLayer" type="CanvasLayer" parent="." unique_id=402968258]
 
-[node name="ColorRect" type="ColorRect" parent="CRTFilterLayer"]
+[node name="ColorRect" type="ColorRect" parent="CRTFilterLayer" unique_id=1391194014]
+z_index = 100
 material = SubResource("ShaderMaterial_0xm2m")
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,9 +46,39 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Feed" parent="." instance=ExtResource("1_ig7tw")]
+[node name="Player" parent="." unique_id=2124234993 instance=ExtResource("3_h2yge")]
+visible = false
+z_index = 1
 
-[node name="Player" parent="." instance=ExtResource("3_h2yge")]
+[node name="FeedButton" type="Button" parent="." unique_id=1207263940]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 200.0
+offset_top = 100.0
+offset_right = 300.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Feed"
+script = ExtResource("5_lquwl")
 
-[connection signal="draw_hand" from="Feed" to="Player" method="_populate_hand"]
-[connection signal="hide_hand" from="Feed" to="Player" method="_hide_hand"]
+[node name="MessengerButton" type="Button" parent="." unique_id=1160866522]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 200.0
+offset_top = 200.0
+offset_right = 300.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Messenger"
+script = ExtResource("6_7mycd")
+
+[connection signal="pressed" from="FeedButton" to="FeedButton" method="_on_pressed"]
+[connection signal="pressed" from="MessengerButton" to="MessengerButton" method="_on_pressed"]

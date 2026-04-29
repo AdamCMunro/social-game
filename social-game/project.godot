@@ -25,3 +25,7 @@ window/size/viewport_width=1160
 window/size/viewport_height=670
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0

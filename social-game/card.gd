@@ -4,6 +4,7 @@ extends Node2D
 @onready var player = hand.get_parent()
 @onready var main = player.get_parent()
 @onready var feed = main.get_node("Feed")
+@onready var post_scale = feed.get_node("Post").scale
 
 @onready var viewport_centre = get_viewport_rect().size / 2
 
@@ -205,7 +206,7 @@ func _place_card_animation():
 	.set_trans(Tween.TRANS_SINE)\
 	.set_ease(Tween.EASE_IN_OUT)
 	
-	tween.tween_property(self, "scale", Vector2(1.13, 1.13), 0.3)\
+	tween.tween_property(self, "scale", post_scale, 0.3)\
 	.set_trans(Tween.TRANS_SINE)\
 	.set_ease(Tween.EASE_IN_OUT)
 	

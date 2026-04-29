@@ -1,8 +1,5 @@
 extends Area2D
 
-signal draw_hand
-signal hide_hand
-
 var pressing = false
 var button_scale = Vector2.ZERO
 
@@ -32,9 +29,9 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 		if event.is_pressed() && not event.is_echo():
 			if pressing == false:
 				if not main.in_hand:
-					draw_hand.emit()
+					_draw_hand()
 				else:
-					hide_hand.emit()
+					_hide_hand()
 				pressing = true
 				var tween = _press()
 				await tween.finished
@@ -57,3 +54,9 @@ func _toggle(boolean):
 		return false
 	else:
 		return true
+		
+func _draw_hand():
+	main.get_node('Player')._populate_hand()
+
+func _hide_hand():
+	main.get_node('Player')._hide_hand()

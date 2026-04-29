@@ -17,8 +17,9 @@ scale = Vector2(1.176, 1.1928446)
 texture = ExtResource("1_m0kps")
 
 [node name="MessengerBody" type="Area2D" parent="." unique_id=377509894]
-position = Vector2(587, 329)
-scale = Vector2(1.13, 1.13)
+position = Vector2(587, 337.5)
+scale = Vector2(1.2, 1.2)
+metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="MessengerBody" unique_id=970300752]
 texture = ExtResource("2_tpcxp")
@@ -37,10 +38,10 @@ scale = Vector2(0.9999999, 0.9999999)
 shape = SubResource("RectangleShape2D_75sbr")
 
 [node name="Recipient" type="Label" parent="MessengerBody" unique_id=1599201810]
-offset_left = -225.66374
-offset_top = -265.48676
-offset_right = -185.66374
-offset_bottom = -242.48676
+offset_left = -225.664
+offset_top = -268.0
+offset_right = -115.664
+offset_bottom = -238.0
 theme_override_fonts/font = ExtResource("4_dj5lq")
 theme_override_font_sizes/font_size = 24
 text = "Username"
@@ -82,8 +83,8 @@ theme_override_font_sizes/font_size = 24
 text = "Option 3..."
 
 [node name="Contacts" type="Area2D" parent="." unique_id=1220270471]
-position = Vector2(157, 325)
-scale = Vector2(0.8, 0.8)
+position = Vector2(150, 325)
+scale = Vector2(1.1, 1.1)
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Contacts" unique_id=593490741]
