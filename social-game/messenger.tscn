@@ -1,11 +1,16 @@
 [gd_scene format=3 uid="uid://bbf22kjn4rw6"]
 
+[ext_resource type="Script" uid="uid://bgejr7rtsgtpf" path="res://messenger.gd" id="1_1clpa"]
 [ext_resource type="Texture2D" uid="uid://wdetlss0c3ti" path="res://assets/Messenger_Background.png" id="1_m0kps"]
 [ext_resource type="Texture2D" uid="uid://6j8u0l3vsjc4" path="res://assets/Messenger.png" id="2_tpcxp"]
 [ext_resource type="Texture2D" uid="uid://cj5uveejvi17t" path="res://assets/Send_Message_Button.png" id="3_dj5lq"]
 [ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="4_dj5lq"]
+[ext_resource type="Script" uid="uid://yobyk68gyaq5" path="res://option_1.gd" id="5_5uh8x"]
 [ext_resource type="Texture2D" uid="uid://bv7kp8r2220md" path="res://assets/Square_Selection.png" id="5_8wtml"]
 [ext_resource type="Texture2D" uid="uid://dp1txt5oc6mfh" path="res://assets/Contacts.png" id="5_75sbr"]
+[ext_resource type="Script" uid="uid://4udu5egxntkx" path="res://option_2.gd" id="6_5uh8x"]
+[ext_resource type="Script" uid="uid://cys7txb1smtuo" path="res://option_3.gd" id="7_qhwlu"]
+[ext_resource type="Script" uid="uid://mvf0l8pkqr7b" path="res://contacts.gd" id="10_8waa5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_75sbr"]
 size = Vector2(129.79382, 129.79346)
@@ -20,6 +25,7 @@ size = Vector2(466.6667, 30.833313)
 size = Vector2(467.5, 29.166656)
 
 [node name="Messenger" type="Node2D" unique_id=563844369]
+script = ExtResource("1_1clpa")
 
 [node name="MessengerBackground" type="Sprite2D" parent="." unique_id=2025585928]
 position = Vector2(583, 335.00003)
@@ -65,57 +71,120 @@ theme_override_font_sizes/font_size = 24
 text = "Sending Text"
 
 [node name="Option1" type="Area2D" parent="MessengerBody" unique_id=2073892545]
+position = Vector2(0, 182)
+script = ExtResource("5_5uh8x")
 metadata/_edit_group_ = true
 
+[node name="ColorRect" type="ColorRect" parent="MessengerBody/Option1" unique_id=661961617]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.16666
+offset_top = -15.75
+offset_right = 234.16666
+offset_bottom = 15.9166565
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
 [node name="OptionLabel" type="Label" parent="MessengerBody/Option1" unique_id=417421513]
-offset_left = -231.85843
-offset_top = 166.3717
-offset_right = 230.0885
-offset_bottom = 196.3717
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.97348
+offset_top = -15.0
+offset_right = 230.97345
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_dj5lq")
 theme_override_font_sizes/font_size = 24
 text = "Option 1..."
 
-[node name="Sprite2D" type="Sprite2D" parent="MessengerBody/Option1" unique_id=1670038969]
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MessengerBody/Option1" unique_id=1519360124]
-position = Vector2(0, 182.5)
 shape = SubResource("RectangleShape2D_8wtml")
 
 [node name="Option2" type="Area2D" parent="MessengerBody" unique_id=789330614]
+position = Vector2(0, 216)
+script = ExtResource("6_5uh8x")
 metadata/_edit_group_ = true
 
+[node name="ColorRect" type="ColorRect" parent="MessengerBody/Option2" unique_id=1603883933]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.16666
+offset_top = -15.7500305
+offset_right = 234.16666
+offset_bottom = 15.916626
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
 [node name="OptionLabel" type="Label" parent="MessengerBody/Option2" unique_id=888915625]
-offset_left = -232.74338
-offset_top = 201.7699
-offset_right = 231.85846
-offset_bottom = 231.7699
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -232.30092
+offset_top = -15.0
+offset_right = 232.30092
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_dj5lq")
 theme_override_font_sizes/font_size = 24
 text = "Option 2..."
 
-[node name="Sprite2D" type="Sprite2D" parent="MessengerBody/Option2" unique_id=2047898561]
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MessengerBody/Option2" unique_id=1229319885]
-position = Vector2(0, 217.917)
 shape = SubResource("RectangleShape2D_5uh8x")
 
 [node name="Option3" type="Area2D" parent="MessengerBody" unique_id=1979361157]
+position = Vector2(0, 250)
+script = ExtResource("7_qhwlu")
 metadata/_edit_group_ = true
 
+[node name="ColorRect" type="ColorRect" parent="MessengerBody/Option3" unique_id=1931307096]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.16666
+offset_top = -15.750061
+offset_right = 234.16666
+offset_bottom = 15.916595
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
 [node name="OptionLabel" type="Label" parent="MessengerBody/Option3" unique_id=509663925]
-offset_left = -232.74338
-offset_top = 235.39825
-offset_right = 233.62836
-offset_bottom = 265.39825
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -233.18587
+offset_top = -15.000008
+offset_right = 233.18587
+offset_bottom = 15.000008
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_dj5lq")
 theme_override_font_sizes/font_size = 24
 text = "Option 3..."
 
-[node name="Sprite2D" type="Sprite2D" parent="MessengerBody/Option3" unique_id=930492967]
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MessengerBody/Option3" unique_id=1637328924]
-position = Vector2(0, 252.5)
 shape = SubResource("RectangleShape2D_qhwlu")
 
 [node name="Selection" type="Area2D" parent="MessengerBody" unique_id=2006294913]
@@ -128,10 +197,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -232.5
-offset_top = -20.0
-offset_right = 232.5
-offset_bottom = 20.0
+offset_left = -235.0
+offset_top = -18.75
+offset_right = 235.0
+offset_bottom = 18.75
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("5_8wtml")
@@ -145,7 +214,18 @@ axis_stretch_vertical = 1
 [node name="Contacts" type="Area2D" parent="." unique_id=1220270471]
 position = Vector2(145, 335)
 scale = Vector2(1.15, 1.15)
+script = ExtResource("10_8waa5")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Contacts" unique_id=593490741]
 texture = ExtResource("5_75sbr")
+
+[connection signal="input_event" from="MessengerBody/Option1" to="MessengerBody/Option1" method="_on_input_event"]
+[connection signal="mouse_entered" from="MessengerBody/Option1" to="MessengerBody/Option1" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="MessengerBody/Option1" to="MessengerBody/Option1" method="_on_mouse_exited"]
+[connection signal="input_event" from="MessengerBody/Option2" to="MessengerBody/Option2" method="_on_input_event"]
+[connection signal="mouse_entered" from="MessengerBody/Option2" to="MessengerBody/Option2" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="MessengerBody/Option2" to="MessengerBody/Option2" method="_on_mouse_exited"]
+[connection signal="input_event" from="MessengerBody/Option3" to="MessengerBody/Option3" method="_on_input_event"]
+[connection signal="mouse_entered" from="MessengerBody/Option3" to="MessengerBody/Option3" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="MessengerBody/Option3" to="MessengerBody/Option3" method="_on_mouse_exited"]

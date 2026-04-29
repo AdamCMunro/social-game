@@ -1,8 +1,5 @@
 extends Node2D
 
-signal draw_hand
-signal hide_hand
-
 @onready var post_scene = preload("res://post.tscn")
 @onready var main = get_parent()
 @onready var viewport_centre = get_viewport_rect().size / 2
