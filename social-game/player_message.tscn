@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://2va2dssklteg"]
+
+[ext_resource type="Texture2D" uid="uid://3ot0rf6cao1l" path="res://assets/Repeat_Player_Message.png" id="1_0v5c0"]
+[ext_resource type="Texture2D" uid="uid://c5j4iu61pctct" path="res://assets/Player_Message.png" id="2_e7vov"]
+[ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="3_7t5t8"]
+[ext_resource type="Script" uid="uid://bw6ia0kiaxnqa" path="res://message.gd" id="4_e7vov"]
+
+[node name="PlayerMessage" type="MarginContainer" unique_id=1149575305]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RepeatSprite" type="NinePatchRect" parent="." unique_id=866435898]
+visible = false
+layout_mode = 2
+texture = ExtResource("1_0v5c0")
+
+[node name="Sprite" type="NinePatchRect" parent="." unique_id=1682241946]
+layout_mode = 2
+texture = ExtResource("2_e7vov")
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 17
+patch_margin_bottom = 17
+
+[node name="TextContainer" type="MarginContainer" parent="." unique_id=1189363854]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 27
+
+[node name="Message" type="Label" parent="TextContainer" unique_id=1049173985]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_7t5t8")
+theme_override_font_sizes/font_size = 12
+text = "Message..."
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 3
+script = ExtResource("4_e7vov")

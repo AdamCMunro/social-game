@@ -7,6 +7,8 @@ extends Node2D
 @onready var option_arr = [option1, option2, option3]
 @onready var sending_text = $MessengerBody/SendingText
 
+@onready var player_message_scene = preload("res://player_message.tscn")
+
 var typing = false
 
 # Called when the node enters the scene tree for the first time.
@@ -45,8 +47,12 @@ func _input(event: InputEvent):
 			if sending_text.text == "Type random letters to send":
 				sending_text.visible_ratio = 0
 				sending_text.text = option1.full_text
-			else:
+			elif sending_text.visible_characters < sending_text.text.length():
 				sending_text.visible_characters += 1
+			else:
+				typing = false
+				sending_text.visible = false
+				_send_message(sending_text.text)
 
 func _show_sending_text():
 	var tween = create_tween()
@@ -54,3 +60,23 @@ func _show_sending_text():
 	tween.tween_property(sending_text, "visible_ratio", 1, 0.2)\
 		.set_ease(Tween.EASE_IN_OUT)\
 		.set_trans(Tween.TRANS_SINE)
+
+func _send_message(message):
+	var new_message = player_message_scene.instantiate()
+	
+	new_message.get_node("TextContainer/Message").text = message
+	new_message.position = Vector2(viewport_centre.x + 110, 1000)
+	add_child(new_message)
+	
+	_message_appear(new_message)
+	
+func _message_appear(message):
+	var tween = create_tween()
+	
+	tween.tween_property(message, "position", Vector2(message.position.x, viewport_centre.y + 45), 0.3)\
+		.set_ease(Tween.EASE_IN_OUT)\
+		.set_trans(Tween.TRANS_SINE)
+	tween.tween_property(message, "position", Vector2(message.position.x, viewport_centre.y + 65), 0.2)\
+		.set_ease(Tween.EASE_IN_OUT)\
+		.set_trans(Tween.TRANS_SINE)
+	
