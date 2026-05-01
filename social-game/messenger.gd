@@ -11,15 +11,30 @@ extends Node2D
 
 var typing = false
 
+var chosen_option_text
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$MessengerBody.position = viewport_centre
+	$Messages.position = viewport_centre
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 
+
+func _option1():
+	chosen_option_text = option1.full_text
+	_option_chosen()
+	
+func _option2():
+	chosen_option_text = option2.full_text
+	_option_chosen()
+	
+func _option3():
+	chosen_option_text = option3.full_text
+	_option_chosen()
 
 func _option_chosen() -> void:
 	
@@ -46,7 +61,7 @@ func _input(event: InputEvent):
 		if typing:
 			if sending_text.text == "Type random letters to send":
 				sending_text.visible_ratio = 0
-				sending_text.text = option1.full_text
+				sending_text.text = chosen_option_text
 			elif sending_text.visible_characters < sending_text.text.length():
 				sending_text.visible_characters += 1
 			else:
@@ -63,20 +78,30 @@ func _show_sending_text():
 
 func _send_message(message):
 	var new_message = player_message_scene.instantiate()
-	
 	new_message.get_node("TextContainer/Message").text = message
-	new_message.position = Vector2(viewport_centre.x + 110, 1000)
-	add_child(new_message)
+	$Messages/ScrollContainer/VBoxContainer.add_child(new_message)
 	
-	_message_appear(new_message)
+	await get_tree().process_frame
 	
-func _message_appear(message):
+	var target_position = new_message.position
+	
+	_message_animation(new_message)
+	_scroll_to_bottom()
+
+func _scroll_to_bottom():
+	await get_tree().process_frame
+	
+	var scroll_bar = $Messages/ScrollContainer.get_v_scroll_bar()
 	var tween = create_tween()
 	
-	tween.tween_property(message, "position", Vector2(message.position.x, viewport_centre.y + 45), 0.3)\
-		.set_ease(Tween.EASE_IN_OUT)\
-		.set_trans(Tween.TRANS_SINE)
-	tween.tween_property(message, "position", Vector2(message.position.x, viewport_centre.y + 65), 0.2)\
-		.set_ease(Tween.EASE_IN_OUT)\
-		.set_trans(Tween.TRANS_SINE)
+	tween.tween_property($Messages/ScrollContainer, "scroll_vertical", scroll_bar.max_value, 0.3).set_trans(Tween.TRANS_SINE)
+
+func _message_animation(message):
+	message.modulate.a = 0
+	
+	var tween = create_tween()
+
+	# Fade in
+	tween.tween_property(message, "modulate:a", 1.0, 0.2)
+	
 	

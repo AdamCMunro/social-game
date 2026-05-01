@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://bgejr7rtsgtpf" path="res://messenger.gd" id="1_1clpa"]
 [ext_resource type="Texture2D" uid="uid://wdetlss0c3ti" path="res://assets/Messenger_Background.png" id="1_m0kps"]
 [ext_resource type="Texture2D" uid="uid://6j8u0l3vsjc4" path="res://assets/Messenger.png" id="2_tpcxp"]
-[ext_resource type="Texture2D" uid="uid://cj5uveejvi17t" path="res://assets/Send_Message_Button.png" id="3_dj5lq"]
 [ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="4_dj5lq"]
 [ext_resource type="Script" uid="uid://yobyk68gyaq5" path="res://option_1.gd" id="5_5uh8x"]
 [ext_resource type="Texture2D" uid="uid://bv7kp8r2220md" path="res://assets/Square_Selection.png" id="5_8wtml"]
@@ -11,9 +10,8 @@
 [ext_resource type="Script" uid="uid://4udu5egxntkx" path="res://option_2.gd" id="6_5uh8x"]
 [ext_resource type="Script" uid="uid://cys7txb1smtuo" path="res://option_3.gd" id="7_qhwlu"]
 [ext_resource type="Script" uid="uid://mvf0l8pkqr7b" path="res://contacts.gd" id="10_8waa5"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_75sbr"]
-size = Vector2(129.79382, 129.79346)
+[ext_resource type="PackedScene" uid="uid://c647b82lppukb" path="res://message.tscn" id="11_8waa5"]
+[ext_resource type="PackedScene" uid="uid://2va2dssklteg" path="res://player_message.tscn" id="12_u38sr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qhwlu"]
 size = Vector2(467.5, 29.166656)
@@ -33,24 +31,12 @@ scale = Vector2(1.176, 1.1928446)
 texture = ExtResource("1_m0kps")
 
 [node name="MessengerBody" type="Area2D" parent="." unique_id=377509894]
+z_index = 2
 position = Vector2(587, 337.5)
 scale = Vector2(1.2, 1.2)
 
 [node name="Sprite2D" type="Sprite2D" parent="MessengerBody" unique_id=970300752]
 texture = ExtResource("2_tpcxp")
-
-[node name="SendButton" type="Area2D" parent="MessengerBody" unique_id=186149192]
-position = Vector2(215.04425, 135.39824)
-scale = Vector2(0.3, 0.3)
-metadata/_edit_group_ = true
-
-[node name="Sprite2D" type="Sprite2D" parent="MessengerBody/SendButton" unique_id=1442369735]
-texture = ExtResource("3_dj5lq")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MessengerBody/SendButton" unique_id=1334323720]
-position = Vector2(-0.00024414063, 0)
-scale = Vector2(0.9999999, 0.9999999)
-shape = SubResource("RectangleShape2D_75sbr")
 
 [node name="Recipient" type="Label" parent="MessengerBody" unique_id=1599201810]
 offset_left = -225.664
@@ -106,7 +92,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_dj5lq")
 theme_override_font_sizes/font_size = 24
-text = "Option 3..."
+text = "Long Message Test"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MessengerBody/Option3" unique_id=1637328924]
 shape = SubResource("RectangleShape2D_qhwlu")
@@ -145,7 +131,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_dj5lq")
 theme_override_font_sizes/font_size = 24
-text = "Option 2..."
+text = "Short Message Test"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MessengerBody/Option2" unique_id=1229319885]
 shape = SubResource("RectangleShape2D_5uh8x")
@@ -184,7 +170,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_dj5lq")
 theme_override_font_sizes/font_size = 24
-text = "Option 1..."
+text = "Standard Message Test"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MessengerBody/Option1" unique_id=1519360124]
 shape = SubResource("RectangleShape2D_8wtml")
@@ -222,15 +208,51 @@ metadata/_edit_group_ = true
 [node name="Sprite2D" type="Sprite2D" parent="Contacts" unique_id=593490741]
 texture = ExtResource("5_75sbr")
 
+[node name="Messages" type="Area2D" parent="." unique_id=1755341961]
+position = Vector2(587, 338)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Messages" unique_id=1535120205]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -287.0
+offset_top = -268.0
+offset_right = 288.0
+offset_bottom = 186.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Messages/ScrollContainer" unique_id=434320952]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Message" parent="Messages/ScrollContainer/VBoxContainer" unique_id=1911466256 instance=ExtResource("11_8waa5")]
+layout_mode = 2
+
+[node name="PlayerMessage" parent="Messages/ScrollContainer/VBoxContainer" unique_id=1149575305 instance=ExtResource("12_u38sr")]
+layout_mode = 2
+
+[node name="Message2" parent="Messages/ScrollContainer/VBoxContainer" unique_id=1225237553 instance=ExtResource("11_8waa5")]
+layout_mode = 2
+
+[node name="PlayerMessage2" parent="Messages/ScrollContainer/VBoxContainer" unique_id=461834479 instance=ExtResource("12_u38sr")]
+layout_mode = 2
+
+[node name="Message3" parent="Messages/ScrollContainer/VBoxContainer" unique_id=1553365621 instance=ExtResource("11_8waa5")]
+layout_mode = 2
+
 [connection signal="input_event" from="MessengerBody/Option3" to="MessengerBody/Option3" method="_on_input_event"]
 [connection signal="mouse_entered" from="MessengerBody/Option3" to="MessengerBody/Option3" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="MessengerBody/Option3" to="MessengerBody/Option3" method="_on_mouse_exited"]
-[connection signal="option3_chosen" from="MessengerBody/Option3" to="." method="_option_chosen"]
+[connection signal="option3_chosen" from="MessengerBody/Option3" to="." method="_option3"]
 [connection signal="input_event" from="MessengerBody/Option2" to="MessengerBody/Option2" method="_on_input_event"]
 [connection signal="mouse_entered" from="MessengerBody/Option2" to="MessengerBody/Option2" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="MessengerBody/Option2" to="MessengerBody/Option2" method="_on_mouse_exited"]
-[connection signal="option2_chosen" from="MessengerBody/Option2" to="." method="_option_chosen"]
+[connection signal="option2_chosen" from="MessengerBody/Option2" to="." method="_option2"]
 [connection signal="input_event" from="MessengerBody/Option1" to="MessengerBody/Option1" method="_on_input_event"]
 [connection signal="mouse_entered" from="MessengerBody/Option1" to="MessengerBody/Option1" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="MessengerBody/Option1" to="MessengerBody/Option1" method="_on_mouse_exited"]
-[connection signal="option1_chosen" from="MessengerBody/Option1" to="." method="_option_chosen"]
+[connection signal="option1_chosen" from="MessengerBody/Option1" to="." method="_option1"]

@@ -5,7 +5,7 @@ signal option1_chosen
 @onready var selection = get_parent().get_node("Selection")
 @onready var messenger_body = get_parent()
 
-var option_text = "Option 1..."
+var option_text = "Standard Message Test"
 var full_text = "OMG YAAAAASSSSS QUEEN"
 
 var hovered = false
