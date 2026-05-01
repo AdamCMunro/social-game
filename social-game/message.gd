@@ -18,6 +18,9 @@ func update_bubble_width(text_string: String):
 	autowrap_mode = TextServer.AUTOWRAP_OFF
 	custom_minimum_size.x = 0
 	
+	await get_tree().process_frame
+	await get_tree().process_frame
+	
 	var natural_size = get_combined_minimum_size()
 	
 	var max_width = 250
