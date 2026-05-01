@@ -79,29 +79,24 @@ func _show_sending_text():
 func _send_message(message):
 	var new_message = player_message_scene.instantiate()
 	new_message.get_node("TextContainer/Message").text = message
-	$Messages/ScrollContainer/VBoxContainer.add_child(new_message)
-	
 	await get_tree().process_frame
+	new_message.position = Vector2(15, 10)
+	$Messages.add_child(new_message)
 	
-	var target_position = new_message.position
-	
-	_message_animation(new_message)
-	_scroll_to_bottom()
+	#_message_animation(new_message)
 
-func _scroll_to_bottom():
-	await get_tree().process_frame
-	
-	var scroll_bar = $Messages/ScrollContainer.get_v_scroll_bar()
-	var tween = create_tween()
-	
-	tween.tween_property($Messages/ScrollContainer, "scroll_vertical", scroll_bar.max_value, 0.3).set_trans(Tween.TRANS_SINE)
 
 func _message_animation(message):
 	message.modulate.a = 0
-	
 	var tween = create_tween()
 
 	# Fade in
 	tween.tween_property(message, "modulate:a", 1.0, 0.2)
+	tween.parallel().tween_property(message, "position", Vector2(message.position.x, 0), 0.3)\
+		.set_ease(Tween.EASE_IN_OUT)\
+		.set_trans(Tween.TRANS_SINE)
+	tween.tween_property(message, "position", Vector2(message.position.x, 10), 0.2)\
+		.set_ease(Tween.EASE_IN_OUT)\
+		.set_trans(Tween.TRANS_SINE)
 	
 	
