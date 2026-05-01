@@ -206,9 +206,43 @@ metadata/_edit_group_ = true
 [node name="Sprite2D" type="Sprite2D" parent="Contacts" unique_id=593490741]
 texture = ExtResource("5_75sbr")
 
-[node name="Messages" type="Area2D" parent="." unique_id=1755341961]
+[node name="Messages" type="Control" parent="." unique_id=612957513]
 z_index = 2
-position = Vector2(587, 338)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TypingIndicator" type="RichTextLabel" parent="Messages" unique_id=1226494192]
+visible = false
+layout_mode = 0
+offset_left = -284.0
+offset_top = 159.0
+offset_right = -107.0
+offset_bottom = 199.0
+theme_override_fonts/normal_font = ExtResource("4_dj5lq")
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "[wave amp=9.0 freq=4 connected=0]User is typing...[/wave]"
+
+[node name="Container" type="VBoxContainer" parent="Messages" unique_id=837099262]
+top_level = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -280.75
+offset_top = -445.0
+offset_right = 280.75
+offset_bottom = -155.0
+grow_horizontal = 2
+size_flags_vertical = 8
 
 [connection signal="input_event" from="MessengerBody/Option3" to="MessengerBody/Option3" method="_on_input_event"]
 [connection signal="mouse_entered" from="MessengerBody/Option3" to="MessengerBody/Option3" method="_on_mouse_entered"]

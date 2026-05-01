@@ -8,16 +8,17 @@ extends Node2D
 @onready var sending_text = $MessengerBody/SendingText
 
 @onready var player_message_scene = preload("res://player_message.tscn")
+@onready var message_scene = preload("res://message.tscn")
 
 var typing = false
 
 var chosen_option_text
+var next_message = "Why thank you m'lord"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$MessengerBody.position = viewport_centre
 	$Messages.position = viewport_centre
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -79,24 +80,38 @@ func _show_sending_text():
 func _send_message(message):
 	var new_message = player_message_scene.instantiate()
 	new_message.get_node("TextContainer/Message").text = message
-	await get_tree().process_frame
-	new_message.position = Vector2(15, 10)
-	$Messages.add_child(new_message)
+	$Messages/Container.add_child(new_message)
+	$Messages/Container.size.y += new_message.get_node("TextContainer/Message").size.y * 0.1
+	$Messages/Container.position.y -= new_message.get_node("TextContainer/Message").size.y * 0.1
+	_message_animation(new_message)
+	await get_tree().create_timer(2.0).timeout
+	_show_typing()
 	
-	#_message_animation(new_message)
-
+func _show_typing():
+	$Messages/TypingIndicator.visible = true
+	await get_tree().create_timer(2.0).timeout
+	$Messages/TypingIndicator.visible = false
+	_recieve_message(next_message)
+	
+func _recieve_message(message):
+	var new_message = message_scene.instantiate()
+	new_message.get_node("TextContainer/Message").text = message
+	$Messages/Container.add_child(new_message)
+	$Messages/Container.size.y += new_message.get_node("TextContainer/Message").size.y * 0.1
+	$Messages/Container.position.y -= new_message.get_node("TextContainer/Message").size.y * 0.1
+	_message_animation(new_message)
 
 func _message_animation(message):
 	message.modulate.a = 0
+	message.position.y += 500
 	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
 
-	# Fade in
-	tween.tween_property(message, "modulate:a", 1.0, 0.2)
-	tween.parallel().tween_property(message, "position", Vector2(message.position.x, 0), 0.3)\
-		.set_ease(Tween.EASE_IN_OUT)\
-		.set_trans(Tween.TRANS_SINE)
-	tween.tween_property(message, "position", Vector2(message.position.x, 10), 0.2)\
-		.set_ease(Tween.EASE_IN_OUT)\
-		.set_trans(Tween.TRANS_SINE)
+	tween.tween_property(message, "modulate:a", 1.0, 0.3)
+	tween.parallel().tween_property(message, "position:y", -5, 0.2).from_current()
+	tween.tween_property(message, "position:y", 0, 0.1)
+	
 	
 	

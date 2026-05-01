@@ -1,23 +1,23 @@
-[gd_scene load_steps=5 format=3 uid="uid://fb2km1l0442p"]
+[gd_scene format=3 uid="uid://fb2km1l0442p"]
 
 [ext_resource type="Script" uid="uid://b4ekba7qr4od4" path="res://player.gd" id="1_hqtel"]
 [ext_resource type="Texture2D" uid="uid://cvx5xocxtioa1" path="res://assets/Stat_Block.png" id="1_onrkg"]
 [ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="2_i3pqv"]
 [ext_resource type="Script" uid="uid://djrw57m5yd1q1" path="res://hand.gd" id="4_sweqy"]
 
-[node name="Player" type="Node2D"]
+[node name="Player" type="Node2D" unique_id=1827458889]
 script = ExtResource("1_hqtel")
 
-[node name="StatBlock" type="Area2D" parent="."]
+[node name="StatBlock" type="Area2D" parent="." unique_id=656760276]
 position = Vector2(5, 5)
 scale = Vector2(0.75, 0.75)
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="StatBlock"]
+[node name="Sprite2D" type="Sprite2D" parent="StatBlock" unique_id=988289218]
 position = Vector2(140, 110)
 texture = ExtResource("1_onrkg")
 
-[node name="EnergyLabel" type="RichTextLabel" parent="StatBlock"]
+[node name="EnergyLabel" type="RichTextLabel" parent="StatBlock" unique_id=742912586]
 offset_left = 23.0
 offset_top = 28.0
 offset_right = 148.0
@@ -28,7 +28,7 @@ bbcode_enabled = true
 text = "[wave amp=11.0 freq=2.5 connected=0]Energy:[/wave]
 "
 
-[node name="Energy" type="RichTextLabel" parent="StatBlock"]
+[node name="Energy" type="RichTextLabel" parent="StatBlock" unique_id=1703837554]
 offset_left = 178.0
 offset_top = 34.0
 offset_right = 270.0
@@ -39,7 +39,7 @@ theme_override_font_sizes/normal_font_size = 36
 bbcode_enabled = true
 text = "[wave amp=11.0 freq=2.5 connected=0]0000[/wave]"
 
-[node name="MentalHealthLabel" type="RichTextLabel" parent="StatBlock"]
+[node name="MentalHealthLabel" type="RichTextLabel" parent="StatBlock" unique_id=931707095]
 offset_left = 23.0
 offset_top = 62.0
 offset_right = 148.0
@@ -50,7 +50,7 @@ bbcode_enabled = true
 text = "[wave amp=11.0 freq=2.5 connected=0]Health:[/wave]
 "
 
-[node name="MentalHealth" type="RichTextLabel" parent="StatBlock"]
+[node name="MentalHealth" type="RichTextLabel" parent="StatBlock" unique_id=1232427402]
 offset_left = 178.0
 offset_top = 67.0
 offset_right = 270.0
@@ -61,7 +61,7 @@ theme_override_font_sizes/normal_font_size = 36
 bbcode_enabled = true
 text = "[wave amp=11.0 freq=2.5 connected=0]0000[/wave]"
 
-[node name="FollowersLabel" type="RichTextLabel" parent="StatBlock"]
+[node name="FollowersLabel" type="RichTextLabel" parent="StatBlock" unique_id=1862476686]
 offset_left = 23.0
 offset_top = 94.0
 offset_right = 168.0
@@ -72,7 +72,7 @@ bbcode_enabled = true
 text = "[wave amp=11.0 freq=2.5 connected=0]Stalkers:[/wave]
 "
 
-[node name="Followers" type="RichTextLabel" parent="StatBlock"]
+[node name="Followers" type="RichTextLabel" parent="StatBlock" unique_id=2055877491]
 offset_left = 178.0
 offset_top = 100.0
 offset_right = 270.0
@@ -83,7 +83,7 @@ theme_override_font_sizes/normal_font_size = 36
 bbcode_enabled = true
 text = "[wave amp=11.0 freq=2.5 connected=0]0000[/wave]"
 
-[node name="MoneyLabel" type="RichTextLabel" parent="StatBlock"]
+[node name="MoneyLabel" type="RichTextLabel" parent="StatBlock" unique_id=1176226332]
 offset_left = 23.0
 offset_top = 126.0
 offset_right = 168.0
@@ -94,7 +94,7 @@ bbcode_enabled = true
 text = "[wave amp=11.0 freq=2.5 connected=0]Money:[/wave]
 "
 
-[node name="Money" type="RichTextLabel" parent="StatBlock"]
+[node name="Money" type="RichTextLabel" parent="StatBlock" unique_id=1267955771]
 offset_left = 178.0
 offset_top = 133.0
 offset_right = 270.0
@@ -105,5 +105,5 @@ theme_override_font_sizes/normal_font_size = 36
 bbcode_enabled = true
 text = "[wave amp=11.0 freq=2.5 connected=0]0000[/wave]"
 
-[node name="Hand" type="Node2D" parent="."]
+[node name="Hand" type="Node2D" parent="." unique_id=1534596021]
 script = ExtResource("4_sweqy")
