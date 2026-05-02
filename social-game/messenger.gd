@@ -81,9 +81,9 @@ func _send_message(message):
 	var new_message = player_message_scene.instantiate()
 	new_message.get_node("TextContainer/Message").text = message
 	$Messages/Container.add_child(new_message)
-	$Messages/Container.size.y += new_message.get_node("TextContainer/Message").size.y * 0.1
-	$Messages/Container.position.y -= new_message.get_node("TextContainer/Message").size.y * 0.1
-	_message_animation(new_message)
+	$Messages/Container.size.y += new_message.get_node("TextContainer/Message").size.y * 0.2
+	$Messages/Container.position.y -= new_message.get_node("TextContainer/Message").size.y * 0.2
+	#_message_animation(new_message)
 	await get_tree().create_timer(2.0).timeout
 	_show_typing()
 	
@@ -97,9 +97,9 @@ func _recieve_message(message):
 	var new_message = message_scene.instantiate()
 	new_message.get_node("TextContainer/Message").text = message
 	$Messages/Container.add_child(new_message)
-	$Messages/Container.size.y += new_message.get_node("TextContainer/Message").size.y * 0.1
-	$Messages/Container.position.y -= new_message.get_node("TextContainer/Message").size.y * 0.1
-	_message_animation(new_message)
+	$Messages/Container.size.y += new_message.get_node("TextContainer/Message").size.y * 0.2
+	$Messages/Container.position.y -= new_message.get_node("TextContainer/Message").size.y * 0.2
+	#_message_animation(new_message)
 
 func _message_animation(message):
 	message.modulate.a = 0
