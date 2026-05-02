@@ -1,9 +1,18 @@
 extends Area2D
 
+var contacts = []
+var contact_names = ["Desmond", "Angela", "James"]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	_prepare_drift()
+	for n in get_children():
+		if n is not Area2D and n is not Sprite2D:
+			contacts.append(n)
+			
+	for i in range(contacts.size()):
+		contacts[i].get_node("ContactBody/Label").text = contact_names[i]
+		
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

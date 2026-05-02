@@ -5,8 +5,8 @@ signal option3_chosen
 @onready var selection = get_parent().get_node("Selection")
 @onready var messenger_body = get_parent()
 
-var option_text = "Long Message Test"
-var full_text = "Super Mario RPG, Sonic The Hedgehog, Donkey Kong 3. Adventures of Lolo 1 & 2. Dig Dug, King's Knight ChewManFu. ~Harvest Moon~"
+var option_text = ""
+var full_text = ""
 
 var hovered = false
 var selected = false

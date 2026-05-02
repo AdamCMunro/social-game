@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://bvuqovsm01win"]
+
+[ext_resource type="Script" uid="uid://cnvo5kcqbl1bi" path="res://contact.gd" id="1_4kyxd"]
+[ext_resource type="Texture2D" uid="uid://cbr0k4rlfyjd2" path="res://assets/Contact.png" id="1_npiiw"]
+[ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="2_4kyxd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xsttb"]
+size = Vector2(214, 48)
+
+[node name="Contact" type="Node2D" unique_id=1756223629]
+script = ExtResource("1_4kyxd")
+
+[node name="ContactBody" type="Area2D" parent="." unique_id=270495457]
+
+[node name="Sprite2D" type="Sprite2D" parent="ContactBody" unique_id=975478562]
+texture = ExtResource("1_npiiw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContactBody" unique_id=1751198998]
+shape = SubResource("RectangleShape2D_xsttb")
+
+[node name="Label" type="Label" parent="ContactBody" unique_id=1158975523]
+offset_left = -96.0
+offset_top = -15.0
+offset_right = 31.0
+offset_bottom = 15.0
+theme_override_fonts/font = ExtResource("2_4kyxd")
+theme_override_font_sizes/font_size = 24
+text = "Username"
+
+[connection signal="input_event" from="ContactBody" to="." method="_on_contact_body_input_event"]
+[connection signal="mouse_entered" from="ContactBody" to="." method="_on_contact_body_mouse_entered"]
+[connection signal="mouse_exited" from="ContactBody" to="." method="_on_contact_body_mouse_exited"]

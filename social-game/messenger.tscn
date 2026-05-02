@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://4udu5egxntkx" path="res://option_2.gd" id="6_5uh8x"]
 [ext_resource type="Script" uid="uid://cys7txb1smtuo" path="res://option_3.gd" id="7_qhwlu"]
 [ext_resource type="Script" uid="uid://mvf0l8pkqr7b" path="res://contacts.gd" id="10_8waa5"]
+[ext_resource type="PackedScene" uid="uid://bvuqovsm01win" path="res://contact.tscn" id="11_8waa5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qhwlu"]
 size = Vector2(467.5, 29.166656)
@@ -90,7 +91,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_dj5lq")
 theme_override_font_sizes/font_size = 24
-text = "Long Message Test"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MessengerBody/Option3" unique_id=1637328924]
 shape = SubResource("RectangleShape2D_qhwlu")
@@ -129,7 +129,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_dj5lq")
 theme_override_font_sizes/font_size = 24
-text = "Short Message Test"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MessengerBody/Option2" unique_id=1229319885]
 shape = SubResource("RectangleShape2D_5uh8x")
@@ -168,7 +167,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_dj5lq")
 theme_override_font_sizes/font_size = 24
-text = "Standard Message Test"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MessengerBody/Option1" unique_id=1519360124]
 shape = SubResource("RectangleShape2D_8wtml")
@@ -205,6 +203,39 @@ metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Contacts" unique_id=593490741]
 texture = ExtResource("5_75sbr")
+
+[node name="Contact" parent="Contacts" unique_id=1756223629 instance=ExtResource("11_8waa5")]
+position = Vector2(0, -200)
+
+[node name="Contact2" parent="Contacts" unique_id=690784607 instance=ExtResource("11_8waa5")]
+position = Vector2(0, -150)
+
+[node name="Contact3" parent="Contacts" unique_id=70512145 instance=ExtResource("11_8waa5")]
+position = Vector2(0, -100)
+
+[node name="Selection" type="Area2D" parent="Contacts" unique_id=1909477713]
+position = Vector2(0, -200)
+metadata/_edit_group_ = true
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Contacts/Selection" unique_id=619951743]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -112.5
+offset_top = -25.0
+offset_right = 112.5
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_8wtml")
+patch_margin_left = 17
+patch_margin_top = 17
+patch_margin_right = 17
+patch_margin_bottom = 17
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
 [node name="Messages" type="Control" parent="." unique_id=612957513]
 z_index = 2
