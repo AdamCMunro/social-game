@@ -63,7 +63,7 @@ func _input(event: InputEvent):
 			if sending_text.text == "Type random letters to send":
 				sending_text.visible_ratio = 0
 				sending_text.text = chosen_option_text
-			elif sending_text.visible_characters < sending_text.text.length():
+			elif sending_text.visible_characters < sending_text.text.length() - 1:
 				sending_text.visible_characters += 1
 			else:
 				typing = false
@@ -81,9 +81,8 @@ func _send_message(message):
 	var new_message = player_message_scene.instantiate()
 	new_message.get_node("TextContainer/Message").text = message
 	$Messages/Container.add_child(new_message)
-	$Messages/Container.size.y += new_message.get_node("TextContainer/Message").size.y * 0.2
-	$Messages/Container.position.y -= new_message.get_node("TextContainer/Message").size.y * 0.2
-	#_message_animation(new_message)
+	await get_tree().process_frame
+	_animate_messages(new_message.size.y)
 	await get_tree().create_timer(2.0).timeout
 	_show_typing()
 	
@@ -97,21 +96,25 @@ func _recieve_message(message):
 	var new_message = message_scene.instantiate()
 	new_message.get_node("TextContainer/Message").text = message
 	$Messages/Container.add_child(new_message)
-	$Messages/Container.size.y += new_message.get_node("TextContainer/Message").size.y * 0.2
-	$Messages/Container.position.y -= new_message.get_node("TextContainer/Message").size.y * 0.2
-	#_message_animation(new_message)
+	await get_tree().process_frame
+	_animate_messages(new_message.size.y)
 
-func _message_animation(message):
-	message.modulate.a = 0
-	message.position.y += 500
+func _animate_messages(offset):
 	var tween = create_tween()
 	
-	tween.set_ease(Tween.EASE_OUT)
-	tween.set_trans(Tween.TRANS_SINE)
-
-	tween.tween_property(message, "modulate:a", 1.0, 0.3)
-	tween.parallel().tween_property(message, "position:y", -5, 0.2).from_current()
-	tween.tween_property(message, "position:y", 0, 0.1)
+	tween.tween_property($Messages/Container, "size:y", (offset + 10), 0.15).as_relative()\
+		.set_ease(Tween.EASE_OUT)\
+		.set_trans(Tween.TRANS_SINE)
+	tween.parallel().tween_property($Messages/Container, "position:y", -(offset + 10), 0.15).as_relative()\
+		.set_ease(Tween.EASE_OUT)\
+		.set_trans(Tween.TRANS_SINE)
+	tween.tween_property($Messages/Container, "size:y", -10, 0.2).as_relative()\
+		.set_ease(Tween.EASE_OUT)\
+		.set_trans(Tween.TRANS_SINE)
+	tween.parallel().tween_property($Messages/Container, "position:y", 10, 0.2).as_relative()\
+		.set_ease(Tween.EASE_OUT)\
+		.set_trans(Tween.TRANS_SINE)
+	
 	
 	
 	
