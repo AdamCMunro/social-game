@@ -22,7 +22,8 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	$Messages/Container.size.x = 561.5
+	$Messages/Container.position.x = 299.25
 
 
 func _option1():
@@ -82,6 +83,8 @@ func _send_message(message):
 	new_message.get_node("TextContainer/Message").text = message
 	$Messages/Container.add_child(new_message)
 	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
 	_animate_messages(new_message.size.y)
 	await get_tree().create_timer(2.0).timeout
 	_show_typing()
@@ -96,6 +99,8 @@ func _recieve_message(message):
 	var new_message = message_scene.instantiate()
 	new_message.get_node("TextContainer/Message").text = message
 	$Messages/Container.add_child(new_message)
+	await get_tree().process_frame
+	await get_tree().process_frame
 	await get_tree().process_frame
 	_animate_messages(new_message.size.y)
 
