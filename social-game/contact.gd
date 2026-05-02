@@ -63,6 +63,7 @@ func _select():
 	selection.visible = false
 	
 	get_parent().get_parent()._show_chats($ContactBody/Label.text)
+	get_parent().get_parent().get_node("Messages/TypingIndicator").text = str("[wave amp=9.0 freq=4 connected=0]", $ContactBody/Label.text, " is typing...[/wave]")
 			
 func _deselect():
 	$ContactBody/Sprite2D.texture = preload("res://assets/Contact.png")

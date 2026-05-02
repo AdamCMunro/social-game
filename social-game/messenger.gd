@@ -11,7 +11,10 @@ extends Node2D
 @onready var message_scene = preload("res://message.tscn")
 
 var typing = false
+var repeat = false
 
+var prev_message
+var prev_message_type = ""
 var chosen_option_text
 var next_message_index
 
@@ -94,19 +97,28 @@ func _send_message(message):
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await get_tree().process_frame
-	_animate_messages(new_message.size.y)
+	_animate_messages(new_message.size.y + 3)
+	prev_message_type = "sent"
+	prev_message = new_message
 	
 func _recieve_message(message):
 	$Messages/TypingIndicator.visible = true
 	await get_tree().create_timer(2.0).timeout
 	$Messages/TypingIndicator.visible = false
+	
 	var new_message = message_scene.instantiate()
 	new_message.get_node("TextContainer/Message").text = message
 	$Messages/Container.add_child(new_message)
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await get_tree().process_frame
-	_animate_messages(new_message.size.y)
+	if repeat:
+		prev_message.get_node("Sprite").visible = false
+		prev_message.get_node("RepeatSprite").visible = true
+		repeat = false
+	_animate_messages(new_message.size.y + 3)
+	prev_message_type = "recieved"
+	prev_message = new_message
 
 func _animate_messages(offset):
 	var tween = create_tween()
@@ -132,8 +144,11 @@ func _show_chats(name):
 	_progress_chats(0)
 				
 func _progress_chats(start_index):
+	
 	for i in range(start_index, message_arr.size()):
-		if message_arr[i].seed == _get_seed():
+		if message_arr[i].seed == _get_seed() or message_arr[i].seed == "":
+			if prev_message_type == "recieved":
+				repeat = true
 			_recieve_message(message_arr[i].body)
 			await get_tree().create_timer(2.2).timeout
 			if message_arr[i].options.size() > 0:
@@ -161,6 +176,9 @@ func _get_seed():
 	
 func _append_seed(char):
 	get_parent()._append_seed(char)
+	
+func _clear_chats():
+	pass
 	
 	
 	
