@@ -214,6 +214,7 @@ position = Vector2(0, -150)
 position = Vector2(0, -100)
 
 [node name="Selection" type="Area2D" parent="Contacts" unique_id=1909477713]
+visible = false
 position = Vector2(0, -200)
 metadata/_edit_group_ = true
 

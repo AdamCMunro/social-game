@@ -39,6 +39,7 @@ func _on_contact_body_input_event(viewport: Node, event: InputEvent, shape_idx: 
 			if not selected:
 				_select()
 				
+				
 func _select():
 	$ContactBody/Sprite2D.texture = preload("res://assets/Contact_Selected.png")
 	$ContactBody/Label.set("theme_override_colors/font_color",black)
@@ -62,7 +63,11 @@ func _select():
 	selected = true
 	selection.visible = false
 	
-	get_parent().get_parent()._show_chats($ContactBody/Label.text)
+	get_parent().get_parent()._clear_chats()
+	get_parent().get_parent()._transition_recipient($ContactBody/Label.text)
+	await get_tree().create_timer(0.75).timeout
+	var index = await get_parent().get_parent()._retrieve_messages($ContactBody/Label.text)
+	get_parent().get_parent()._show_chats($ContactBody/Label.text, index)
 	get_parent().get_parent().get_node("Messages/TypingIndicator").text = str("[wave amp=9.0 freq=4 connected=0]", $ContactBody/Label.text, " is typing...[/wave]")
 			
 func _deselect():
