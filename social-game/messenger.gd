@@ -241,26 +241,32 @@ func _animate_messages_clear():
 func _retrieve_messages(name):
 	var file = str("user://chat_logs/history/", name, ".json")
 	
+	var height = 0
+	
 	message_history_arr = _json_decode(file)
 	next_message_index = 0
 	
 	for m in message_history_arr:
+		repeat = false
+		var new_message
 		if m.sender == "player":
-			_send_message(m.body)
-			await get_tree().process_frame
-			await get_tree().process_frame
-			await get_tree().process_frame
-			await get_tree().process_frame
-			await get_tree().process_frame
+			if prev_message_type == "sent":
+				repeat = true
+			new_message = player_message_scene.instantiate()
+			prev_message_type = "sent"
 		else:
-			_recieve_message(m.body)
-			await get_tree().process_frame
-			await get_tree().process_frame
-			await get_tree().process_frame
-			await get_tree().process_frame
-			await get_tree().process_frame
+			if prev_message_type == "recieved":
+				repeat = true
+			new_message = message_scene.instantiate()
+			prev_message_type = "recieved"
+		new_message.get_node("TextContainer/Message").text = m.body
+		$Messages/Container.add_child(new_message)
+		await get_tree().process_frame
+		height += new_message.size.y
+		prev_message = new_message
 		next_message_index += 1
 		
+	_animate_messages(height)
 	return next_message_index
 
 func _add_message_to_history(sender, body):
