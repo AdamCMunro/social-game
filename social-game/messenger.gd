@@ -11,6 +11,8 @@ extends Node2D
 @onready var player_message_scene = preload("res://player_message.tscn")
 @onready var message_scene = preload("res://message.tscn")
 
+var option_position = []
+
 var typing = false
 var repeat = false
 
@@ -28,7 +30,9 @@ var sender_name
 func _ready() -> void:
 	$MessengerBody.position = viewport_centre
 	$Messages.position = viewport_centre
+	
 	for n in option_arr:
+		option_position.append(n.position)
 		n.visible = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -54,23 +58,32 @@ func _option3():
 
 func _option_chosen() -> void:
 	
-	for option in option_arr:
-		var option_tween = create_tween()
-		
-		option_tween.tween_property(option, "position", Vector2(option.position.x, option.position.y - 15), 0.15)\
-			.set_ease(Tween.EASE_IN_OUT)\
-			.set_trans(Tween.TRANS_SINE)
-		option_tween.tween_property(option, "position", Vector2(option.position.x, option.position.y + 500), 0.1)\
-			.set_ease(Tween.EASE_IN_OUT)\
-			.set_trans(Tween.TRANS_SINE)
-		
-		await option_tween.finished
-		
+	_hide_options()
+	
 	sending_text.visible = true
 	sending_text.visible_ratio = 0
 	_show_sending_text()
 	typing = true
 
+
+func _hide_option(option):
+	var option_tween = create_tween()
+		
+	option_tween.tween_property(option, "position", Vector2(option.position.x, option.position.y - 15), 0.15)\
+		.set_ease(Tween.EASE_IN_OUT)\
+		.set_trans(Tween.TRANS_SINE)
+	option_tween.tween_property(option, "position", Vector2(option.position.x, option.position.y + 500), 0.1)\
+		.set_ease(Tween.EASE_IN_OUT)\
+		.set_trans(Tween.TRANS_SINE)
+	
+	return option_tween
+
+func _hide_options():
+	for i in range(option_arr.size()):
+		await _hide_option(option_arr[i]).finished
+		option_arr[i].visible = false
+		option_arr[i].position = option_position[i]
+	return true
 
 func _input(event: InputEvent):
 	if event is InputEventKey and event.pressed:
@@ -169,6 +182,15 @@ func _progress_chats(start_index):
 					option_arr[j].visible = true
 				next_message_index = i + 1
 				break
+		else:
+			if message_arr[i-1].options.size() > 0:
+				for j in range(option_arr.size()):
+					option_arr[j].option_text = message_arr[i - 1].options[j].option
+					option_arr[j].full_text = message_arr[i - 1].options[j].full
+					option_arr[j]._transition_text(message_arr[i - 1].options[j].option)
+					option_arr[j].visible = true
+				next_message_index = i + 1
+				break
 
 
 func _json_decode(file_path: String) -> Array:
@@ -209,6 +231,7 @@ func _append_seed(char):
 	get_parent()._append_seed(char)
 	
 func _clear_chats():
+	
 	var tween = _animate_messages_clear()
 	
 	await tween.finished
@@ -225,6 +248,9 @@ func _clear_chats():
 	_save_json(str("user://chat_logs/history/", sender_name, ".json"), message_history_arr)
 	message_arr.clear()
 	message_history_arr.clear()
+	await _hide_options()
+	return true
+	
 	
 func _animate_messages_clear():
 	var tween = create_tween()
@@ -259,6 +285,10 @@ func _retrieve_messages(name):
 				repeat = true
 			new_message = message_scene.instantiate()
 			prev_message_type = "recieved"
+		if repeat:
+				prev_message.get_node("Sprite").visible = false
+				prev_message.get_node("RepeatSprite").visible = true
+				repeat = false
 		new_message.get_node("TextContainer/Message").text = m.body
 		$Messages/Container.add_child(new_message)
 		await get_tree().process_frame

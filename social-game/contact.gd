@@ -63,9 +63,8 @@ func _select():
 	selected = true
 	selection.visible = false
 	
-	get_parent().get_parent()._clear_chats()
 	get_parent().get_parent()._transition_recipient($ContactBody/Label.text)
-	await get_tree().create_timer(0.75).timeout
+	await get_parent().get_parent()._clear_chats()
 	var index = await get_parent().get_parent()._retrieve_messages($ContactBody/Label.text)
 	get_parent().get_parent()._show_chats($ContactBody/Label.text, index)
 	get_parent().get_parent().get_node("Messages/TypingIndicator").text = str("[wave amp=9.0 freq=4 connected=0]", $ContactBody/Label.text, " is typing...[/wave]")
