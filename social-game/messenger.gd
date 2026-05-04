@@ -192,6 +192,12 @@ func _progress_chats(start_index):
 				next_message_index = i + 1
 				break
 
+func _show_options(options):
+	for i in range(options.size()):
+		option_arr[i].option_text = options[i].option
+		option_arr[i].full_text = options[i].full
+		option_arr[i]._transition_text(options[i].option)
+		option_arr[i].visible = true
 
 func _json_decode(file_path: String) -> Array:
 	var content = FileAccess.get_file_as_string(file_path)

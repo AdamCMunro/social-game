@@ -8,6 +8,10 @@ var contact_position
 var selected = false
 var hovered = false
 
+var pending = 0
+
+var options = []
+
 var black = Color(0,0,0,1)
 var white = Color(1,1,1,1)
 
@@ -62,6 +66,7 @@ func _select():
 			
 	selected = true
 	selection.visible = false
+	pending = 0
 	
 	get_parent().get_parent()._transition_recipient($ContactBody/Label.text)
 	await get_parent().get_parent()._clear_chats()
@@ -74,4 +79,55 @@ func _deselect():
 	$ContactBody/Label.set("theme_override_colors/font_color",white)
 	
 	selected = false
-			
+	
+func _progress_chat():
+	var name = $ContactBody/Label.text
+	var messenger = get_parent().get_parent()
+	var history_path = str("user://chat_logs/history/", name, ".json")
+	var messages_path = str("res://chat_logs/", name, ".json")
+	var history = _json_decode(history_path)
+	var messages = _json_decode(messages_path)
+	var start = history.size()
+	var choice = false
+	
+	for i in range(start, messages.size()):
+		options.clear()
+		choice = false
+		if messages[i].seed == "" or messages[i].seed == history[history.size() - 1].seed:
+			await get_tree().create_timer(0.75).timeout
+			if messages[i].options.size() > 0:
+				choice = true
+			history.append({"sender":name, "body":messages[i].body, "choice":choice, "seed":history[history.size() - 1].seed})
+			_save_json(history_path, history)
+			if selected:
+				messenger._recieve_message(messages[i].body)
+			else:
+				pending += 1
+			if choice:
+				options = messages[i].options
+				if selected:
+					messenger._show_options(options)
+				break
+				
+func _show_typing():
+	pass
+		
+
+func _json_decode(file_path: String) -> Array:
+	var content = FileAccess.get_file_as_string(file_path)
+	var data = JSON.parse_string(content)
+	
+	if typeof(data) == TYPE_ARRAY:
+		return data as Array
+		
+	push_error("Failed to parse JSON, or the root is not an Array.")
+	return []
+
+func _save_json(file_path: String, data_array: Array) -> void:
+	var json_string: String = JSON.stringify(data_array, "\t")
+	var file: FileAccess = FileAccess.open(file_path, FileAccess.WRITE)
+	
+	if file:
+		file.store_string(json_string)
+		
+		file.close()

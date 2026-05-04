@@ -16,6 +16,7 @@ func _on_pressed() -> void:
 	var instance = feed.instantiate()
 	instance.z_index = -1
 	get_parent().add_child(instance)
+	get_parent().get_node('DeleteSaveButton').visible = false
 	get_parent().get_node('Player').visible = true
 	get_parent().get_node('MessengerButton').visible = false
 	visible = false

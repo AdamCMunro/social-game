@@ -27,6 +27,12 @@ theme_override_fonts/font = ExtResource("2_4kyxd")
 theme_override_font_sizes/font_size = 24
 text = "Username"
 
+[node name="Alert" type="Sprite2D" parent="ContactBody" unique_id=1007830402]
+
+[node name="AlertLabel" type="RichTextLabel" parent="ContactBody" unique_id=914907788]
+offset_right = 40.0
+offset_bottom = 40.0
+
 [connection signal="input_event" from="ContactBody" to="." method="_on_contact_body_input_event"]
 [connection signal="mouse_entered" from="ContactBody" to="." method="_on_contact_body_mouse_entered"]
 [connection signal="mouse_exited" from="ContactBody" to="." method="_on_contact_body_mouse_exited"]
