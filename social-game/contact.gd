@@ -111,6 +111,8 @@ func _progress_chat():
 	for i in range(start, messages.size()):
 		options.clear()
 		choice = false
+		if _check_repetition(messages[i].body, history):
+			continue
 		if messages[i].seed == "" or messages[i].seed == history[history.size() - 1].seed:
 			if history.size() > 0 and messages[i].body == history[history.size() - 1].body:
 				continue
@@ -144,6 +146,17 @@ func _get_start_point(arr):
 			count += 1
 	
 	return count
+	
+func _check_repetition(text, arr):
+	var index = arr.size()-1
+	
+	while index >= 0:
+		if arr[index].body == text:
+			return true
+		elif arr[index].sender == "player":
+			return false
+		index -= 1
+	return false
 		
 
 func _json_decode(file_path: String) -> Array:

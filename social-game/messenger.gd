@@ -248,7 +248,7 @@ func _retrieve_messages(name):
 		new_message.get_node("TextContainer/Message").text = m.body
 		$Messages/Container.add_child(new_message)
 		await get_tree().process_frame
-		height += new_message.size.y
+		height += new_message.size.y + 3
 		prev_message = new_message
 		next_message_index += 1
 		
