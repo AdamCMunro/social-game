@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cnvo5kcqbl1bi" path="res://contact.gd" id="1_4kyxd"]
 [ext_resource type="Texture2D" uid="uid://cbr0k4rlfyjd2" path="res://assets/Contact.png" id="1_npiiw"]
 [ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="2_4kyxd"]
+[ext_resource type="Texture2D" uid="uid://du8xuy76u2ptw" path="res://assets/Alert.png" id="4_xsttb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xsttb"]
 size = Vector2(214, 48)
@@ -28,10 +29,36 @@ theme_override_font_sizes/font_size = 24
 text = "Username"
 
 [node name="Alert" type="Sprite2D" parent="ContactBody" unique_id=1007830402]
+visible = false
+position = Vector2(83, 0)
+texture = ExtResource("4_xsttb")
 
-[node name="AlertLabel" type="RichTextLabel" parent="ContactBody" unique_id=914907788]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="TypingLabel" type="RichTextLabel" parent="ContactBody/Alert" unique_id=914907788]
+visible = false
+offset_left = -19.0
+offset_top = -28.0
+offset_right = 21.0
+offset_bottom = 12.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_4kyxd")
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "[wave amp=30.0 freq=4 connected=0]...[/wave]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PendingLabel" type="RichTextLabel" parent="ContactBody/Alert" unique_id=71428637]
+visible = false
+offset_left = -19.0
+offset_top = -20.0
+offset_right = 21.0
+offset_bottom = 20.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_4kyxd")
+theme_override_font_sizes/normal_font_size = 24
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="input_event" from="ContactBody" to="." method="_on_contact_body_input_event"]
 [connection signal="mouse_entered" from="ContactBody" to="." method="_on_contact_body_mouse_entered"]

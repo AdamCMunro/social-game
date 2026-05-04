@@ -58,7 +58,7 @@ func _option3():
 
 func _option_chosen() -> void:
 	
-	_hide_options()
+	await _hide_options()
 	
 	sending_text.visible = true
 	sending_text.visible_ratio = 0
@@ -97,9 +97,12 @@ func _input(event: InputEvent):
 				typing = false
 				sending_text.visible = false
 				_send_message(sending_text.text)
-				_add_message_to_history("player", sending_text.text)
 				await get_tree().create_timer(0.5).timeout
-				_progress_chats(next_message_index)
+				for n in $Contacts.contacts:
+					if n.contact_name == sender_name:
+						message_history_arr.append({"sender":"player", "body":sending_text.text, "choice":false, "seed":_get_seed()})
+						n._save_json(str("user://chat_logs/history/", sender_name, ".json"), message_history_arr)
+						n._progress_chat()
 
 func _show_sending_text():
 	var tween = create_tween()
@@ -121,7 +124,7 @@ func _send_message(message):
 	
 func _show_typing():
 	$Messages/TypingIndicator.visible = true
-	await get_tree().create_timer(2.0).timeout
+	await get_tree().create_timer(1).timeout
 	$Messages/TypingIndicator.visible = false
 	
 func _recieve_message(message):
@@ -155,49 +158,17 @@ func _animate_messages(offset):
 		.set_ease(Tween.EASE_OUT)\
 		.set_trans(Tween.TRANS_SINE)
 		
-func _show_chats(name, index):
-	var file = str("res://chat_logs/", name, ".json")
-	
-	message_arr = _json_decode(file)
-	sender_name = name
-	
-	_progress_chats(index)
-				
-func _progress_chats(start_index):
-	
-	for i in range(start_index, message_arr.size()):
-		if message_arr[i].seed == _get_seed() or message_arr[i].seed == "":
-			if prev_message_type == "recieved":
-				repeat = true
-			_show_typing()
-			await get_tree().create_timer(2.0).timeout
-			_recieve_message(message_arr[i].body)
-			_add_message_to_history(sender_name, message_arr[i].body)
-			await get_tree().create_timer(0.75).timeout
-			if message_arr[i].options.size() > 0:
-				for j in range(option_arr.size()):
-					option_arr[j].option_text = message_arr[i].options[j].option
-					option_arr[j].full_text = message_arr[i].options[j].full
-					option_arr[j]._transition_text(message_arr[i].options[j].option)
-					option_arr[j].visible = true
-				next_message_index = i + 1
-				break
-		else:
-			if message_arr[i-1].options.size() > 0:
-				for j in range(option_arr.size()):
-					option_arr[j].option_text = message_arr[i - 1].options[j].option
-					option_arr[j].full_text = message_arr[i - 1].options[j].full
-					option_arr[j]._transition_text(message_arr[i - 1].options[j].option)
-					option_arr[j].visible = true
-				next_message_index = i + 1
-				break
 
 func _show_options(options):
+	for n in options:
+		n.visible = false
+	
 	for i in range(options.size()):
 		option_arr[i].option_text = options[i].option
 		option_arr[i].full_text = options[i].full
-		option_arr[i]._transition_text(options[i].option)
+		await option_arr[i]._transition_text(options[i].option)
 		option_arr[i].visible = true
+
 
 func _json_decode(file_path: String) -> Array:
 	var content = FileAccess.get_file_as_string(file_path)
@@ -208,27 +179,6 @@ func _json_decode(file_path: String) -> Array:
 		
 	push_error("Failed to parse JSON, or the root is not an Array.")
 	return []
-
-func _save_json(file_path: String, data_array: Array) -> void:
-	# Convert the array to a JSON string. 
-	# The "\t" parameter adds tab indentation for readability (pretty printing).
-	var json_string: String = JSON.stringify(data_array, "\t")
-	
-	# Open the file in WRITE mode. This automatically overwrites existing content 
-	# or creates a new file if it doesn't exist.
-	var file: FileAccess = FileAccess.open(file_path, FileAccess.WRITE)
-	
-	if file:
-		# Write the JSON string to the file
-		file.store_string(json_string)
-		
-		# Close the file to free the resource and ensure data is flushed
-		file.close()
-	else:
-		# If the file fails to open (e.g., bad path, read-only system), grab the error
-		var error_code = FileAccess.get_open_error()
-		printerr("Failed to open file for writing at: ", file_path)
-		printerr("Error code: ", error_code)
 
 func _get_seed():
 	return get_parent().seed
@@ -251,7 +201,6 @@ func _clear_chats():
 	await get_tree().process_frame
 	$Messages/Container.position = container_position
 	
-	_save_json(str("user://chat_logs/history/", sender_name, ".json"), message_history_arr)
 	message_arr.clear()
 	message_history_arr.clear()
 	await _hide_options()
@@ -271,11 +220,12 @@ func _animate_messages_clear():
 	return tween
 
 func _retrieve_messages(name):
-	var file = str("user://chat_logs/history/", name, ".json")
-	
+	var history_file = str("user://chat_logs/history/", name, ".json")
+	var message_file = str("res://chat_logs/", name, ".json")
 	var height = 0
 	
-	message_history_arr = _json_decode(file)
+	message_history_arr = _json_decode(history_file)
+	message_arr = _json_decode(message_file)
 	next_message_index = 0
 	
 	for m in message_history_arr:
@@ -303,12 +253,10 @@ func _retrieve_messages(name):
 		next_message_index += 1
 		
 	_animate_messages(height)
+	if message_history_arr[message_history_arr.size() - 1].choice:
+		_show_options(message_arr[message_history_arr.size() - 1].options)
+	
 	return next_message_index
-
-func _add_message_to_history(sender, body):
-	var new_message = {"sender":sender, "body":body}
-	message_history_arr.append(new_message)
-	_save_json(str("user://chat_logs/history/", sender_name, ".json"), message_history_arr)
 	
 func _transition_recipient(new_text):
 	var tween = create_tween()

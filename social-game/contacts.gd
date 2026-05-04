@@ -3,15 +3,18 @@ extends Area2D
 var contacts = []
 var contact_names = ["Desmond", "Angela", "James"]
 
+@onready var contact_scene = preload("res://contact.tscn")
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	_prepare_drift()
-	for n in get_children():
-		if n is not Area2D and n is not Sprite2D:
-			contacts.append(n)
-			
-	for i in range(contacts.size()):
-		contacts[i].get_node("ContactBody/Label").text = contact_names[i]
+	for i in range (contact_names.size()):
+		var new_contact = contact_scene.instantiate()
+		new_contact.contact_name = contact_names[i]
+		new_contact.get_node("ContactBody/Label").text = contact_names[i]
+		new_contact.position.y = -200 + (50 * i)
+		contacts.append(new_contact)
+		add_child(new_contact)
 		
 
 

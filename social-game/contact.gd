@@ -1,6 +1,7 @@
 extends Node2D
 
 @onready var selection = get_parent().get_node("Selection")
+@onready var messenger = get_parent().get_parent()
 
 var contact_scale
 var contact_position
@@ -9,8 +10,10 @@ var selected = false
 var hovered = false
 
 var pending = 0
+var typing = false
 
 var options = []
+var contact_name
 
 var black = Color(0,0,0,1)
 var white = Color(1,1,1,1)
@@ -20,12 +23,25 @@ var white = Color(1,1,1,1)
 func _ready() -> void:
 	contact_scale = scale
 	contact_position = position
+	_progress_chat()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	
 	if hovered and not selected:
 		selection.visible = true
+	
+	if not selected:
+		if typing or pending > 0:
+			$ContactBody/Alert.visible = true
+			if typing:
+				$ContactBody/Alert/TypingLabel.visible = true
+				$ContactBody/Alert/PendingLabel.visible = false
+			else:
+				$ContactBody/Alert/PendingLabel.text = str(pending)
+				$ContactBody/Alert/PendingLabel.visible = true
+				$ContactBody/Alert/TypingLabel.visible = false
 
 
 func _on_contact_body_mouse_entered() -> void:
@@ -66,14 +82,17 @@ func _select():
 			
 	selected = true
 	selection.visible = false
+	$ContactBody/Alert.visible = false
 	pending = 0
+	messenger.sender_name = contact_name
 	
-	get_parent().get_parent()._transition_recipient($ContactBody/Label.text)
-	await get_parent().get_parent()._clear_chats()
-	var index = await get_parent().get_parent()._retrieve_messages($ContactBody/Label.text)
-	get_parent().get_parent()._show_chats($ContactBody/Label.text, index)
-	get_parent().get_parent().get_node("Messages/TypingIndicator").text = str("[wave amp=9.0 freq=4 connected=0]", $ContactBody/Label.text, " is typing...[/wave]")
-			
+	messenger._transition_recipient(contact_name)
+	await messenger._clear_chats()
+	messenger._retrieve_messages(contact_name)
+	messenger.get_node("Messages/TypingIndicator").text = str("[wave amp=9.0 freq=4 connected=0]", contact_name, " is typing...[/wave]")
+	await get_tree().create_timer(0.75).timeout
+	_progress_chat()
+				
 func _deselect():
 	$ContactBody/Sprite2D.texture = preload("res://assets/Contact.png")
 	$ContactBody/Label.set("theme_override_colors/font_color",white)
@@ -81,23 +100,31 @@ func _deselect():
 	selected = false
 	
 func _progress_chat():
-	var name = $ContactBody/Label.text
-	var messenger = get_parent().get_parent()
-	var history_path = str("user://chat_logs/history/", name, ".json")
-	var messages_path = str("res://chat_logs/", name, ".json")
+	var history_path = str("user://chat_logs/history/", contact_name, ".json")
+	var messages_path = str("res://chat_logs/", contact_name, ".json")
 	var history = _json_decode(history_path)
 	var messages = _json_decode(messages_path)
-	var start = history.size()
+	var start = _get_start_point(history)
 	var choice = false
 	
+
 	for i in range(start, messages.size()):
 		options.clear()
 		choice = false
 		if messages[i].seed == "" or messages[i].seed == history[history.size() - 1].seed:
-			await get_tree().create_timer(0.75).timeout
+			if history.size() > 0 and messages[i].body == history[history.size() - 1].body:
+				continue
+			typing = true
+			if selected:
+				messenger._show_typing()
+			await get_tree().create_timer(1).timeout
+			typing = false
 			if messages[i].options.size() > 0:
 				choice = true
-			history.append({"sender":name, "body":messages[i].body, "choice":choice, "seed":history[history.size() - 1].seed})
+			if history.size() > 0:
+				history.append({"sender":contact_name, "body":messages[i].body, "choice":choice, "seed":history[history.size() - 1].seed})
+			else:
+				history.append({"sender":contact_name, "body":messages[i].body, "choice":choice, "seed":""})
 			_save_json(history_path, history)
 			if selected:
 				messenger._recieve_message(messages[i].body)
@@ -109,8 +136,14 @@ func _progress_chat():
 					messenger._show_options(options)
 				break
 				
-func _show_typing():
-	pass
+func _get_start_point(arr):
+	var count = 0
+	
+	for n in arr:
+		if n.sender != "player":
+			count += 1
+	
+	return count
 		
 
 func _json_decode(file_path: String) -> Array:
