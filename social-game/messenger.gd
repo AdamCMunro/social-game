@@ -11,6 +11,8 @@ extends Node2D
 @onready var player_message_scene = preload("res://player_message.tscn")
 @onready var message_scene = preload("res://message.tscn")
 
+var line_height = 24
+
 var option_position = []
 
 var typing = false
@@ -255,10 +257,8 @@ func _retrieve_messages(name):
 				repeat = false
 		new_message.get_node("TextContainer/Message").text = m.body
 		$Messages/Container.add_child(new_message)
-		await get_tree().process_frame
-		await get_tree().process_frame
-		await get_tree().process_frame
-		height += new_message.size.y + 3
+		var lines = _get_lines(m.body)
+		height += (lines * line_height) + 31
 		prev_message = new_message
 		next_message_index += 1
 		
@@ -267,7 +267,17 @@ func _retrieve_messages(name):
 		_show_options(message_arr[message_history_arr[message_history_arr.size() - 1].index].options)
 	
 	return next_message_index
+
+func _get_lines(string):
+	var total = 0
+	var remaining = string.length()
 	
+	while remaining > 0:
+		total += 1
+		remaining -= 45
+
+	return total
+
 func _transition_recipient(new_text):
 	var tween = create_tween()
 	
