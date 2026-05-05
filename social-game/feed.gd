@@ -50,15 +50,20 @@ func _input(event):
 
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
-			if not main.in_hand:
-				is_scrolling = true
-				_reset_post(next_post)
-				var tween = _move_posts(current_post, next_post)
-				await tween.finished
+			_trigger_scroll()
+	elif event is InputEventPanGesture:
+		if event.delta.y > 0.5: 
+			_trigger_scroll()
 
-				_recycle_posts()
-
-				is_scrolling = false
+func _trigger_scroll():
+	if not main.in_hand:
+		is_scrolling = true
+		_reset_post(next_post)
+		var tween = _move_posts(current_post, next_post)
+		await tween.finished
+		_recycle_posts()
+		await get_tree().create_timer(0.4).timeout
+		is_scrolling = false
 
 func _move_posts(post, post2):
 	var tween = create_tween()
