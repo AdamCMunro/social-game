@@ -15,7 +15,7 @@ extends Node2D
 @onready var scroll_target_y: float = container_position.y
 var smooth_speed = 0.5
 
-var line_height = 24.5
+var line_height = 24.75
 
 var option_position = []
 
@@ -288,7 +288,7 @@ func _retrieve_messages(name):
 		new_message.get_node("TextContainer/Message").text = m.body
 		$Messages/Container.add_child(new_message)
 		var lines = _get_lines(m.body)
-		height += (lines * line_height) + 31
+		height += (lines * line_height) + 31.5
 		prev_message = new_message
 		next_message_index += 1
 		

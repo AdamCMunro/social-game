@@ -17,3 +17,4 @@ func _on_pressed() -> void:
 	DirAccess.remove_absolute(str("user://chat_logs/history/desmond.json"))
 	DirAccess.remove_absolute(str("user://chat_logs/history/angela.json"))
 	DirAccess.remove_absolute(str("user://chat_logs/history/james.json"))
+	DirAccess.remove_absolute(str("user://chat_logs/history/test.json"))
