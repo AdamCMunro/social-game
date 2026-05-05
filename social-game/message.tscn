@@ -21,6 +21,9 @@ metadata/_edit_group_ = true
 visible = false
 layout_mode = 2
 texture = ExtResource("1_13d81")
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
 
 [node name="Sprite" type="NinePatchRect" parent="." unique_id=886610882]
 layout_mode = 2

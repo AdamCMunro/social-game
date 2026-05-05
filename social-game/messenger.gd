@@ -24,6 +24,8 @@ var next_message_index
 var message_arr = []
 var message_history_arr = []
 
+var new_seed_vaue
+
 var sender_name
 
 # Called when the node enters the scene tree for the first time.
@@ -43,17 +45,17 @@ func _process(delta: float) -> void:
 
 func _option1():
 	chosen_option_text = option1.full_text
-	_append_seed("1")
+	new_seed_vaue = "1"
 	_option_chosen()
 	
 func _option2():
 	chosen_option_text = option2.full_text
-	_append_seed("2")
+	new_seed_vaue = "2"
 	_option_chosen()
 	
 func _option3():
 	chosen_option_text = option3.full_text
-	_append_seed("3")
+	new_seed_vaue = "3"
 	_option_chosen()
 
 func _option_chosen() -> void:
@@ -83,6 +85,7 @@ func _hide_options():
 		await _hide_option(option_arr[i]).finished
 		option_arr[i].visible = false
 		option_arr[i].position = option_position[i]
+	sending_text.text = "Type random letters to send"
 	return true
 
 func _input(event: InputEvent):
@@ -100,7 +103,8 @@ func _input(event: InputEvent):
 				await get_tree().create_timer(0.5).timeout
 				for n in $Contacts.contacts:
 					if n.contact_name == sender_name:
-						message_history_arr.append({"sender":"player", "body":sending_text.text, "choice":false, "seed":_get_seed()})
+						var seed = str(message_history_arr[message_history_arr.size() - 1].seed, new_seed_vaue)
+						message_history_arr.append({"sender":"player", "body":sending_text.text, "choice":false, "seed":seed})
 						n._save_json(str("user://chat_logs/history/", sender_name, ".json"), message_history_arr)
 						n._progress_chat()
 
@@ -160,12 +164,16 @@ func _animate_messages(offset):
 		
 
 func _show_options(options):
-	for n in options:
+	sending_text.text = "Type random letters to send"
+	for n in option_arr:
 		n.visible = false
+		n._deselect()
 	
 	for i in range(options.size()):
 		option_arr[i].option_text = options[i].option
 		option_arr[i].full_text = options[i].full
+		print("Option ", i, " option text: ", options[i].option)
+		print("Option ", i, " full text: ", options[i].full)
 		await option_arr[i]._transition_text(options[i].option)
 		option_arr[i].visible = true
 
@@ -248,13 +256,15 @@ func _retrieve_messages(name):
 		new_message.get_node("TextContainer/Message").text = m.body
 		$Messages/Container.add_child(new_message)
 		await get_tree().process_frame
+		await get_tree().process_frame
+		await get_tree().process_frame
 		height += new_message.size.y + 3
 		prev_message = new_message
 		next_message_index += 1
 		
 	_animate_messages(height)
 	if message_history_arr[message_history_arr.size() - 1].choice:
-		_show_options(message_arr[message_history_arr.size() - 1].options)
+		_show_options(message_arr[message_history_arr[message_history_arr.size() - 1].index].options)
 	
 	return next_message_index
 	

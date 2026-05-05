@@ -113,7 +113,7 @@ func _progress_chat():
 		choice = false
 		if _check_repetition(messages[i].body, history):
 			continue
-		if messages[i].seed == "" or messages[i].seed == history[history.size() - 1].seed:
+		if messages[i].seed.has("") or messages[i].seed.has(history[history.size() - 1].seed):
 			if history.size() > 0 and messages[i].body == history[history.size() - 1].body:
 				continue
 			typing = true
@@ -124,9 +124,9 @@ func _progress_chat():
 			if messages[i].options.size() > 0:
 				choice = true
 			if history.size() > 0:
-				history.append({"sender":contact_name, "body":messages[i].body, "choice":choice, "seed":history[history.size() - 1].seed})
+				history.append({"sender":contact_name, "body":messages[i].body, "choice":choice, "seed":history[history.size() - 1].seed, "index":i})
 			else:
-				history.append({"sender":contact_name, "body":messages[i].body, "choice":choice, "seed":""})
+				history.append({"sender":contact_name, "body":messages[i].body, "choice":choice, "seed":"", "index":i})
 			_save_json(history_path, history)
 			if selected:
 				messenger._recieve_message(messages[i].body)
