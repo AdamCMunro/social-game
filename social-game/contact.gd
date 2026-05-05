@@ -116,11 +116,6 @@ func _progress_chat():
 		if messages[i].seed.has("") or messages[i].seed.has(history[history.size() - 1].seed):
 			if history.size() > 0 and messages[i].body == history[history.size() - 1].body:
 				continue
-			typing = true
-			if selected:
-				messenger._show_typing()
-			await get_tree().create_timer(1).timeout
-			typing = false
 			if messages[i].options.size() > 0:
 				choice = true
 			if history.size() > 0:
@@ -128,6 +123,11 @@ func _progress_chat():
 			else:
 				history.append({"sender":contact_name, "body":messages[i].body, "choice":choice, "seed":"", "index":i})
 			_save_json(history_path, history)
+			typing = true
+			if selected:
+				messenger._show_typing()
+			await get_tree().create_timer(1).timeout
+			typing = false
 			if selected:
 				messenger._recieve_message(messages[i].body)
 			else:
@@ -137,6 +137,7 @@ func _progress_chat():
 				if selected:
 					messenger._show_options(options)
 				break
+			await get_tree().create_timer(0.5).timeout
 				
 func _get_start_point(arr):
 	var count = 0

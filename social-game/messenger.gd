@@ -11,7 +11,11 @@ extends Node2D
 @onready var player_message_scene = preload("res://player_message.tscn")
 @onready var message_scene = preload("res://message.tscn")
 
-var line_height = 24
+@export var scroll_speed = 20.0
+@onready var scroll_target_y: float = container_position.y
+var smooth_speed = 0.5
+
+var line_height = 24.5
 
 var option_position = []
 
@@ -43,6 +47,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	$Messages/Container.size.x = 561.5
 	$Messages/Container.position.x = 299.25
+	
+	#$Messages/Container.position.y = lerp($Messages/Container.position.y, scroll_target_y, smooth_speed)
 
 
 func _option1():
@@ -105,11 +111,33 @@ func _input(event: InputEvent):
 				await get_tree().create_timer(0.5).timeout
 				for n in $Contacts.contacts:
 					if n.contact_name == sender_name:
+						message_history_arr = _json_decode(str("user://chat_logs/history/", sender_name, ".json"))
 						var seed = str(message_history_arr[message_history_arr.size() - 1].seed, new_seed_vaue)
 						message_history_arr.append({"sender":"player", "body":sending_text.text, "choice":false, "seed":seed})
 						n._save_json(str("user://chat_logs/history/", sender_name, ".json"), message_history_arr)
 						n._progress_chat()
+	elif event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
+			_scroll_messages(scroll_speed)
+		elif event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
+			_scroll_messages(-scroll_speed)
+	elif event is InputEventPanGesture:
+		if event.delta.y > 0.5: 
+			pass
+		elif event.delta.y < -0.5:
+			pass
 
+	
+	
+func _scroll_messages(amount):
+	if (scroll_target_y + amount) <= container_position.y:
+		scroll_target_y += amount
+		clamp_scroll()
+	
+func clamp_scroll():
+	var limit = $Messages.size.y - $Messages/Container.size.y
+	scroll_target_y = clamp(scroll_target_y, limit, 0)
+	
 func _show_sending_text():
 	var tween = create_tween()
 	
@@ -174,8 +202,6 @@ func _show_options(options):
 	for i in range(options.size()):
 		option_arr[i].option_text = options[i].option
 		option_arr[i].full_text = options[i].full
-		print("Option ", i, " option text: ", options[i].option)
-		print("Option ", i, " full text: ", options[i].full)
 		await option_arr[i]._transition_text(options[i].option)
 		option_arr[i].visible = true
 
@@ -213,7 +239,11 @@ func _clear_chats():
 	
 	message_arr.clear()
 	message_history_arr.clear()
-	await _hide_options()
+	
+	if option1.visible:
+		await _hide_options()
+		await get_tree().create_timer(0.3).timeout
+		
 	return true
 	
 	
