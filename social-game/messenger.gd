@@ -13,11 +13,12 @@ extends Node2D
 @onready var message_scene = preload("res://message.tscn")
 
 @export var mac_scroll_speed = 5.0
-@export var win_scroll_speed = 10.0
+@export var win_scroll_speed = 22.5
 @onready var scroll_target_y: float = container_position.y
 var smooth_speed = 0.5
-var friction = 0.8
-var return_speed = 0.1
+var return_speed = 0.2
+var upper_limit
+var lower_limit
 
 var line_height = 24.75
 
@@ -26,6 +27,7 @@ var option_position = []
 var typing = false
 var repeat = false
 var scrolling = false
+var messages_moving = false
 
 var prev_message
 var prev_message_type = ""
@@ -53,9 +55,11 @@ func _process(delta: float) -> void:
 	$Messages/Container.size.x = 561.5
 	$Messages/Container.position.x = 299.25
 	
-	if scrolling:
-		$Messages/Container.position.y = lerp($Messages/Container.position.y, scroll_target_y, smooth_speed)
-
+	lower_limit = current_container_position.y
+	upper_limit = current_container_position.y + $Messages/Container.size.y - 1200
+	
+	if scrolling and not messages_moving:
+		$Messages/Container.position.y = lerp($Messages/Container.position.y, scroll_target_y, smooth_speed)	
 
 func _option1():
 	chosen_option_text = option1.full_text
@@ -138,26 +142,16 @@ func _input(event: InputEvent):
 	
 	
 func _scroll_messages(amount):
-	scrolling = true
-	
-	var lower_limit = current_container_position.y
-	var upper_limit = current_container_position.y + $Messages/Container.size.y - 1200
-	
-	if scroll_target_y + amount < lower_limit:
-		scroll_target_y = lower_limit
-	elif scroll_target_y + amount > upper_limit:
-		scroll_target_y = upper_limit
-	else:
-		scroll_target_y += amount
+	if (upper_limit - lower_limit) > 0:
+		scrolling = true
+		if scroll_target_y + amount <= lower_limit:
+			scroll_target_y = lower_limit
+			scroll_target_y = lower_limit
+		elif scroll_target_y + amount >= upper_limit:
+			scroll_target_y = upper_limit
+		else:
+			scroll_target_y += amount
 
-	
-func apply_stretch_return():
-	var limit1 = $Messages.size.y - $Messages/Container.size.y
-	var limit2 = current_container_position.y
-	if scroll_target_y < limit1:
-		scroll_target_y = lerp(scroll_target_y, limit1, return_speed)
-	elif scroll_target_y > limit2:
-		scroll_target_y = lerp(scroll_target_y, limit2, return_speed)	
 
 func _show_sending_text():
 	var tween = create_tween()
@@ -173,13 +167,13 @@ func _send_message(message):
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await get_tree().process_frame
-	_animate_messages(new_message.size.y + 3)
+	await _animate_messages(new_message.size.y + 3)
 	prev_message_type = "sent"
 	prev_message = new_message
 	
-func _show_typing():
+func _show_typing(time):
 	$Messages/TypingIndicator.visible = true
-	await get_tree().create_timer(1).timeout
+	await get_tree().create_timer(time).timeout
 	$Messages/TypingIndicator.visible = false
 	
 func _recieve_message(message):
@@ -193,14 +187,15 @@ func _recieve_message(message):
 		prev_message.get_node("Sprite").visible = false
 		prev_message.get_node("RepeatSprite").visible = true
 		repeat = false
-	_animate_messages(new_message.size.y + 3)
+	await _animate_messages(new_message.size.y + 3)
 	prev_message_type = "recieved"
 	prev_message = new_message
 
 func _animate_messages(offset):
 	var tween = create_tween()
+	messages_moving = true
 	
-	current_container_position.y -= offset
+	current_container_position.y = container_position.y - offset
 	
 	tween.tween_property($Messages/Container, "size:y", (offset + 10), 0.15).as_relative()\
 		.set_ease(Tween.EASE_OUT)\
@@ -215,6 +210,9 @@ func _animate_messages(offset):
 		.set_ease(Tween.EASE_OUT)\
 		.set_trans(Tween.TRANS_SINE)
 		
+	await tween.finished
+	
+	messages_moving = false
 
 func _show_options(options):
 	sending_text.text = "Type random letters to send"
@@ -247,9 +245,7 @@ func _append_seed(char):
 	
 func _clear_chats():
 	
-	var tween = _animate_messages_clear()
-	
-	await tween.finished
+	await _animate_messages_clear()
 	
 	var chat_arr = $Messages/Container.get_children()
 	
@@ -265,13 +261,13 @@ func _clear_chats():
 	
 	if option1.visible:
 		await _hide_options()
-		await get_tree().create_timer(0.3).timeout
 		
 	return true
 	
 	
 func _animate_messages_clear():
 	var tween = create_tween()
+	messages_moving = true
 	
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_SINE)
@@ -280,7 +276,11 @@ func _animate_messages_clear():
 	tween.tween_property($Messages/Container, "position:y", -750, 0.3).as_relative()
 	tween.parallel().tween_property($Messages/Containter, "modulate:a", 0, 0.3)
 	
-	return tween
+	await tween.finished
+	
+	messages_moving = false
+	
+	
 
 func _retrieve_messages(name):
 	var history_file = str("user://chat_logs/history/", name, ".json")
@@ -315,11 +315,10 @@ func _retrieve_messages(name):
 		prev_message = new_message
 		next_message_index += 1
 		
-	_animate_messages(height)
+	await _animate_messages(height)
 	if message_history_arr[message_history_arr.size() - 1].choice:
 		_show_options(message_arr[message_history_arr[message_history_arr.size() - 1].index].options)
 	
-	return next_message_index
 
 func _get_lines(string):
 	var total = 0

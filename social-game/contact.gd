@@ -123,10 +123,11 @@ func _progress_chat():
 			else:
 				history.append({"sender":contact_name, "body":messages[i].body, "choice":choice, "seed":"", "index":i})
 			_save_json(history_path, history)
+			await get_tree().create_timer(messages[i].delay).timeout
 			typing = true
 			if selected:
-				messenger._show_typing()
-			await get_tree().create_timer(1).timeout
+				messenger._show_typing(messages[i].typing)
+			await get_tree().create_timer(messages[i].typing).timeout
 			typing = false
 			if selected:
 				messenger._recieve_message(messages[i].body)
