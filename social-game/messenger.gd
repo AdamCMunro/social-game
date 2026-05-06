@@ -7,13 +7,17 @@ extends Node2D
 @onready var option_arr = [option1, option2, option3]
 @onready var sending_text = $MessengerBody/SendingText
 @onready var container_position = $Messages/Container.position
+@onready var current_container_position = $Messages/Container.position
 
 @onready var player_message_scene = preload("res://player_message.tscn")
 @onready var message_scene = preload("res://message.tscn")
 
-@export var scroll_speed = 20.0
+@export var mac_scroll_speed = 5.0
+@export var win_scroll_speed = 10.0
 @onready var scroll_target_y: float = container_position.y
 var smooth_speed = 0.5
+var friction = 0.8
+var return_speed = 0.1
 
 var line_height = 24.75
 
@@ -21,6 +25,7 @@ var option_position = []
 
 var typing = false
 var repeat = false
+var scrolling = false
 
 var prev_message
 var prev_message_type = ""
@@ -48,7 +53,8 @@ func _process(delta: float) -> void:
 	$Messages/Container.size.x = 561.5
 	$Messages/Container.position.x = 299.25
 	
-	#$Messages/Container.position.y = lerp($Messages/Container.position.y, scroll_target_y, smooth_speed)
+	if scrolling:
+		$Messages/Container.position.y = lerp($Messages/Container.position.y, scroll_target_y, smooth_speed)
 
 
 func _option1():
@@ -118,26 +124,41 @@ func _input(event: InputEvent):
 						n._progress_chat()
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
-			_scroll_messages(scroll_speed)
+			_scroll_messages(win_scroll_speed)
 		elif event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
-			_scroll_messages(-scroll_speed)
+			_scroll_messages(-win_scroll_speed)
 	elif event is InputEventPanGesture:
-		if event.delta.y > 0.5: 
-			pass
-		elif event.delta.y < -0.5:
-			pass
+		if event.delta.y > 0: 
+			_scroll_messages(-mac_scroll_speed)
+		elif event.delta.y < 0:
+			_scroll_messages(mac_scroll_speed)
+	else:
+		scrolling = false
 
 	
 	
 func _scroll_messages(amount):
-	if (scroll_target_y + amount) <= container_position.y:
+	scrolling = true
+	
+	var lower_limit = current_container_position.y
+	var upper_limit = current_container_position.y + $Messages/Container.size.y - 1200
+	
+	if scroll_target_y + amount < lower_limit:
+		scroll_target_y = lower_limit
+	elif scroll_target_y + amount > upper_limit:
+		scroll_target_y = upper_limit
+	else:
 		scroll_target_y += amount
-		clamp_scroll()
+
 	
-func clamp_scroll():
-	var limit = $Messages.size.y - $Messages/Container.size.y
-	scroll_target_y = clamp(scroll_target_y, limit, 0)
-	
+func apply_stretch_return():
+	var limit1 = $Messages.size.y - $Messages/Container.size.y
+	var limit2 = current_container_position.y
+	if scroll_target_y < limit1:
+		scroll_target_y = lerp(scroll_target_y, limit1, return_speed)
+	elif scroll_target_y > limit2:
+		scroll_target_y = lerp(scroll_target_y, limit2, return_speed)	
+
 func _show_sending_text():
 	var tween = create_tween()
 	
@@ -178,6 +199,8 @@ func _recieve_message(message):
 
 func _animate_messages(offset):
 	var tween = create_tween()
+	
+	current_container_position.y -= offset
 	
 	tween.tween_property($Messages/Container, "size:y", (offset + 10), 0.15).as_relative()\
 		.set_ease(Tween.EASE_OUT)\
