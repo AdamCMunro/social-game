@@ -171,6 +171,10 @@ func _send_message(message):
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await get_tree().process_frame
+	if prev_message_type == "sent":
+		prev_message.get_node("Sprite").visible = false
+		prev_message.get_node("RepeatSprite").visible = true
+		repeat = false
 	await _animate_messages(new_message.size.y + 3)
 	prev_message_type = "sent"
 	prev_message = new_message
@@ -187,14 +191,13 @@ func _recieve_message(message):
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await get_tree().process_frame
-	if repeat:
+	if prev_message_type == "recieved":
 		prev_message.get_node("Sprite").visible = false
 		prev_message.get_node("RepeatSprite").visible = true
 		repeat = false
 	await _animate_messages(new_message.size.y + 3)
 	prev_message_type = "recieved"
 	prev_message = new_message
-	print("recieving: ", message)
 	return true
 
 func _animate_messages(offset):
@@ -219,7 +222,6 @@ func _animate_messages(offset):
 	await tween.finished
 	
 	messages_moving = false
-	print("animating")
 
 func _show_options(options):
 	sending_text.text = "Type random letters to send"
