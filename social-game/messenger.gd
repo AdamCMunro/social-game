@@ -12,9 +12,10 @@ extends Node2D
 @onready var player_message_scene = preload("res://player_message.tscn")
 @onready var message_scene = preload("res://message.tscn")
 
-@export var mac_scroll_speed = 5.0
+@export var mac_scroll_speed = 7.5
 @export var win_scroll_speed = 22.5
-@onready var scroll_target_y: float = container_position.y
+var velocity: float
+var friction = 0.8
 var smooth_speed = 0.5
 var return_speed = 0.2
 var upper_limit
@@ -27,6 +28,7 @@ var option_position = []
 var typing = false
 var repeat = false
 var scrolling = false
+var scroll_return = false
 var messages_moving = false
 
 var prev_message
@@ -59,7 +61,7 @@ func _process(delta: float) -> void:
 	upper_limit = current_container_position.y + $Messages/Container.size.y - 1200
 	
 	if scrolling and not messages_moving:
-		$Messages/Container.position.y = lerp($Messages/Container.position.y, scroll_target_y, smooth_speed)	
+		$Messages/Container.position.y = lerp($Messages/Container.position.y, $Messages/Container.position.y + (velocity * 0.85), smooth_speed)
 
 func _option1():
 	chosen_option_text = option1.full_text
@@ -143,14 +145,16 @@ func _input(event: InputEvent):
 	
 func _scroll_messages(amount):
 	if (upper_limit - lower_limit) > 0:
+		var scroll_position = $Messages/Container.position.y
 		scrolling = true
-		if scroll_target_y + amount <= lower_limit:
-			scroll_target_y = lower_limit
-			scroll_target_y = lower_limit
-		elif scroll_target_y + amount >= upper_limit:
-			scroll_target_y = upper_limit
+		if scroll_position + velocity + amount <= lower_limit:
+			$Messages/Container.position.y = lower_limit
+			velocity = 0
+		elif scroll_position + velocity + amount >= upper_limit:
+			$Messages/Container.position.y = upper_limit
+			velocity = 0
 		else:
-			scroll_target_y += amount
+			velocity += amount
 
 
 func _show_sending_text():
