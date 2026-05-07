@@ -61,7 +61,7 @@ func _process(delta: float) -> void:
 	upper_limit = current_container_position.y + $Messages/Container.size.y - 1200
 	
 	if scrolling and not messages_moving:
-		$Messages/Container.position.y = lerp($Messages/Container.position.y, $Messages/Container.position.y + (velocity * 0.85), smooth_speed)
+		$Messages/Container.position.y = lerp($Messages/Container.position.y, $Messages/Container.position.y + (velocity * friction), smooth_speed)
 
 func _option1():
 	chosen_option_text = option1.full_text
@@ -111,12 +111,12 @@ func _hide_options():
 func _input(event: InputEvent):
 	if event is InputEventKey and event.pressed:
 		if typing:
-			if sending_text.text == "Type random letters to send":
+			if sending_text.text == "Type random letters to send" and sending_text.visible_ratio == 1:
 				sending_text.visible_ratio = 0
 				sending_text.text = chosen_option_text
-			elif sending_text.visible_characters < sending_text.text.length() - 1:
+			elif sending_text.text != "Type random letters to send" and sending_text.visible_characters < sending_text.text.length() - 1:
 				sending_text.visible_characters += 1
-			else:
+			elif sending_text.text != "Type random letters to send":
 				typing = false
 				sending_text.visible = false
 				_send_message(sending_text.text)
@@ -194,6 +194,8 @@ func _recieve_message(message):
 	await _animate_messages(new_message.size.y + 3)
 	prev_message_type = "recieved"
 	prev_message = new_message
+	print("recieving: ", message)
+	return true
 
 func _animate_messages(offset):
 	var tween = create_tween()
@@ -217,6 +219,7 @@ func _animate_messages(offset):
 	await tween.finished
 	
 	messages_moving = false
+	print("animating")
 
 func _show_options(options):
 	sending_text.text = "Type random letters to send"
@@ -320,7 +323,7 @@ func _retrieve_messages(name):
 		next_message_index += 1
 		
 	await _animate_messages(height)
-	if message_history_arr[message_history_arr.size() - 1].choice:
+	if message_history_arr.size() > 0 and message_history_arr[message_history_arr.size() - 1].choice:
 		_show_options(message_arr[message_history_arr[message_history_arr.size() - 1].index].options)
 	
 

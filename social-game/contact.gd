@@ -11,6 +11,7 @@ var hovered = false
 
 var pending = 0
 var typing = false
+var repeat = false
 
 var options = []
 var contact_name
@@ -91,7 +92,6 @@ func _select():
 	messenger._retrieve_messages(contact_name)
 	messenger.get_node("Messages/TypingIndicator").text = str("[wave amp=9.0 freq=4 connected=0]", contact_name, " is typing...[/wave]")
 	await get_tree().create_timer(0.75).timeout
-	_progress_chat()
 				
 func _deselect():
 	$ContactBody/Sprite2D.texture = preload("res://assets/Contact.png")
@@ -114,15 +114,6 @@ func _progress_chat():
 		if _check_repetition(messages[i].body, history):
 			continue
 		if messages[i].seed.has("") or messages[i].seed.has(history[history.size() - 1].seed):
-			if history.size() > 0 and messages[i].body == history[history.size() - 1].body:
-				continue
-			if messages[i].options.size() > 0:
-				choice = true
-			if history.size() > 0:
-				history.append({"sender":contact_name, "body":messages[i].body, "choice":choice, "seed":history[history.size() - 1].seed, "index":i})
-			else:
-				history.append({"sender":contact_name, "body":messages[i].body, "choice":choice, "seed":"", "index":i})
-			_save_json(history_path, history)
 			await get_tree().create_timer(messages[i].delay).timeout
 			typing = true
 			if selected:
@@ -130,9 +121,16 @@ func _progress_chat():
 			await get_tree().create_timer(messages[i].typing).timeout
 			typing = false
 			if selected:
-				messenger._recieve_message(messages[i].body)
+				await messenger._recieve_message(messages[i].body)
 			else:
 				pending += 1
+			if messages[i].options.size() > 0:
+				choice = true
+			if history.size() > 0:
+				history.append({"sender":contact_name, "body":messages[i].body, "choice":choice, "seed":history[history.size() - 1].seed, "index":i})
+			else:
+				history.append({"sender":contact_name, "body":messages[i].body, "choice":choice, "seed":"", "index":i})
+			_save_json(history_path, history)
 			if choice:
 				options = messages[i].options
 				if selected:
