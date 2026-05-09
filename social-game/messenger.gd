@@ -13,7 +13,7 @@ extends Node2D
 @onready var message_scene = preload("res://message.tscn")
 
 @export var mac_scroll_speed = 7.5
-@export var win_scroll_speed = 22.5
+@export var win_scroll_speed = 7.5
 var velocity: float
 var friction = 0.8
 var smooth_speed = 0.5
@@ -61,7 +61,8 @@ func _process(delta: float) -> void:
 	upper_limit = current_container_position.y + $Messages/Container.size.y - 1200
 	
 	if scrolling and not messages_moving:
-		$Messages/Container.position.y = lerp($Messages/Container.position.y, $Messages/Container.position.y + (velocity * friction), smooth_speed)
+		if $Messages/Container.position.y + (velocity * friction) >= lower_limit and $Messages/Container.position.y + (velocity * friction) <= upper_limit:
+			$Messages/Container.position.y = lerp($Messages/Container.position.y, $Messages/Container.position.y + (velocity * friction), smooth_speed)
 
 func _option1():
 	chosen_option_text = option1.full_text
