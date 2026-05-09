@@ -92,7 +92,7 @@ texture = ExtResource("1_syi5y")
 visible = false
 position = Vector2(-100, 0)
 sprite_frames = SubResource("SpriteFrames_viqdb")
-frame_progress = 0.5429618
+frame_progress = 0.105356365
 
 [node name="RadioSelected" type="Sprite2D" parent="BuyableBody/Radio" unique_id=282038100]
 visible = false

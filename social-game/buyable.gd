@@ -45,8 +45,10 @@ func _on_radio_input_event(viewport: Node, event: InputEvent, shape_idx: int) ->
 		if event.is_pressed() && not event.is_echo():
 			if not selected:
 				_select()
+				get_parent().get_parent()._purchase(int(price_text))
 			else:
 				_deselect()
+				get_parent().get_parent()._refund(int(price_text))
 
 func _select():
 	selected = true
