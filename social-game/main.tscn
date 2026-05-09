@@ -4,8 +4,9 @@
 [ext_resource type="Shader" uid="uid://de2dvj8kxib8f" path="res://main.gdshader" id="2_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://fb2km1l0442p" path="res://player.tscn" id="3_h2yge"]
 [ext_resource type="Script" uid="uid://cu5ri8vy7twcm" path="res://feed_button.gd" id="5_lquwl"]
-[ext_resource type="Script" uid="uid://wfvhgnvpmors" path="res://messenger_button.gd" id="6_7mycd"]
+[ext_resource type="Script" uid="uid://dtxykhqeosp1j" path="res://messenger_button.gd" id="6_7mycd"]
 [ext_resource type="Script" uid="uid://dhfkytmsipecp" path="res://delete_save_button_2.gd" id="6_272bh"]
+[ext_resource type="Script" uid="uid://wfvhgnvpmors" path="res://economy_button.gd" id="7_272bh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0xm2m"]
 shader = ExtResource("2_0xm2m")
@@ -96,6 +97,22 @@ grow_vertical = 2
 text = "Delete Save"
 script = ExtResource("6_272bh")
 
+[node name="EconomyButton" type="Button" parent="." unique_id=2097924532]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 200.0
+offset_top = 400.0
+offset_right = 300.0
+offset_bottom = 450.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Economy"
+script = ExtResource("7_272bh")
+
 [connection signal="pressed" from="FeedButton" to="FeedButton" method="_on_pressed"]
 [connection signal="pressed" from="MessengerButton" to="MessengerButton" method="_on_pressed"]
 [connection signal="pressed" from="DeleteSaveButton" to="DeleteSaveButton" method="_on_pressed"]
+[connection signal="pressed" from="EconomyButton" to="EconomyButton" method="_on_pressed"]

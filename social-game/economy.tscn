@@ -1,28 +1,17 @@
 [gd_scene format=3 uid="uid://dbghdmnyr03y0"]
 
 [ext_resource type="Texture2D" uid="uid://wdetlss0c3ti" path="res://assets/Messenger_Background.png" id="1_fryby"]
-[ext_resource type="Texture2D" uid="uid://cfwkwj5qhknds" path="res://assets/Radio_Button.png" id="2_tljx8"]
-[ext_resource type="Texture2D" uid="uid://c5r053l63exvw" path="res://assets/Radio_Button_Pressed.png" id="3_4ctyq"]
+[ext_resource type="Script" uid="uid://b67xqdmjtumdo" path="res://buyable_box.gd" id="2_fryby"]
 
 [node name="Economy" type="Node2D" unique_id=1309318153]
 
 [node name="EconomyBackground" type="Sprite2D" parent="." unique_id=1192179656]
+z_index = -1
 position = Vector2(581.99994, 338.00003)
 scale = Vector2(1.176, 1.193)
 texture = ExtResource("1_fryby")
 
-[node name="Buyable" type="Area2D" parent="." unique_id=1790254142]
-
-[node name="Radio" type="Sprite2D" parent="Buyable" unique_id=1641907487]
-texture = ExtResource("2_tljx8")
-
-[node name="RadioHover" type="AnimatedSprite2D" parent="Buyable" unique_id=1736372308]
-
-[node name="RadioSelected" type="Sprite2D" parent="Buyable" unique_id=15739443]
-texture = ExtResource("3_4ctyq")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Buyable" unique_id=173892565]
-
-[node name="Label" type="RichTextLabel" parent="Buyable" unique_id=1084165085]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="BuyableBox" type="Area2D" parent="." unique_id=1945558664]
+position = Vector2(581.99994, 338.00003)
+scale = Vector2(1.176, 1.193)
+script = ExtResource("2_fryby")
