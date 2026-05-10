@@ -6,13 +6,12 @@ extends Area2D
 var hovering = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var arr_midpoint = buyable_arr.size()/2.0
 	
 	for i in range(buyable_arr.size()):
 		var instance = buyable_scene.instantiate()
 		instance.get_node("BuyableBody/Label").text = buyable_arr[i].label
 		instance.get_node("BuyableBody/Price").text = str(buyable_arr[i].price)
-		instance.position.y += (i - arr_midpoint) * 50
+		instance.position.y += i * 50
 		add_child(instance)
 		
 

@@ -3,6 +3,7 @@ extends Node2D
 @onready var radio = $BuyableBody/Radio
 @onready var label = $BuyableBody/Label
 @onready var price = $BuyableBody/Price
+@onready var economy = get_parent().get_parent()
 @onready var label_text = label.text
 @onready var price_text = price.text
 var buyable_position
@@ -30,7 +31,7 @@ func _process(delta: float) -> void:
 	elif not mouse_over and hovered:
 		_dehover()
 	
-	if get_parent().get_parent()._get_money() < int(price.text) and not selected:
+	if economy._get_money() < int(price_text) and not selected:
 		_strike()
 	elif striken:
 		_destrike()
@@ -71,13 +72,11 @@ func _deselect():
 
 
 func _on_buyable_body_mouse_entered() -> void:
-	print("here")
 	mouse_over = true
 	if not get_parent().hovering:
 		_hover()
 
 func _on_buyable_body_mouse_exited() -> void:
-	print("gone")
 	mouse_over = false
 	if hovered:
 		_dehover()

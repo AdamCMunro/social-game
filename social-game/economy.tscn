@@ -3,6 +3,8 @@
 [ext_resource type="Texture2D" uid="uid://wdetlss0c3ti" path="res://assets/Messenger_Background.png" id="1_fryby"]
 [ext_resource type="Script" uid="uid://cuene76e01xxq" path="res://economy.gd" id="1_tljx8"]
 [ext_resource type="Script" uid="uid://b67xqdmjtumdo" path="res://buyable_box.gd" id="2_fryby"]
+[ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="4_tljx8"]
+[ext_resource type="Texture2D" uid="uid://54uojsot7j05" path="res://assets/Dollar.png" id="5_4ctyq"]
 
 [node name="Economy" type="Node2D" unique_id=1309318153]
 script = ExtResource("1_tljx8")
@@ -17,3 +19,23 @@ texture = ExtResource("1_fryby")
 position = Vector2(581.99994, 338.00003)
 scale = Vector2(1.176, 1.193)
 script = ExtResource("2_fryby")
+
+[node name="Money" type="Area2D" parent="." unique_id=685675484]
+
+[node name="MoneyLabel" type="RichTextLabel" parent="Money" unique_id=2017805454]
+offset_left = -136.99998
+offset_top = -91.0
+offset_right = 228.00002
+offset_bottom = 95.0
+size_flags_horizontal = 4
+theme_override_colors/default_color = Color(0.41960785, 1, 0.41568628, 1)
+theme_override_fonts/normal_font = ExtResource("4_tljx8")
+theme_override_font_sizes/normal_font_size = 144
+text = "0000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="Money" unique_id=1782544081]
+position = Vector2(-166, -3.9999998)
+scale = Vector2(10, 10)
+texture = ExtResource("5_4ctyq")
