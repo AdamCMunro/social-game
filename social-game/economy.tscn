@@ -39,3 +39,11 @@ vertical_alignment = 1
 position = Vector2(-166, -3.9999998)
 scale = Vector2(10, 10)
 texture = ExtResource("5_4ctyq")
+
+[node name="IncrementLabel" type="RichTextLabel" parent="Money" unique_id=972030741]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="DecrementLabel" type="RichTextLabel" parent="Money" unique_id=598840728]
+offset_right = 40.0
+offset_bottom = 40.0
