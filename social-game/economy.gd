@@ -16,3 +16,6 @@ func _purchase(value):
 	
 func _refund(value):
 	player._update_money(player.money + value)
+
+func _get_money():
+	return player.money

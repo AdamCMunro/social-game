@@ -37,7 +37,7 @@ func _process(delta: float) -> void:
 	_update_label(money_label, current_money)
 
 func _test_update():
-	_update_money(1000)
+	_update_money(210)
 
 func _populate_hand():
 	$Hand._populate(deck)

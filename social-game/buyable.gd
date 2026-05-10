@@ -12,6 +12,10 @@ var mouse_over = false
 var hovered = false
 var radio_hovered = false
 var selected = false
+var striken = false
+
+var white = "#ffffff"
+var red = "#ff3360"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -25,28 +29,33 @@ func _process(delta: float) -> void:
 		_hover()
 	elif not mouse_over and hovered:
 		_dehover()
+	
+	if get_parent().get_parent()._get_money() < int(price.text) and not selected:
+		_strike()
+	elif striken:
+		_destrike()
 
 
 func _on_radio_mouse_entered() -> void:
 	radio_hovered = true
-	if not selected:
+	if not selected and not striken:
 		radio.get_node("RadioHover").play("default")
 		radio.get_node("RadioHover").visible = true
 
 
 func _on_radio_mouse_exited() -> void:
 	radio_hovered = false
-	if not selected:
+	if not selected and not striken:
 		radio.get_node("RadioHover").visible = false
 		
 
 func _on_radio_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed() && not event.is_echo():
-			if not selected:
+			if not selected and not striken:
 				_select()
 				get_parent().get_parent()._purchase(int(price_text))
-			else:
+			elif not striken:
 				_deselect()
 				get_parent().get_parent()._refund(int(price_text))
 
@@ -115,3 +124,25 @@ func _add_wave(label, text):
 	
 func _remove_wave(label, text):
 	label.text = text
+	
+func _strike():
+	striken = true
+	
+	radio.get_node("RadioHover").visible = false
+	radio.get_node("RadioSelected").visible = false
+	radio.get_node("RadioStriken").visible = true
+	
+	$BuyableBody/Strike.visible = true
+	
+	label.text = str("[color=", red, "]", label_text, "[/color]")
+	price.text = str("[color=", red, "]", price_text, "[/color]")
+
+func _destrike():
+	striken = false
+	
+	radio.get_node("RadioStriken").visible = false
+	
+	$BuyableBody/Strike.visible = false
+	
+	label.text = label_text
+	price.text = price_text
