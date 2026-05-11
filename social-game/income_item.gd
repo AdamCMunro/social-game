@@ -46,9 +46,9 @@ func _rise_up(node):
 	tween.set_ease(Tween.EASE_IN)
 	tween.set_trans(Tween.TRANS_SINE)
 	
-	tween.tween_property(self, "position:y", income_position.y - 5, 0.15)
+	tween.tween_property(self, "position:y", income_position.y - 4, 0.15)
 	tween.parallel().tween_property(self, "scale", income_scale * 1.05, 0.15)
-	tween.tween_property(self, "position:y", income_position.y - 2.5, 0.25)
+	tween.tween_property(self, "position:y", income_position.y - 2, 0.25)
 	tween.parallel().tween_property(self, "scale", income_scale * 1.025, 0.25)
 	
 	

@@ -32,7 +32,7 @@ func _animate_income_arrival(node, endpoint):
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_SINE)
 	
-	tween.tween_property(node, "position:y", endpoint - 12, 0.3)
+	tween.tween_property(node, "position:y", endpoint - 10, 0.3)
 	tween.tween_property(node, "position:y", endpoint, 0.3)
 	
 	await tween.finished
