@@ -7,6 +7,10 @@
 [ext_resource type="Script" uid="uid://dbyrax13h0r40" path="res://income_box.gd" id="4_wyra4"]
 [ext_resource type="Texture2D" uid="uid://54uojsot7j05" path="res://assets/Dollar.png" id="5_4ctyq"]
 [ext_resource type="Texture2D" uid="uid://cd75cv48mg0ts" path="res://assets/Red_Dollar.png" id="6_d7dul"]
+[ext_resource type="Texture2D" uid="uid://dhc6rc8afnmn4" path="res://assets/Button.png" id="8_lomyq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ms0h4"]
+size = Vector2(214, 48)
 
 [node name="Economy" type="Node2D" unique_id=1309318153]
 script = ExtResource("1_tljx8")
@@ -33,6 +37,7 @@ offset_top = -91.0
 offset_right = 220.0
 offset_bottom = 95.0
 size_flags_horizontal = 4
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.41960785, 1, 0.41568628, 1)
 theme_override_fonts/normal_font = ExtResource("4_tljx8")
 theme_override_font_sizes/normal_font_size = 144
@@ -71,3 +76,43 @@ theme_override_font_sizes/normal_font_size = 120
 text = "Income"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Button" type="Area2D" parent="." unique_id=1384485960]
+
+[node name="Sprite2D" type="Sprite2D" parent="Button" unique_id=1761824243]
+texture = ExtResource("8_lomyq")
+
+[node name="ColorRect" type="ColorRect" parent="Button" unique_id=1759298570]
+visible = false
+offset_left = -107.0
+offset_top = -24.0
+offset_right = 107.0
+offset_bottom = 24.0
+mouse_filter = 2
+
+[node name="Label" type="RichTextLabel" parent="Button" unique_id=1092379188]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -87.25
+offset_top = -23.5
+offset_right = 87.25
+offset_bottom = 23.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("4_tljx8")
+theme_override_font_sizes/normal_font_size = 26
+bbcode_enabled = true
+text = "Continue"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Button" unique_id=1955581631]
+shape = SubResource("RectangleShape2D_ms0h4")
+
+[connection signal="input_event" from="Button" to="." method="_on_button_input_event"]
+[connection signal="mouse_entered" from="Button" to="." method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="Button" to="." method="_on_button_mouse_exited"]
