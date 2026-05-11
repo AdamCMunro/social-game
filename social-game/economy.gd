@@ -12,8 +12,8 @@ var balance
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	player._test_update()
-	balance = player.money
+	_get_player_info()
+	_get_change_label_scene()
 	$Money.position = viewport_centre
 	$Money.position.y += 200
 	$BuyableBox.position = viewport_centre
@@ -22,6 +22,7 @@ func _ready() -> void:
 	$IncomeBox.position.y -= 150
 	$Income.position = viewport_centre
 	$Income.position.y -= 250
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -110,5 +111,12 @@ func _animate_change_label(label):
 	tween.parallel().tween_property(label, "modulate:a", 0, 0.4)
 	
 	return tween
+
+func _get_player_info():
+	player = get_parent().get_node("Player")
+	balance = player.money
+
+func _get_change_label_scene():
+	change_label_scene = preload("res://change_label.tscn")
 	
 	

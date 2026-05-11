@@ -3,6 +3,8 @@ extends Node2D
 @onready var income_position = position
 @onready var income_scale = scale
 
+var floating = false
+
 var label_text :String
 var amount_text :String
 
@@ -18,17 +20,19 @@ func _process(delta: float) -> void:
 
 
 func _on_income_body_mouse_entered() -> void:
-	_add_wave($IncomeBody/Label, label_text)
-	_add_wave($IncomeBody/Amount, amount_text)
-	_rise_up($IncomeBody/Label)
-	_rise_up($IncomeBody/Amount)
+	if not floating:
+		_add_wave($IncomeBody/Label, label_text)
+		_add_wave($IncomeBody/Amount, amount_text)
+		_rise_up($IncomeBody/Label)
+		_rise_up($IncomeBody/Amount)
 
 
 func _on_income_body_mouse_exited() -> void:
-	_remove_wave($IncomeBody/Label, label_text)
-	_remove_wave($IncomeBody/Amount, amount_text)
-	_fall_down($IncomeBody/Label)
-	_fall_down($IncomeBody/Amount)
+	if not floating:
+		_remove_wave($IncomeBody/Label, label_text)
+		_remove_wave($IncomeBody/Amount, amount_text)
+		_fall_down($IncomeBody/Label)
+		_fall_down($IncomeBody/Amount)
 
 func _add_wave(label, text):
 	label.text = str("[wave amp=12.0 freq=4 connected=0]", text, "[/wave]")

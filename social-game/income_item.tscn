@@ -4,10 +4,11 @@
 [ext_resource type="Script" uid="uid://bh6iveud8lx00" path="res://income_item.gd" id="1_qu7ml"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qu7ml"]
-radius = 15.0
+radius = 18.666668
 height = 450.0
 
 [node name="IncomeItem" type="Node2D" unique_id=1462398857]
+scale = Vector2(0.75, 0.75)
 script = ExtResource("1_qu7ml")
 
 [node name="IncomeBody" type="Area2D" parent="." unique_id=1096397533]

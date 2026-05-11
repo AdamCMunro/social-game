@@ -28,9 +28,9 @@ script = ExtResource("4_wyra4")
 [node name="Money" type="Area2D" parent="." unique_id=685675484]
 
 [node name="MoneyLabel" type="RichTextLabel" parent="Money" unique_id=2017805454]
-offset_left = -136.99998
+offset_left = -145.0
 offset_top = -91.0
-offset_right = 228.00002
+offset_right = 220.0
 offset_bottom = 95.0
 size_flags_horizontal = 4
 theme_override_colors/default_color = Color(0.41960785, 1, 0.41568628, 1)
@@ -42,13 +42,13 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="GreenDollar" type="Sprite2D" parent="Money" unique_id=1782544081]
-position = Vector2(-166, -3.9999998)
+position = Vector2(-174, -4)
 scale = Vector2(10, 10)
 texture = ExtResource("5_4ctyq")
 
 [node name="RedDollar" type="Sprite2D" parent="Money" unique_id=548862890]
 visible = false
-position = Vector2(-166, -3.9999998)
+position = Vector2(-174, -4)
 scale = Vector2(10, 10)
 texture = ExtResource("6_d7dul")
 
