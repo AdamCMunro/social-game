@@ -18,7 +18,7 @@ var striken = false
 var destriking = false
 
 var white = "#ffffff"
-var red = "#ff3360"
+var red = "#d0316c"
 
 var strike_width = 260
 

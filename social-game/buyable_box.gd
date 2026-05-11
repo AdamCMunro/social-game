@@ -1,7 +1,7 @@
 extends Area2D
 
 @onready var buyable_scene = preload("res://buyable.tscn")
-@onready var buyable_arr = [{"label":"Rent","price":200}, {"label":"Electricity","price":25}, {"label":"Food","price":15}, {"label":"Internet","price":10}]
+var buyable_arr = [{"label":"Rent","price":200}, {"label":"Electricity","price":25}, {"label":"Food","price":15}, {"label":"Internet","price":10}]
 
 var hovering = false
 # Called when the node enters the scene tree for the first time.

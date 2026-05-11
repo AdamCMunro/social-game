@@ -13,7 +13,7 @@ script = ExtResource("1_j7o2i")
 
 [node name="FeedBackground" type="Sprite2D" parent="." unique_id=275030922]
 position = Vector2(577, 325)
-scale = Vector2(1.15, 1.15)
+scale = Vector2(1.17, 1.17)
 texture = ExtResource("2_insad")
 
 [node name="NewPostButton" type="Area2D" parent="." unique_id=428603437]

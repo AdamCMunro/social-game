@@ -4,7 +4,9 @@
 [ext_resource type="Script" uid="uid://cuene76e01xxq" path="res://economy.gd" id="1_tljx8"]
 [ext_resource type="Script" uid="uid://b67xqdmjtumdo" path="res://buyable_box.gd" id="2_fryby"]
 [ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="4_tljx8"]
+[ext_resource type="Script" uid="uid://dbyrax13h0r40" path="res://income_box.gd" id="4_wyra4"]
 [ext_resource type="Texture2D" uid="uid://54uojsot7j05" path="res://assets/Dollar.png" id="5_4ctyq"]
+[ext_resource type="Texture2D" uid="uid://cd75cv48mg0ts" path="res://assets/Red_Dollar.png" id="6_d7dul"]
 
 [node name="Economy" type="Node2D" unique_id=1309318153]
 script = ExtResource("1_tljx8")
@@ -20,6 +22,9 @@ position = Vector2(581.99994, 338.00003)
 scale = Vector2(1.176, 1.193)
 script = ExtResource("2_fryby")
 
+[node name="IncomeBox" type="Area2D" parent="." unique_id=408516497]
+script = ExtResource("4_wyra4")
+
 [node name="Money" type="Area2D" parent="." unique_id=685675484]
 
 [node name="MoneyLabel" type="RichTextLabel" parent="Money" unique_id=2017805454]
@@ -31,19 +36,38 @@ size_flags_horizontal = 4
 theme_override_colors/default_color = Color(0.41960785, 1, 0.41568628, 1)
 theme_override_fonts/normal_font = ExtResource("4_tljx8")
 theme_override_font_sizes/normal_font_size = 144
+bbcode_enabled = true
 text = "0000"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Sprite2D" type="Sprite2D" parent="Money" unique_id=1782544081]
+[node name="GreenDollar" type="Sprite2D" parent="Money" unique_id=1782544081]
 position = Vector2(-166, -3.9999998)
 scale = Vector2(10, 10)
 texture = ExtResource("5_4ctyq")
 
-[node name="IncrementLabel" type="RichTextLabel" parent="Money" unique_id=972030741]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="RedDollar" type="Sprite2D" parent="Money" unique_id=548862890]
+visible = false
+position = Vector2(-166, -3.9999998)
+scale = Vector2(10, 10)
+texture = ExtResource("6_d7dul")
 
-[node name="DecrementLabel" type="RichTextLabel" parent="Money" unique_id=598840728]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Income" type="Area2D" parent="." unique_id=2076015649]
+
+[node name="IncomeLabel" type="RichTextLabel" parent="Income" unique_id=1670872794]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -90.0
+offset_right = 200.0
+offset_bottom = 62.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("4_tljx8")
+theme_override_font_sizes/normal_font_size = 120
+text = "Income"
+horizontal_alignment = 1
+vertical_alignment = 1

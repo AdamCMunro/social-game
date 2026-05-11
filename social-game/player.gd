@@ -60,7 +60,6 @@ func _update_followers(value):
 func _update_money(value):
 	_update_stat(money, "current_money", money_label, value)
 	money = value
-	print("money: ", money)
 
 func _update_stat(stat, temp_stat, label, new_value):
 	var starting_val = stat

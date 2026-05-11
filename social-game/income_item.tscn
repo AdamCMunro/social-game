@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://dtxc0wrnjjaoj"]
+
+[ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="1_0lecg"]
+[ext_resource type="Script" uid="uid://bh6iveud8lx00" path="res://income_item.gd" id="1_qu7ml"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qu7ml"]
+radius = 15.0
+height = 450.0
+
+[node name="IncomeItem" type="Node2D" unique_id=1462398857]
+script = ExtResource("1_qu7ml")
+
+[node name="IncomeBody" type="Area2D" parent="." unique_id=1096397533]
+
+[node name="Label" type="RichTextLabel" parent="IncomeBody" unique_id=1583603557]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -215.0
+offset_top = -24.0
+offset_right = 64.0
+offset_bottom = 22.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("1_0lecg")
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "Income Source:"
+vertical_alignment = 1
+
+[node name="Amount" type="RichTextLabel" parent="IncomeBody" unique_id=961593744]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 135.0
+offset_top = -22.5
+offset_right = 220.0
+offset_bottom = 22.5
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("1_0lecg")
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "0000"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="IncomeBody" unique_id=2132908900]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_qu7ml")
+
+[connection signal="mouse_entered" from="IncomeBody" to="." method="_on_income_body_mouse_entered"]
+[connection signal="mouse_exited" from="IncomeBody" to="." method="_on_income_body_mouse_exited"]

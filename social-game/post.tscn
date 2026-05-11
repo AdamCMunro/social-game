@@ -20,7 +20,7 @@ size = Vector2(55.999954, 55.99997)
 size = Vector2(51.99997, 57.333374)
 
 [node name="Post" type="Node2D" unique_id=1213721221]
-scale = Vector2(1.15, 1.15)
+scale = Vector2(1.17, 1.17)
 metadata/_edit_group_ = true
 
 [node name="PostBody" type="Area2D" parent="." unique_id=1683546787]
