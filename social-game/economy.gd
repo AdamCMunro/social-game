@@ -9,25 +9,42 @@ var green = "#6bff6a"
 var red = "#d0316c"
 var black = '#000000'
 
-var balance
+var balance :int
 
 var button_hovered = false
 var button_pressed = false
+var paused = false
+
+var money_pos :Vector2
+var buyable_box_pos :Vector2
+var income_box_pos :Vector2
+var income_pos :Vector2
+var button_pos :Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	_get_player_info()
 	_get_change_label_scene()
+	
 	$Money.position = viewport_centre
 	$Money.position.y += 200
+	money_pos = $Money.position
+	
 	$BuyableBox.position = viewport_centre
 	$BuyableBox.position.y += 500
+	buyable_box_pos = $BuyableBox.position
+	
 	$IncomeBox.position = viewport_centre
 	$IncomeBox.position.y -= 150
+	income_box_pos = $IncomeBox.position
+	
 	$Income.position = viewport_centre
 	$Income.position.y -= 250
+	income_pos = $Income.position
+	
 	$Button.position = viewport_centre
 	$Button.position.y += 300
+	button_pos = $Button.position
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -43,6 +60,14 @@ func _process(delta: float) -> void:
 	else:
 		$Button/ColorRect.visible = false
 		$Button/Label.text = "Continue"
+	
+	if Input.is_action_just_pressed("pause"):
+		if not paused:
+			paused = true
+			_hide_for_pause()
+		else:
+			paused = false
+			_show_for_resume()
 
 	
 func _purchase(value):
@@ -156,7 +181,6 @@ func _on_button_input_event(viewport: Node, event: InputEvent, shape_idx: int) -
 func _animate_button_press():
 	var tween = create_tween()
 	var starting_scale = $Button.scale
-	var starting_pos = $Button.position
 	
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_SINE)
@@ -186,5 +210,39 @@ func _move_to_buyables():
 	
 	tween.tween_property($BuyableBox, "position:y", -600, 0.4).as_relative()
 	tween.tween_property($BuyableBox, "position:y", 15, 0.2).as_relative()
-
 	
+	await tween.finished
+	
+	buyable_box_pos = $BuyableBox.position
+	money_pos = $Money.position
+
+func _hide_for_pause():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	if button_pressed:
+		tween.tween_property($Money, "position:y", -100, 0.05)
+		tween.parallel().tween_property($BuyableBox, "position:y", 700, 0.05)
+	else:
+		tween.tween_property($Money, "position:y", 800, 0.05)
+		tween.parallel().tween_property($Income, "position:y", -100, 0.05)
+		tween.parallel().tween_property($IncomeBox, "position:y", -100, 0.05)
+		tween.parallel().tween_property($Button, "position:y", 800, 0.05)
+		
+
+func _show_for_resume():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	if button_pressed:
+		tween.tween_property($Money, "position:y", money_pos.y, 0.05)
+		tween.parallel().tween_property($BuyableBox, "position:y", buyable_box_pos.y, 0.05)
+	else:
+		tween.tween_property($Money, "position:y", money_pos.y, 0.05)
+		tween.parallel().tween_property($Income, "position:y", income_pos.y, 0.05)
+		tween.parallel().tween_property($IncomeBox, "position:y", income_box_pos.y, 0.05)
+		tween.parallel().tween_property($Button, "position:y", button_pos.y, 0.05)

@@ -30,6 +30,7 @@ var repeat = false
 var scrolling = false
 var scroll_return = false
 var messages_moving = false
+var paused = false
 
 var prev_message
 var prev_message_type = ""
@@ -39,14 +40,22 @@ var next_message_index
 var message_arr = []
 var message_history_arr = []
 
-var new_seed_vaue
+var new_seed_value
 
 var sender_name
+
+var contacts_pos :Vector2
+var messenger_body_pos :Vector2
+var messages_pos :Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$MessengerBody.position = viewport_centre
 	$Messages.position = viewport_centre
+	
+	messenger_body_pos = $MessengerBody.position
+	messages_pos = $Messages.position
+	contacts_pos = $Contacts.position
 	
 	for n in option_arr:
 		option_position.append(n.position)
@@ -55,7 +64,8 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	$Messages/Container.size.x = 561.5
-	$Messages/Container.position.x = 299.25
+	if not paused:
+		$Messages/Container.position.x = 299.25
 	
 	lower_limit = current_container_position.y
 	upper_limit = current_container_position.y + $Messages/Container.size.y - 1200
@@ -63,20 +73,27 @@ func _process(delta: float) -> void:
 	if scrolling and not messages_moving:
 		if $Messages/Container.position.y + (velocity * friction) >= lower_limit and $Messages/Container.position.y + (velocity * friction) <= upper_limit:
 			$Messages/Container.position.y = lerp($Messages/Container.position.y, $Messages/Container.position.y + (velocity * friction), smooth_speed)
-
+	
+	if Input.is_action_just_pressed("pause"):
+		if not paused:
+			paused = true
+			_hide_for_pause()
+		else:
+			_show_for_resume()
+	
 func _option1():
 	chosen_option_text = option1.full_text
-	new_seed_vaue = "1"
+	new_seed_value = "1"
 	_option_chosen()
 	
 func _option2():
 	chosen_option_text = option2.full_text
-	new_seed_vaue = "2"
+	new_seed_value = "2"
 	_option_chosen()
 	
 func _option3():
 	chosen_option_text = option3.full_text
-	new_seed_vaue = "3"
+	new_seed_value = "3"
 	_option_chosen()
 
 func _option_chosen() -> void:
@@ -125,7 +142,7 @@ func _input(event: InputEvent):
 				for n in $Contacts.contacts:
 					if n.contact_name == sender_name:
 						message_history_arr = _json_decode(str("user://chat_logs/history/", sender_name, ".json"))
-						var seed = str(message_history_arr[message_history_arr.size() - 1].seed, new_seed_vaue)
+						var seed = str(message_history_arr[message_history_arr.size() - 1].seed, new_seed_value)
 						message_history_arr.append({"sender":"player", "body":sending_text.text, "choice":false, "seed":seed})
 						n._save_json(str("user://chat_logs/history/", sender_name, ".json"), message_history_arr)
 						n._progress_chat()
@@ -352,7 +369,31 @@ func _transition_recipient(new_text):
 	$MessengerBody/Recipient.text = new_text
 	tween2.tween_property($MessengerBody/Recipient, "visible_ratio", 1.0, 0.2)
 	
+func _hide_for_pause():
+	var tween = create_tween()
 	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property($Contacts, "position:x", -300, 0.05)
+	tween.tween_property($MessengerBody, "position:x", 1500, 0.05)
+	tween.parallel().tween_property($Messages, "position:x", 1500, 0.05)
+	tween.parallel().tween_property($Messages/Container, "position:x", 1500, 0.05)
+	
+func _show_for_resume():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property($Contacts, "position:x", contacts_pos.x, 0.05)
+	tween.parallel().tween_property($MessengerBody, "position:x", messenger_body_pos.x, 0.05)
+	tween.parallel().tween_property($Messages, "position:x", messages_pos.x, 0.05)
+	tween.parallel().tween_property($Messages/Container, "position:x", 299.25, 0.05)
+	
+	await tween.finished
+	
+	paused = false
 	
 	
 	
