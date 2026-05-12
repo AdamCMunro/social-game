@@ -1,0 +1,168 @@
+[gd_scene format=3 uid="uid://brrdg34r0bl2j"]
+
+[ext_resource type="Script" uid="uid://da7l5j3ovpfs3" path="res://pause.gd" id="1_6eyaj"]
+[ext_resource type="Texture2D" uid="uid://dhc6rc8afnmn4" path="res://assets/Button.png" id="2_8u653"]
+[ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="3_bwtow"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_05lnj"]
+size = Vector2(381, 80)
+
+[node name="Pause" type="Node2D" unique_id=1004405613]
+visible = false
+z_index = 2
+script = ExtResource("1_6eyaj")
+
+[node name="PauseRect" type="ColorRect" parent="." unique_id=1608752551]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -583.5
+offset_top = -338.5
+offset_right = 583.5
+offset_bottom = 338.5
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.18039216)
+
+[node name="PauseBody" type="Area2D" parent="." unique_id=1165902638]
+
+[node name="Sprite2D" type="NinePatchRect" parent="PauseBody" unique_id=125201509]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -150.0
+offset_right = 200.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_8u653")
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+
+[node name="Resume" type="Area2D" parent="PauseBody" unique_id=2123659445]
+position = Vector2(0, -100)
+
+[node name="ColorRect" type="ColorRect" parent="PauseBody/Resume" unique_id=1673735405]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.5
+offset_top = -40.0
+offset_right = 190.5
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PauseBody/Resume" unique_id=73144079]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.5
+offset_top = -40.0
+offset_right = 190.5
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("3_bwtow")
+theme_override_font_sizes/normal_font_size = 48
+text = "Resume"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PauseBody/Resume" unique_id=1972495591]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_05lnj")
+
+[node name="Settings" type="Area2D" parent="PauseBody" unique_id=603694707]
+
+[node name="ColorRect" type="ColorRect" parent="PauseBody/Settings" unique_id=345031118]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.5
+offset_top = -40.0
+offset_right = 190.5
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PauseBody/Settings" unique_id=68018072]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.5
+offset_top = -40.0
+offset_right = 190.5
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("3_bwtow")
+theme_override_font_sizes/normal_font_size = 48
+text = "Settings
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PauseBody/Settings" unique_id=1640916035]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_05lnj")
+
+[node name="Quit" type="Area2D" parent="PauseBody" unique_id=635795093]
+position = Vector2(0, 100)
+
+[node name="ColorRect" type="ColorRect" parent="PauseBody/Quit" unique_id=480903332]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.5
+offset_top = -40.0
+offset_right = 190.5
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PauseBody/Quit" unique_id=1981337563]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.5
+offset_top = -40.0
+offset_right = 190.5
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("3_bwtow")
+theme_override_font_sizes/normal_font_size = 48
+text = "Quit
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PauseBody/Quit" unique_id=584052741]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_05lnj")

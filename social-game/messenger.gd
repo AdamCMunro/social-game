@@ -8,6 +8,7 @@ extends Node2D
 @onready var sending_text = $MessengerBody/SendingText
 @onready var container_position = $Messages/Container.position
 @onready var current_container_position = $Messages/Container.position
+@onready var pause = get_parent().get_node("Pause")
 
 @onready var player_message_scene = preload("res://player_message.tscn")
 @onready var message_scene = preload("res://message.tscn")
@@ -78,8 +79,10 @@ func _process(delta: float) -> void:
 		if not paused:
 			paused = true
 			_hide_for_pause()
+			pause._show_pause()
 		else:
 			_show_for_resume()
+			pause._hide_pause()
 	
 func _option1():
 	chosen_option_text = option1.full_text
@@ -376,7 +379,7 @@ func _hide_for_pause():
 	tween.set_trans(Tween.TRANS_SINE)
 	
 	tween.tween_property($Contacts, "position:x", -300, 0.05)
-	tween.tween_property($MessengerBody, "position:x", 1500, 0.05)
+	tween.parallel().tween_property($MessengerBody, "position:x", 1500, 0.05)
 	tween.parallel().tween_property($Messages, "position:x", 1500, 0.05)
 	tween.parallel().tween_property($Messages/Container, "position:x", 1500, 0.05)
 	

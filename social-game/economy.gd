@@ -1,5 +1,6 @@
 extends Node2D
 
+@onready var pause = get_parent().get_node("Pause")
 @onready var player = get_parent().get_node("Player")
 @onready var viewport_centre = get_viewport_rect().size / 2
 
@@ -65,9 +66,11 @@ func _process(delta: float) -> void:
 		if not paused:
 			paused = true
 			_hide_for_pause()
+			pause._show_pause()
 		else:
 			paused = false
 			_show_for_resume()
+			pause._hide_pause()
 
 	
 func _purchase(value):
