@@ -16,7 +16,6 @@ var post_height
 var post_position
 var post_data
 
-
 var new_post_button_pos
 var hand_pos
 var background_pos
@@ -46,7 +45,6 @@ func _ready() -> void:
 	next_post.position.y = post_position.y + post_height
 
 	new_post_button_pos = $NewPostButton.position
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	$FeedBackground.position = viewport_centre

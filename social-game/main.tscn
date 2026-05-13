@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://dtxykhqeosp1j" path="res://messenger_button.gd" id="6_7mycd"]
 [ext_resource type="Script" uid="uid://dhfkytmsipecp" path="res://delete_save_button_2.gd" id="6_272bh"]
 [ext_resource type="Script" uid="uid://wfvhgnvpmors" path="res://economy_button.gd" id="7_272bh"]
-[ext_resource type="PackedScene" uid="uid://brrdg34r0bl2j" path="res://pause.tscn" id="8_5vw27"]
+[ext_resource type="PackedScene" uid="uid://ddjg0nnrhiinr" path="res://pause.tscn" id="8_5vw27"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0xm2m"]
 shader = ExtResource("2_0xm2m")

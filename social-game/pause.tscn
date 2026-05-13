@@ -185,3 +185,6 @@ patch_margin_right = 17
 patch_margin_bottom = 17
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
+
+[connection signal="input_event" from="PauseBody/Resume" to="." method="_on_resume_input_event"]
+[connection signal="input_event" from="PauseBody/Quit" to="." method="_on_quit_input_event"]
