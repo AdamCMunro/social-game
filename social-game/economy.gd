@@ -65,7 +65,7 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause"):
 		if not paused:
 			paused = true
-			_hide_for_pause()
+			await _hide_for_pause().finished
 			pause._show_pause()
 		else:
 			paused = false
@@ -226,13 +226,23 @@ func _hide_for_pause():
 	tween.set_trans(Tween.TRANS_SINE)
 	
 	if button_pressed:
+		tween.tween_property($Money, "position:y", money_pos.y + 20, 0.05)
+		tween.parallel().tween_property($BuyableBox, "position:y", buyable_box_pos.y - 20, 0.05)
+		
 		tween.tween_property($Money, "position:y", -100, 0.05)
 		tween.parallel().tween_property($BuyableBox, "position:y", 700, 0.05)
 	else:
+		tween.tween_property($Money, "position:y", money_pos.y - 20, 0.05)
+		tween.parallel().tween_property($Income, "position:y", income_pos.y + 20, 0.05)
+		tween.parallel().tween_property($IncomeBox, "position:y", income_box_pos.y + 20, 0.05)
+		tween.parallel().tween_property($Button, "position:y", button_pos.y - 20, 0.05)
+		
 		tween.tween_property($Money, "position:y", 800, 0.05)
 		tween.parallel().tween_property($Income, "position:y", -100, 0.05)
 		tween.parallel().tween_property($IncomeBox, "position:y", -100, 0.05)
 		tween.parallel().tween_property($Button, "position:y", 800, 0.05)
+		
+	return tween
 		
 
 func _show_for_resume():
@@ -242,9 +252,17 @@ func _show_for_resume():
 	tween.set_trans(Tween.TRANS_SINE)
 	
 	if button_pressed:
+		tween.tween_property($Money, "position:y", money_pos.y + 20, 0.05)
+		tween.parallel().tween_property($BuyableBox, "position:y", buyable_box_pos.y - 20, 0.05)
+		
 		tween.tween_property($Money, "position:y", money_pos.y, 0.05)
 		tween.parallel().tween_property($BuyableBox, "position:y", buyable_box_pos.y, 0.05)
 	else:
+		tween.tween_property($Money, "position:y", money_pos.y - 20, 0.05)
+		tween.parallel().tween_property($Income, "position:y", income_pos.y + 20, 0.05)
+		tween.parallel().tween_property($IncomeBox, "position:y", income_box_pos.y + 20, 0.05)
+		tween.parallel().tween_property($Button, "position:y", button_pos.y - 20, 0.05)
+		
 		tween.tween_property($Money, "position:y", money_pos.y, 0.05)
 		tween.parallel().tween_property($Income, "position:y", income_pos.y, 0.05)
 		tween.parallel().tween_property($IncomeBox, "position:y", income_box_pos.y, 0.05)

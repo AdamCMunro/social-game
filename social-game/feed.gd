@@ -54,12 +54,13 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause"):
 		if not paused:
 			paused = true
-			_hide_for_pause()
+			await _hide_for_pause().finished
 			pause._show_pause()
 		else:
 			paused = false
+			await pause._hide_pause().finished
+			pause.visible = false
 			_show_for_resume()
-			pause._hide_pause()
 
 
 func _instaniate_post(post_data):
@@ -140,16 +141,25 @@ func _hide_for_pause():
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_SINE)
 	
+	
 	if main.in_hand:
 		var hand = player.get_node("Hand")
 		hand_pos = hand.position
+		tween.tween_property(hand, "position:y", hand_pos.y - 20, 0.05)
 		tween.tween_property(hand, "position:y", 1000, 0.05)
 	
-	tween.tween_property(current_post, "position:y", 1000, 0.05)
-	tween.parallel().tween_property($NewPostButton, "position:y", -100, 0.05)
-	tween.parallel().tween_property(player.get_node("StatBlock"), "position:x", -200, 0.05)
-	tween.tween_property($FeedBackground/Texture, "size:x", 3000, 0.08)
-	tween.parallel().tween_property($FeedBackground/Texture, "position:x", -1500, 0.08)
+	tween.tween_property(current_post, "position:y", post_position.y - 20, 0.05)
+	tween.parallel().tween_property($NewPostButton, "position:y", new_post_button_pos.y + 20, 0.05)
+	tween.parallel().tween_property(player.get_node("StatBlock"), "position:x", stat_block_pos.x + 20, 0.05)
+	tween.parallel().tween_property($FeedBackground/Texture, "size:x", background_width - 40, 0.08)
+	
+	tween.tween_property(current_post, "position:y", 1000, 0.08)
+	tween.parallel().tween_property($NewPostButton, "position:y", -100, 0.08)
+	tween.parallel().tween_property(player.get_node("StatBlock"), "position:x", -200, 0.08)
+	tween.parallel().tween_property($FeedBackground/Texture, "size:x", 3000, 0.1)
+	tween.parallel().tween_property($FeedBackground/Texture, "position:x", -1500, 0.1)
+	
+	return tween
 	
 func _show_for_resume():
 	var tween = create_tween()
@@ -157,12 +167,17 @@ func _show_for_resume():
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_SINE)
 	
-	tween.tween_property($FeedBackground/Texture, "size:x", background_width, 0.08)
-	tween.parallel().tween_property($FeedBackground/Texture, "position:x", background_pos.x, 0.08)
+	tween.tween_property(current_post, "position:y", post_position.y + 20, 0.05)
+	tween.parallel().tween_property($NewPostButton, "position:y", new_post_button_pos.y + 20, 0.05)
+	tween.parallel().tween_property(player.get_node("StatBlock"), "position:x", stat_block_pos.x + 20, 0.05)
+	tween.parallel().tween_property($FeedBackground/Texture, "size:x", background_width, 0.05)
+	tween.parallel().tween_property($FeedBackground/Texture, "position:x", background_pos.x, 0.05)
+	
 	tween.tween_property(current_post, "position:y", post_position.y, 0.05)
 	tween.parallel().tween_property($NewPostButton, "position:y", new_post_button_pos.y, 0.05)
 	tween.parallel().tween_property(player.get_node("StatBlock"), "position:x", stat_block_pos.x, 0.05)
 	
 	if main.in_hand:
 		var hand = player.get_node("Hand")
+		tween.tween_property(hand, "position:y", hand_pos.y - 20, 0.05)
 		tween.tween_property(hand, "position:y", hand_pos.y, 0.05)

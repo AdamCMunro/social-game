@@ -1,30 +1,16 @@
-[gd_scene format=3 uid="uid://brrdg34r0bl2j"]
+[gd_scene format=3 uid="uid://ddjg0nnrhiinr"]
 
 [ext_resource type="Script" uid="uid://da7l5j3ovpfs3" path="res://pause.gd" id="1_6eyaj"]
 [ext_resource type="Texture2D" uid="uid://dhc6rc8afnmn4" path="res://assets/Button.png" id="2_8u653"]
 [ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="3_bwtow"]
+[ext_resource type="Texture2D" uid="uid://bv7kp8r2220md" path="res://assets/Square_Selection.png" id="4_8u653"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_05lnj"]
 size = Vector2(381, 80)
 
 [node name="Pause" type="Node2D" unique_id=1004405613]
-visible = false
 z_index = 2
 script = ExtResource("1_6eyaj")
-
-[node name="PauseRect" type="ColorRect" parent="." unique_id=1608752551]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -583.5
-offset_top = -338.5
-offset_right = 583.5
-offset_bottom = 338.5
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(1, 1, 1, 0.18039216)
 
 [node name="PauseBody" type="Area2D" parent="." unique_id=1165902638]
 
@@ -62,8 +48,9 @@ offset_right = 190.5
 offset_bottom = 40.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="PauseBody/Resume" unique_id=73144079]
+[node name="Label" type="RichTextLabel" parent="PauseBody/Resume" unique_id=73144079]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -75,9 +62,11 @@ offset_right = 190.5
 offset_bottom = 39.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_fonts/normal_font = ExtResource("3_bwtow")
 theme_override_font_sizes/normal_font_size = 48
+bbcode_enabled = true
 text = "Resume"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -101,8 +90,9 @@ offset_right = 190.5
 offset_bottom = 40.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="PauseBody/Settings" unique_id=68018072]
+[node name="Label" type="RichTextLabel" parent="PauseBody/Settings" unique_id=68018072]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -114,9 +104,11 @@ offset_right = 190.5
 offset_bottom = 39.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_fonts/normal_font = ExtResource("3_bwtow")
 theme_override_font_sizes/normal_font_size = 48
+bbcode_enabled = true
 text = "Settings
 "
 horizontal_alignment = 1
@@ -142,8 +134,9 @@ offset_right = 190.5
 offset_bottom = 40.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="PauseBody/Quit" unique_id=1981337563]
+[node name="Label" type="RichTextLabel" parent="PauseBody/Quit" unique_id=1981337563]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -155,9 +148,11 @@ offset_right = 190.5
 offset_bottom = 39.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_fonts/normal_font = ExtResource("3_bwtow")
 theme_override_font_sizes/normal_font_size = 48
+bbcode_enabled = true
 text = "Quit
 "
 horizontal_alignment = 1
@@ -166,3 +161,27 @@ vertical_alignment = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PauseBody/Quit" unique_id=584052741]
 position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_05lnj")
+
+[node name="Selection" type="Area2D" parent="PauseBody" unique_id=2105691150]
+visible = false
+metadata/_edit_group_ = true
+
+[node name="NinePatchRect" type="NinePatchRect" parent="PauseBody/Selection" unique_id=1031029225]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -45.0
+offset_right = 190.0
+offset_bottom = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_8u653")
+patch_margin_left = 17
+patch_margin_top = 17
+patch_margin_right = 17
+patch_margin_bottom = 17
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1

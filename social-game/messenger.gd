@@ -78,11 +78,12 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause"):
 		if not paused:
 			paused = true
-			_hide_for_pause()
+			await _hide_for_pause().finished
 			pause._show_pause()
 		else:
+			await pause._hide_pause().finished
+			pause.visible = false
 			_show_for_resume()
-			pause._hide_pause()
 	
 func _option1():
 	chosen_option_text = option1.full_text
@@ -378,16 +379,28 @@ func _hide_for_pause():
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_SINE)
 	
+	tween.tween_property($Contacts, "position:x", contacts_pos.x + 10, 0.05)
+	tween.parallel().tween_property($MessengerBody, "position:x", messenger_body_pos.x - 10, 0.05)
+	tween.parallel().tween_property($Messages, "position:x", messages_pos.x - 10, 0.05)
+	tween.parallel().tween_property($Messages/Container, "position:x", 289.25, 0.05)
+	
 	tween.tween_property($Contacts, "position:x", -300, 0.05)
 	tween.parallel().tween_property($MessengerBody, "position:x", 1500, 0.05)
 	tween.parallel().tween_property($Messages, "position:x", 1500, 0.05)
 	tween.parallel().tween_property($Messages/Container, "position:x", 1500, 0.05)
+	
+	return tween
 	
 func _show_for_resume():
 	var tween = create_tween()
 	
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property($Contacts, "position:x", contacts_pos.x + 10, 0.05)
+	tween.parallel().tween_property($MessengerBody, "position:x", messenger_body_pos.x - 10, 0.05)
+	tween.parallel().tween_property($Messages, "position:x", messages_pos.x - 10, 0.05)
+	tween.parallel().tween_property($Messages/Container, "position:x", 289.25, 0.05)
 	
 	tween.tween_property($Contacts, "position:x", contacts_pos.x, 0.05)
 	tween.parallel().tween_property($MessengerBody, "position:x", messenger_body_pos.x, 0.05)
