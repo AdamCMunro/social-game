@@ -66,6 +66,8 @@ func _on_radio_input_event(viewport: Node, event: InputEvent, shape_idx: int) ->
 			elif not striken:
 				_deselect()
 				get_parent().get_parent()._refund(int(price_text))
+			elif striken:
+				_shake()
 
 func _select():
 	selected = true
@@ -186,4 +188,16 @@ func _animate_destrike():
 		destriking = false
 	
 	return true
+	
+func _shake():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property(self, "position:x", buyable_position.x + 10, 0.05)
+	tween.tween_property(self, "position:x", buyable_position.x - 10, 0.05)
+	tween.tween_property(self, "position:x", buyable_position.x + 5, 0.05)
+	tween.tween_property(self, "position:x", buyable_position.x - 5, 0.05)
+	tween.tween_property(self, "position:x", buyable_position.x, 0.05)
 	

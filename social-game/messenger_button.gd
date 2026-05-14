@@ -18,4 +18,5 @@ func _on_pressed() -> void:
 	get_parent().get_node('DeleteSaveButton').visible = false
 	get_parent().get_node('FeedButton').visible = false
 	get_parent().get_node('EconomyButton').visible = false
+	get_parent().current_screen = "messenger"
 	visible = false

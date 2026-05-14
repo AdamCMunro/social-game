@@ -92,7 +92,7 @@ func _update_balance(starting_val, new_value):
 	tween.set_trans(Tween.TRANS_LINEAR)
 	tween.set_ease(Tween.EASE_IN_OUT)
 	
-	tween.tween_property(self, "balance", new_value, 0.7)\
+	tween.tween_property(self, "balance", new_value, 0.4)\
 		.from(starting_val)
 
 func _update_label(label, val, color):
@@ -203,16 +203,16 @@ func _move_to_buyables():
 	tween.parallel().tween_property($IncomeBox, "position:y", 40, 0.1).as_relative()
 	tween.parallel().tween_property($Money, "position:y", 40, 0.1).as_relative()
 		
-	tween.tween_property($Income, "position:y", -475, 0.3).as_relative()
-	tween.parallel().tween_property($IncomeBox, "position:y", -475, 0.3).as_relative()
-	tween.parallel().tween_property($Money, "position:y", -475, 0.3).as_relative()
+	tween.tween_property($Income, "position:y", -475, 0.1).as_relative()
+	tween.parallel().tween_property($IncomeBox, "position:y", -475, 0.075).as_relative()
+	tween.parallel().tween_property($Money, "position:y", -475, 0.1).as_relative()
 	
-	tween.tween_property($Income, "position:y", 30, 0.2).as_relative()
-	tween.parallel().tween_property($IncomeBox, "position:y", 30, 0.2).as_relative()
-	tween.parallel().tween_property($Money, "position:y", 30, 0.2).as_relative()
+	tween.tween_property($Income, "position:y", 30, 0.05).as_relative()
+	tween.parallel().tween_property($IncomeBox, "position:y", 30, 0.05).as_relative()
+	tween.parallel().tween_property($Money, "position:y", 30, 0.05).as_relative()
 	
-	tween.tween_property($BuyableBox, "position:y", -600, 0.4).as_relative()
-	tween.tween_property($BuyableBox, "position:y", 15, 0.2).as_relative()
+	tween.parallel().tween_property($BuyableBox, "position:y", -600, 0.15).as_relative()
+	tween.tween_property($BuyableBox, "position:y", 15, 0.075).as_relative()
 	
 	await tween.finished
 	

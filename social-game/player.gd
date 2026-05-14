@@ -73,10 +73,10 @@ func _update_stat(stat, temp_stat, label, new_value):
 
 func _update_label(label, val):
 	if val < 10:
-		label.text = str("000", val)
+		label.text = str("[wave amp=11.0 freq=2.5 connected=0]000", val, "[/wave]")
 	elif val < 100:
-		label.text = str("00", val)
+		label.text = str("[wave amp=11.0 freq=2.5 connected=0]00", val, "[/wave]")
 	elif val < 1000:
-		label.text = str("0", val)
+		label.text = str("[wave amp=11.0 freq=2.5 connected=0]0", val, "[/wave]")
 	else:
-		label.text = str(val)
+		label.text = str("[wave amp=11.0 freq=2.5 connected=0]", val, "[/wave]")

@@ -6,7 +6,7 @@ extends Node2D
 
 
 var option_hovered = false
-var option_selected = -1
+var quit_selected = false
 
 var black = '#000000'
 
@@ -56,16 +56,15 @@ func _hide_pause():
 	tween.tween_property(self, "scale", Vector2(1.05, 1.05), 0.05)
 	tween.tween_property(self, "scale", Vector2(0,0), 0.06)
 	
-	for n in options_arr:
-		_deselect(n)
-		
-	option_selected = -1
+	_deselect(options_arr[2])
+	
+	option_hovered = false
+	quit_selected = false
 	
 	return tween
 
-
 func _on_option_mouse_entered(area) -> void:
-	if options_arr[option_selected] != area:
+	if area != options_arr[2] or not quit_selected:
 		option_hovered = true
 		$PauseBody/Selection.visible = true
 		$PauseBody/Selection.position = area.position
@@ -73,7 +72,7 @@ func _on_option_mouse_entered(area) -> void:
 
 
 func _on_option_mouse_exited(area) -> void:
-	if options_arr[option_selected] != area:
+	if area != options_arr[2] or not quit_selected:
 		option_hovered = false
 		$PauseBody/Selection.visible = false
 		_remove_wave(area.get_node("Label"))
@@ -92,19 +91,18 @@ func _remove_wave(label):
 func _on_resume_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed() && not event.is_echo():
-			if option_selected != 0:
-				option_selected = 0
-				option_hovered = false
-				_select(options_arr[0])
-			else:
-				_animate_button(options_arr[0])
-				_hide_pause()
+			option_hovered = false
+			_animate_button(options_arr[0])
+			await _hide_pause().finished
+			_resume()
+			for n in options_arr:
+				_deselect(n)
 
 func _on_quit_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed() && not event.is_echo():
-			if option_selected != 2:
-				option_selected = 2
+			if not quit_selected:
+				quit_selected = true
 				option_hovered = false
 				_select(options_arr[2])
 			else:
@@ -112,17 +110,6 @@ func _on_quit_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> 
 				await _hide_pause().finished
 				visible = false
 				_quit()
-
-func _select(button):
-	button.get_node("ColorRect").visible = true
-	_transition_text(button.get_node("Label"))
-	for n in options_arr:
-		if n == button:
-			continue
-		_deselect(n)
-	
-func _animate_button(button):
-	pass
 	
 func _quit():
 	for n in main.get_children():
@@ -135,8 +122,32 @@ func _quit():
 	for n in main.buttons:
 		n.visible = true
 		
+	for n in options_arr:
+		_deselect(n)
+			
 	main.get_node("Player").visible = false
+	main.current_screen = ""
 	
+func _resume():
+	match main.current_screen:
+		"feed":
+			main.get_node("Feed")._show_for_resume()
+			main.get_node("Feed").paused = false
+		"messenger":
+			main.get_node("Messenger")._show_for_resume()
+			main.get_node("Messenger").paused = false
+		"economy":
+			main.get_node("Economy")._show_for_resume()
+			main.get_node("Economy").paused = false
+	
+	
+func _select(button):
+	button.get_node("ColorRect").visible = true
+	_transition_text(button.get_node("Label"))
+	for n in options_arr:
+		if n == button:
+			continue
+		_deselect(n)
 	
 func _deselect(button):
 	button.get_node("ColorRect").visible = false
@@ -153,6 +164,18 @@ func _transition_text(label):
 	
 	label.text = str("[color=", black, "]Are you sure?[/color]")
 	tween2.tween_property(label, "visible_ratio", 1.0, 0.1)
+
+func _animate_button(button):
+	button.get_node("ColorRect").visible = true
+	button.get_node("Label").text = str("[color=", black, "]", button.get_node("Label").text, "[/color]")
+	
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property(button, "scale", Vector2(0.8,0.8), 0.05)
+	tween.tween_property(button, "scale", Vector2(0.9,0.9), 0.05)
 
 #drift stuff
 
