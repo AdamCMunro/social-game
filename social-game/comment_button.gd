@@ -1,10 +1,11 @@
 extends Area2D
 
 @onready var selection = get_parent().get_node("SquareSelection")
-
 @onready var main = get_parent().get_parent().get_parent().get_parent()
+@onready var feed = get_parent().get_parent().get_parent()
 
 var pressed = false
+var commented = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -17,7 +18,7 @@ func _process(delta: float) -> void:
 
 
 func _on_mouse_entered() -> void:
-	if not main.in_hand:
+	if not main.in_hand and not feed.commenting:
 		selection.visible = true
 		selection.global_position = global_position
 
@@ -26,10 +27,13 @@ func _on_mouse_exited() -> void:
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.is_pressed() && not event.is_echo() and not main.in_hand:
+		if event.is_pressed() && not event.is_echo() and not main.in_hand and not feed.commenting:
 			if pressed == false:
 				_press()
-			else:
+				feed._show_comment_box()
+				feed.commenting = true
+				selection.visible = false
+			elif not commented:
 				_unpress()
 
 func _press():

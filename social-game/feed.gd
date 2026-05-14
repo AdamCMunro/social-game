@@ -17,6 +17,7 @@ var post_position
 var post_data
 
 var new_post_button_pos
+var comment_box_pos
 var hand_pos
 var background_pos
 var stat_block_pos
@@ -34,7 +35,9 @@ func _ready() -> void:
 	background_width = $FeedBackground/Texture.size.x
 	
 	$CommentBox.position = viewport_centre
-	$CommentBox.position.y = 525
+	$CommentBox.position.y = 1000
+	
+	comment_box_pos = Vector2(viewport_centre.x, 525)
 	
 	stat_block_pos = player.get_node("StatBlock").position
 	
@@ -150,6 +153,10 @@ func _hide_for_pause():
 		tween.tween_property(hand, "position:y", hand_pos.y - 20, 0.05)
 		tween.tween_property(hand, "position:y", 1000, 0.05)
 	
+	if commenting:
+		tween.tween_property($CommentBox, "position:y", comment_box_pos.y - 20, 0.05)
+		tween.tween_property($CommentBox, "position:y", 1000, 0.05)
+	
 	tween.tween_property(current_post, "position:y", post_position.y - 20, 0.05)
 	tween.parallel().tween_property($NewPostButton, "position:y", new_post_button_pos.y + 20, 0.05)
 	tween.parallel().tween_property(player.get_node("StatBlock"), "position:x", stat_block_pos.x + 20, 0.05)
@@ -184,14 +191,27 @@ func _show_for_resume():
 		tween.tween_property(hand, "position:y", hand_pos.y - 20, 0.05)
 		tween.tween_property(hand, "position:y", hand_pos.y, 0.05)
 	
+	if commenting:
+		tween.tween_property($CommentBox, "position:y", comment_box_pos.y - 20, 0.05)
+		tween.tween_property($CommentBox, "position:y", comment_box_pos.y, 0.05)
+	
 func _show_comment_box():
 	var tween = create_tween()
 	
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_SINE)
 	
-	tween.tween_property($CommentBox, "position:y", 100, 0.1)
+	tween.tween_property($CommentBox, "position:y", comment_box_pos.y - 20, 0.2)
+	tween.tween_property($CommentBox, "position:y", comment_box_pos.y, 0.2)
 	
 	
 func _hide_comment_box():
-	pass
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property($CommentBox, "position:y", comment_box_pos.y - 20, 0.2)
+	tween.tween_property($CommentBox, "position:y", 1000, 0.2)
+	
+	
