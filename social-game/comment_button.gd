@@ -18,7 +18,7 @@ func _process(delta: float) -> void:
 
 
 func _on_mouse_entered() -> void:
-	if not main.in_hand and not feed.commenting:
+	if not main.in_hand and not feed.commenting and not commented:
 		selection.visible = true
 		selection.global_position = global_position
 

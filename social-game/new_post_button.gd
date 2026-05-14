@@ -5,6 +5,7 @@ var button_scale = Vector2.ZERO
 
 @onready var sprite = $Sprite2D
 @onready var main = get_parent().get_parent()
+@onready var feed = get_parent()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -29,6 +30,10 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 		if event.is_pressed() && not event.is_echo():
 			if pressing == false:
 				if not main.in_hand:
+					if feed.commenting:
+						feed.get_node("CommentBox")._cancel_comment()
+						feed.commenting = false
+						await get_tree().create_timer(0.25).timeout
 					_draw_hand()
 				else:
 					_hide_hand()

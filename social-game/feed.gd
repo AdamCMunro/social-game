@@ -139,7 +139,9 @@ func _reset_post(post):
 	for b in button_arr:
 		if b and b.pressed:
 			b._unpress()
-			
+	
+	comment.commented = false
+	
 func _hide_for_pause():
 	var tween = create_tween()
 	
@@ -213,5 +215,24 @@ func _hide_comment_box():
 	
 	tween.tween_property($CommentBox, "position:y", comment_box_pos.y - 20, 0.2)
 	tween.tween_property($CommentBox, "position:y", 1000, 0.2)
+	
+	await tween.finished
+	
+	_reset_comment_box()
+		
+func _reset_comment_box():
+	$CommentBox/Cancel.position = $CommentBox.cancel_pos
+	
+	for i in range($CommentBox.option_arr.size()):
+		var option = $CommentBox.option_arr[i]
+		var pos = $CommentBox.option_pos[i]
+		var text = $CommentBox.option_text[i]
+		
+		option.position = pos
+		$CommentBox._deselect(option, text)
+		$CommentBox.selected_option = null
+		
+	$CommentBox.commenting_text.text = "Type random letters to comment"
+	
 	
 	

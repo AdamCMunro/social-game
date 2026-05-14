@@ -13,8 +13,7 @@ extends Node2D
 @onready var player_message_scene = preload("res://player_message.tscn")
 @onready var message_scene = preload("res://message.tscn")
 
-@export var mac_scroll_speed = 7.5
-@export var win_scroll_speed = 7.5
+@export var scroll_speed = 7.5
 var velocity: float
 var friction = 0.8
 var smooth_speed = 0.5
@@ -152,14 +151,14 @@ func _input(event: InputEvent):
 						n._progress_chat()
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
-			_scroll_messages(win_scroll_speed)
+			_scroll_messages(scroll_speed)
 		elif event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
-			_scroll_messages(-win_scroll_speed)
+			_scroll_messages(-scroll_speed)
 	elif event is InputEventPanGesture:
 		if event.delta.y > 0: 
-			_scroll_messages(-mac_scroll_speed)
+			_scroll_messages(-scroll_speed)
 		elif event.delta.y < 0:
-			_scroll_messages(mac_scroll_speed)
+			_scroll_messages(scroll_speed)
 	else:
 		scrolling = false
 

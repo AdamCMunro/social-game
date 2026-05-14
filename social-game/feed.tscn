@@ -78,6 +78,7 @@ mouse_filter = 0
 theme_override_fonts/font = ExtResource("7_ogxe3")
 theme_override_font_sizes/font_size = 30
 text = "Type random letters to comment"
+autowrap_mode = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="CommentBox" unique_id=1016564010]
 position = Vector2(0, 50)
@@ -202,6 +203,21 @@ shape = SubResource("RectangleShape2D_fqlfk")
 
 [node name="Cancel" type="Area2D" parent="CommentBox" unique_id=828478071]
 position = Vector2(0, 100)
+
+[node name="ColorRect" type="ColorRect" parent="CommentBox/Cancel" unique_id=797743113]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -22.5
+offset_right = 230.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="CommentBox/Cancel" unique_id=1638370333]
 anchors_preset = 8

@@ -3,6 +3,7 @@ extends Area2D
 @onready var feed = get_parent()
 @onready var selection = $Selection
 @onready var option_arr = [$Option1, $Option2, $Option3]
+@onready var commenting_text = $CommentingText
 
 var option_text = ["OMG SLAY", "I hate you", "whatever"]
 var full_text = ["OMG SLAY", "I HATE YOU I HATE YOU I HATE YOU", "whatever"]
@@ -13,7 +14,7 @@ var cancel_pos
 var selected_option
 var hovered_option
 
-var commenting_text
+var chosen_option_text
 
 var hovering = false
 var typing = false
@@ -95,8 +96,13 @@ func _on_option_input_event(viewport: Node, event: InputEvent, shape_idx: int, o
 func _choose_option(option):
 	for i in range(option_arr.size()):
 		if option_arr[i] == option:
-			commenting_text = full_text[i]
-	_hide_options()
+			chosen_option_text = full_text[i]
+	await _hide_options()
+	commenting_text.visible = true
+	commenting_text.visible_ratio = 0
+	_show_commenting_text()
+	typing = true
+	
 
 func _hide_options():
 	for i in range(option_arr.size()):
@@ -118,6 +124,7 @@ func _hide_options():
 	
 	tween.tween_property($Cancel, "position:y", cancel_pos.y - 10, 0.1)
 	tween.tween_property($Cancel, "position:y", 800, 0.1)
+	
 		
 
 func _on_cancel_mouse_entered() -> void:
@@ -134,20 +141,52 @@ func _on_cancel_mouse_exited() -> void:
 func _on_cancel_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed() && not event.is_echo():
+			$Cancel/ColorRect.visible = true
+			$Cancel/Label.set("theme_override_colors/font_color",black)
 			var tween = create_tween()
 			
 			tween.set_ease(Tween.EASE_IN_OUT)
 			tween.set_trans(Tween.TRANS_SINE)
 			
-			tween.tween_property($Cancel, "scale", Vector2(0.9,0.9), 0.1)
-			tween.tween_property($Cancel, "scale", Vector2(1.01,1.01), 0.1)
-			tween.tween_property($Cancel, "scale", Vector2(1,1), 0.1)
+			tween.tween_property($Cancel, "scale", Vector2(0.9,0.9), 0.05)
+			tween.tween_property($Cancel, "scale", Vector2(1.01,1.01), 0.05)
+			tween.tween_property($Cancel, "scale", Vector2(1,1), 0.05)
 			
 			await tween.finished
-			
-			feed.commenting = false
-			feed._hide_comment_box()
-			feed.current_post.get_node("PostBody/CommentButton")._unpress()
-			await get_tree().create_timer(0.3).timeout
-			for i in range(option_arr.size()):
-				_deselect(option_arr[i], option_text[i])
+			$Cancel/ColorRect.visible = false
+			$Cancel/Label.set("theme_override_colors/font_color",white)
+			_cancel_comment()
+
+func _cancel_comment():
+	
+	feed.commenting = false
+	feed._hide_comment_box()
+	feed.current_post.get_node("PostBody/CommentButton")._unpress()
+	await get_tree().create_timer(0.3).timeout
+	for i in range(option_arr.size()):
+		_deselect(option_arr[i], option_text[i])
+		
+func _show_commenting_text():
+	var tween = create_tween()
+	
+	tween.tween_property(commenting_text, "visible_ratio", 1, 0.2)\
+		.set_ease(Tween.EASE_IN_OUT)\
+		.set_trans(Tween.TRANS_SINE)
+
+func _input(event: InputEvent):
+	if event is InputEventKey and event.pressed:
+		if typing:
+			if commenting_text.text == "Type random letters to comment" and commenting_text.visible_ratio == 1:
+				commenting_text.visible_ratio = 0
+				commenting_text.text = chosen_option_text
+			elif commenting_text.text != "Type random letters to comment" and commenting_text.visible_characters < commenting_text.text.length():
+				commenting_text.visible_characters += 1
+			elif commenting_text.text != "Type random letters to comment":
+				typing = false
+				commenting_text.visible = false
+				_comment()
+				feed.commenting = false
+				feed._hide_comment_box()
+
+func _comment():
+	feed.current_post.get_node("PostBody/CommentButton").commented = true
