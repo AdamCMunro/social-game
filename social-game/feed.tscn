@@ -5,6 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://epawnamf4d4y" path="res://assets/Feed_Background.png" id="2_insad"]
 [ext_resource type="Script" uid="uid://du6rui0tgp2f3" path="res://new_post_button.gd" id="3_j7o2i"]
 [ext_resource type="Texture2D" uid="uid://clmicxk60kuy4" path="res://assets/New_Post_Button.png" id="3_n6tdq"]
+[ext_resource type="Texture2D" uid="uid://pfwusgo5ll1r" path="res://assets/Comment_Box.png" id="6_0eyb3"]
+[ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="7_ogxe3"]
+[ext_resource type="Texture2D" uid="uid://bv7kp8r2220md" path="res://assets/Square_Selection.png" id="8_fqlfk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_insad"]
 size = Vector2(128, 128)
@@ -48,6 +51,160 @@ texture = ExtResource("3_n6tdq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NewPostButton" unique_id=815436491]
 shape = SubResource("RectangleShape2D_insad")
+
+[node name="CommentBox" type="Area2D" parent="." unique_id=1898517508]
+z_index = 2
+
+[node name="CommentingText" type="Label" parent="CommentBox" unique_id=1036693439]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Sprite2D" type="Sprite2D" parent="CommentBox" unique_id=1016564010]
+texture = ExtResource("6_0eyb3")
+
+[node name="Option1" type="Area2D" parent="CommentBox" unique_id=2101078491]
+position = Vector2(0, -75)
+
+[node name="Label" type="Label" parent="CommentBox/Option1" unique_id=1832067512]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -22.5
+offset_right = 230.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("7_ogxe3")
+theme_override_font_sizes/font_size = 30
+text = "Option 1"
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="CommentBox/Option1" unique_id=147961894]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -22.5
+offset_right = 230.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Option2" type="Area2D" parent="CommentBox" unique_id=1580980556]
+position = Vector2(0, -25)
+
+[node name="Label" type="Label" parent="CommentBox/Option2" unique_id=1102303710]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -22.5
+offset_right = 230.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("7_ogxe3")
+theme_override_font_sizes/font_size = 30
+text = "Option 2"
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="CommentBox/Option2" unique_id=1906481143]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -22.5
+offset_right = 230.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Option3" type="Area2D" parent="CommentBox" unique_id=1439181395]
+position = Vector2(0, 25)
+
+[node name="Label" type="Label" parent="CommentBox/Option3" unique_id=1183560354]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -22.5
+offset_right = 230.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("7_ogxe3")
+theme_override_font_sizes/font_size = 30
+text = "Option 3"
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="CommentBox/Option3" unique_id=1881964185]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -22.5
+offset_right = 230.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Cancel" type="Area2D" parent="CommentBox" unique_id=828478071]
+position = Vector2(0, 75)
+
+[node name="Label" type="Label" parent="CommentBox/Cancel" unique_id=1638370333]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -22.5
+offset_right = 230.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("7_ogxe3")
+theme_override_font_sizes/font_size = 30
+text = "Cancel"
+vertical_alignment = 1
+
+[node name="Selection" type="Area2D" parent="CommentBox" unique_id=234585728]
+position = Vector2(0, -75)
+
+[node name="NinePatchRect" type="NinePatchRect" parent="CommentBox/Selection" unique_id=1549745622]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -235.0
+offset_top = -22.5
+offset_right = 235.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_fqlfk")
+patch_margin_left = 17
+patch_margin_top = 17
+patch_margin_right = 17
+patch_margin_bottom = 17
 
 [connection signal="input_event" from="NewPostButton" to="NewPostButton" method="_on_input_event"]
 [connection signal="mouse_entered" from="NewPostButton" to="NewPostButton" method="_on_mouse_entered"]

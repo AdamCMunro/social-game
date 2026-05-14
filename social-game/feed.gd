@@ -24,6 +24,7 @@ var background_width
 
 var is_scrolling = false
 var paused = false
+var commenting = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -31,6 +32,9 @@ func _ready() -> void:
 	
 	background_pos = $FeedBackground/Texture.position
 	background_width = $FeedBackground/Texture.size.x
+	
+	$CommentBox.position = viewport_centre
+	$CommentBox.position.y = 525
 	
 	stat_block_pos = player.get_node("StatBlock").position
 	
@@ -179,3 +183,15 @@ func _show_for_resume():
 		var hand = player.get_node("Hand")
 		tween.tween_property(hand, "position:y", hand_pos.y - 20, 0.05)
 		tween.tween_property(hand, "position:y", hand_pos.y, 0.05)
+	
+func _show_comment_box():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property($CommentBox, "position:y", 100, 0.1)
+	
+	
+func _hide_comment_box():
+	pass
