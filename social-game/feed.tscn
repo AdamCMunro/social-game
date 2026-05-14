@@ -81,7 +81,7 @@ text = "Type random letters to comment"
 autowrap_mode = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="CommentBox" unique_id=1016564010]
-position = Vector2(0, 50)
+position = Vector2(0, 20)
 texture = ExtResource("6_0eyb3")
 
 [node name="Option1" type="Area2D" parent="CommentBox" unique_id=2101078491]
@@ -262,6 +262,16 @@ patch_margin_left = 17
 patch_margin_top = 17
 patch_margin_right = 17
 patch_margin_bottom = 17
+
+[node name="Label" type="RichTextLabel" parent="CommentBox" unique_id=998841526]
+offset_left = -230.0
+offset_top = -147.0
+offset_right = -103.0
+offset_bottom = -109.0
+theme_override_fonts/normal_font = ExtResource("7_ogxe3")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[wave amp=11.0 freq=2.5 connected=0]Comment[/wave]"
 
 [connection signal="input_event" from="NewPostButton" to="NewPostButton" method="_on_input_event"]
 [connection signal="mouse_entered" from="NewPostButton" to="NewPostButton" method="_on_mouse_entered"]

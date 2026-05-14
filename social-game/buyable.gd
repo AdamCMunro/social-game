@@ -16,6 +16,7 @@ var radio_hovered = false
 var selected = false
 var striken = false
 var destriking = false
+var moving = false
 
 var white = "#ffffff"
 var red = "#d0316c"
@@ -30,7 +31,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if mouse_over and not hovered:
+	if mouse_over and not hovered and not moving:
 		_hover()
 	elif not mouse_over and hovered:
 		_dehover()
@@ -46,14 +47,14 @@ func _process(delta: float) -> void:
 
 func _on_radio_mouse_entered() -> void:
 	radio_hovered = true
-	if not selected and not striken:
+	if not selected and not striken and not moving:
 		radio.get_node("RadioHover").play("default")
 		radio.get_node("RadioHover").visible = true
 
 
 func _on_radio_mouse_exited() -> void:
 	radio_hovered = false
-	if not selected and not striken:
+	if not selected and not striken and not moving:
 		radio.get_node("RadioHover").visible = false
 		
 

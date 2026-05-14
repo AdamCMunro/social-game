@@ -192,6 +192,9 @@ func _animate_button_press():
 	tween.tween_property($Button, "scale", starting_scale * 0.9, 0.2)
 	
 func _move_to_buyables():
+	for n in $BuyableBox.get_children():
+		n.moving = true
+	
 	var tween = create_tween()
 	
 	tween.set_ease(Tween.EASE_IN_OUT)
@@ -215,6 +218,9 @@ func _move_to_buyables():
 	tween.tween_property($BuyableBox, "position:y", 15, 0.075).as_relative()
 	
 	await tween.finished
+	
+	for n in $BuyableBox.get_children():
+		n.moving = false
 	
 	buyable_box_pos = $BuyableBox.position
 	money_pos = $Money.position
