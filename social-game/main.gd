@@ -5,6 +5,7 @@ extends Node2D
 var in_hand = false
 var seed = ""
 var current_screen = ""
+var current_day = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

@@ -28,7 +28,7 @@ func _on_mouse_exited() -> void:
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed() && not event.is_echo():
-			if pressing == false:
+			if not pressing and not feed.feed_ended:
 				if not main.in_hand:
 					if feed.commenting:
 						feed.get_node("CommentBox")._cancel_comment()

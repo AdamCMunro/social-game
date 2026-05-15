@@ -87,13 +87,13 @@ text = "Username"
 [node name="Caption" type="Label" parent="PostBody" unique_id=1716154906]
 offset_left = -142.5
 offset_top = 140.0
-offset_right = -66.5
-offset_bottom = 175.0
+offset_right = 85.00424
+offset_bottom = 244.75214
 scale = Vector2(1.25, 1.25)
 theme_override_fonts/font = ExtResource("10_deta0")
 theme_override_font_sizes/font_size = 12
 text = "Caption..."
-autowrap_mode = 2
+autowrap_mode = 3
 
 [connection signal="input_event" from="PostBody/LikeButton" to="PostBody/LikeButton" method="_on_input_event"]
 [connection signal="mouse_entered" from="PostBody/LikeButton" to="PostBody/LikeButton" method="_on_mouse_entered"]

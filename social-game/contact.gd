@@ -101,7 +101,7 @@ func _deselect():
 	
 func _progress_chat():
 	var history_path = str("user://chat_logs/history/", contact_name, ".json")
-	var messages_path = str("res://chat_logs/", contact_name, ".json")
+	var messages_path = str("res://daily_files/", messenger.get_parent().current_day, "/chat_logs/", contact_name, ".json")
 	var history = _json_decode(history_path)
 	var messages = _json_decode(messages_path)
 	var start = _get_start_point(history)
