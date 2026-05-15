@@ -26,6 +26,7 @@ var background_width
 var is_scrolling = false
 var paused = false
 var commenting = false
+var prepared_for_play = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -233,6 +234,26 @@ func _reset_comment_box():
 		$CommentBox.selected_option = null
 		
 	$CommentBox.commenting_text.text = "Type random letters to comment"
+
+func _prepare_for_play():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property(current_post, "position:y", post_position.y - 10, 0.05)
+	tween.tween_property(current_post, "position:y", post_position.y + post_height, 0.05)
+
+	
+func _unprepare_for_play():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property(current_post, "position:y", post_position.y - 10, 0.05)
+	tween.tween_property(current_post, "position:y", post_position.y, 0.05)
+	
 	
 	
 	

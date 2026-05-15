@@ -40,6 +40,13 @@ func _process(delta: float) -> void:
 			if abs(last_stop.x - global_position.x) > 125:
 				_swap_card()
 				last_stop = global_position
+				
+			if get_global_mouse_position().y < (viewport_centre.y * 0.75) and not feed.prepared_for_play:
+				feed.prepared_for_play = true
+				feed._prepare_for_play()
+			elif get_global_mouse_position().y >= (viewport_centre.y * 0.75) and feed.prepared_for_play:
+				feed.prepared_for_play = false
+				feed._unprepare_for_play()
 		
 
 		_card_drift(delta)
@@ -210,7 +217,7 @@ func _place_card_animation():
 	.set_trans(Tween.TRANS_SINE)\
 	.set_ease(Tween.EASE_IN_OUT)
 	
-	
+
 #card drift stuff
 
 var noise = FastNoiseLite.new()

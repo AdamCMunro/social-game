@@ -13,8 +13,9 @@ var black = '#000000'
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	_prepare_drift()
-	scale = Vector2.ZERO
+	$PauseBody.scale = Vector2.ZERO
 	position = viewport_centre
+	$Label.modulate.a = 0
 	
 	for n in options_arr:
 	
@@ -32,8 +33,8 @@ func _process(delta: float) -> void:
 	if visible:
 		_drift(delta)
 	else:
-		position = viewport_centre
-		rotation = 0
+		$PauseBody.position = Vector2.ZERO
+		$PauseBody.rotation = 0
 
 func _show_pause():
 	visible = true
@@ -43,8 +44,21 @@ func _show_pause():
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_SINE)
 	
-	tween.tween_property(self, "scale", Vector2(1.05, 1.05), 0.05)
-	tween.tween_property(self, "scale", Vector2(1,1), 0.06)
+	tween.tween_property($PauseBody, "scale", Vector2(1.05, 1.05), 0.05)
+	tween.tween_property($PauseBody, "scale", Vector2(1,1), 0.06)
+	
+	var text_tween = create_tween()
+	
+	text_tween.set_ease(Tween.EASE_IN_OUT)
+	text_tween.set_trans(Tween.TRANS_SINE)
+	
+	text_tween.tween_property($Label, "modulate:a", 0.7, 0.5)
+	text_tween.tween_property($Label, "modulate:a", 0.7, 1)
+	text_tween.tween_property($Label, "modulate:a", 0, 2)
+	text_tween.tween_property($Label, "modulate:a", 0.7, 1)
+	
+	text_tween.set_loops()
+	
 	
 func _hide_pause():
 	
@@ -53,8 +67,9 @@ func _hide_pause():
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_SINE)
 	
-	tween.tween_property(self, "scale", Vector2(1.05, 1.05), 0.05)
-	tween.tween_property(self, "scale", Vector2(0,0), 0.06)
+	tween.tween_property($PauseBody, "scale", Vector2(1.05, 1.05), 0.05)
+	tween.tween_property($PauseBody, "scale", Vector2(0,0), 0.06)
+	tween.parallel().tween_property($Label, "modulate:a", 0, 0.06)
 	
 	_deselect(options_arr[2])
 	
@@ -197,5 +212,5 @@ func _drift(delta):
 	var oy = noise.get_noise_1d(time + 100) * amplitude 
 	var ang = noise.get_noise_1d(time + 200) * rotation_amplitude
 
-	position = Vector2(viewport_centre.x + ox, viewport_centre.y + oy)
-	rotation_degrees = ang
+	$PauseBody.position = Vector2(ox, oy)
+	$PauseBody.rotation_degrees = ang
