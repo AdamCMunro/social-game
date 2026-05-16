@@ -6,6 +6,8 @@ extends Node2D
 @onready var player = main.get_node("Player")
 @onready var viewport_centre = get_viewport_rect().size / 2
 
+var current_post_seed = "000" #where first character is binary liked, second is binary reposted and third is 0-3 indicating if a comment was made
+
 var current_post
 var current_post_body
 
@@ -62,6 +64,8 @@ func _ready() -> void:
 	
 	current_post = _instaniate_post(_get_current_post_data())
 	
+	_populate_comments()
+	
 	next_post = _instaniate_post(_get_next_post_data())
 	
 	post_position = viewport_centre
@@ -101,6 +105,14 @@ func _instaniate_post(data):
 	add_child(new_post)
 	return new_post
 	
+func _populate_comments():
+	var data = _get_current_post_data().options
+	var option_arr = [data[0].option, data[1].option, data[2].option]
+	var full_arr = [data[0].full, data[1].full, data[2].full]
+	
+	$CommentBox.option_text = option_arr
+	$CommentBox.full_text = full_arr
+	
 func _input(event):
 	if is_scrolling:
 		return
@@ -120,6 +132,8 @@ func _input(event):
 func _trigger_scroll():
 	if not main.in_hand:
 		is_scrolling = true
+		main._append_today_seed(current_post_seed)
+		current_post_seed = "000"
 		_reset_post(next_post)
 		var tween = _move_posts(current_post, next_post)
 		await tween.finished
@@ -134,15 +148,20 @@ func _trigger_scroll():
 
 func _final_scroll():
 	var tween = create_tween()
+	is_scrolling = true
 	
-	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
 	
-	tween.tween_property(next_post, "position", Vector2(viewport_centre.x, viewport_centre.y -post_height), 0.5)
-	tween.tween_property($EndLabel, "position:y", end_label_pos.y - 10, 0.3)
-	tween.parallel().tween_property($ContinueButton, "position:y", continue_button_pos.y - 10, 0.3)
-	tween.tween_property($EndLabel, "position:y", end_label_pos.y, 0.2)
-	tween.parallel().tween_property($ContinueButton, "position:y", continue_button_pos.y, 0.2)
+	tween.tween_property(next_post, "position:y", viewport_centre.y - post_height, 0.5)
+	tween.parallel().tween_property($EndLabel, "position:y", end_label_pos.y - 15, 0.5)
+	tween.parallel().tween_property($ContinueButton, "position:y", continue_button_pos.y - 15, 0.5)
+	tween.tween_property($EndLabel, "position:y", end_label_pos.y, 0.3)
+	tween.parallel().tween_property($ContinueButton, "position:y", continue_button_pos.y, 0.3)
+	
+	await tween.finished
+	
+	is_scrolling = false
 
 func _move_posts(post, post2):
 	var tween = create_tween()
@@ -158,6 +177,8 @@ func _recycle_posts():
 	var recycled_post
 	
 	current_post_index += 1
+	
+	_populate_comments()
 	
 	if current_post.get_name() == "Post":
 		recycled_post = current_post
@@ -268,6 +289,9 @@ func _show_for_resume():
 		tween.tween_property($CommentBox, "position:y", comment_box_pos.y, 0.05)
 	
 func _show_comment_box():
+	for i in range($CommentBox.option_arr.size()):
+		$CommentBox.option_arr[i].get_node("Label").text = $CommentBox.option_text[i]
+	
 	var tween = create_tween()
 	
 	tween.set_ease(Tween.EASE_IN_OUT)

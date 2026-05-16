@@ -97,6 +97,7 @@ func _choose_option(option):
 	for i in range(option_arr.size()):
 		if option_arr[i] == option:
 			chosen_option_text = full_text[i]
+			feed.current_post_seed[2] = str(i + 1)
 	await _hide_options()
 	commenting_text.visible = true
 	commenting_text.visible_ratio = 0

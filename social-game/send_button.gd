@@ -36,7 +36,9 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 func _press():
 	$Sprite2D.texture = load("res://assets/Send_Button_Pressed.png")
 	pressed = true
+	feed.current_post_seed[1] = "1"
 	
 func _unpress():
 	$Sprite2D.texture = load("res://assets/Send_Button.png")
 	pressed = false
+	feed.current_post_seed[1] = "0"
