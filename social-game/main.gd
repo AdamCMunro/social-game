@@ -22,3 +22,16 @@ func _append_seed(char):
 	
 func _append_today_seed(data):
 	today_seed = str(today_seed, data)
+
+func _shake():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property(self, "position", Vector2(5, 8), 0.02)
+	tween.tween_property(self, "position", Vector2(-5, -1), 0.03)
+	tween.tween_property(self, "position", Vector2(8, -7), 0.02)
+	tween.tween_property(self, "position", Vector2(-3, 2), 0.01)
+	tween.tween_property(self, "position", Vector2(1, -1), 0.04)
+	tween.tween_property(self, "position", Vector2.ZERO, 0.02)

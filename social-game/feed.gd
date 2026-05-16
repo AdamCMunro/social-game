@@ -1,10 +1,16 @@
 extends Node2D
 
 @onready var post_scene = preload("res://post.tscn")
+@onready var change_label_scene = preload("res://change_label.tscn")
 @onready var main = get_parent()
 @onready var pause = main.get_node("Pause")
 @onready var player = main.get_node("Player")
 @onready var viewport_centre = get_viewport_rect().size / 2
+
+var money_colour = "#6bff6a"
+var health_colour = "#d0316c"
+var followers_colour = "#0072ff"
+var energy_colour = "#ece347"
 
 var current_post_seed = "000" #where first character is binary liked, second is binary reposted and third is 0-3 indicating if a comment was made
 
@@ -114,7 +120,7 @@ func _populate_comments():
 	$CommentBox.full_text = full_arr
 	
 func _input(event):
-	if is_scrolling:
+	if is_scrolling or commenting:
 		return
 
 	if event is InputEventMouseButton:
@@ -126,7 +132,13 @@ func _input(event):
 		if event.delta.y > 0.5 and not feed_ended: 
 			_trigger_scroll()
 		elif event.delta.y > 0.5 and feed_ended:
-			_final_scroll() 
+			_final_scroll()
+	elif event is InputEventKey and event.pressed:
+		if event.keycode == KEY_DOWN and not event.is_echo():
+			if feed_ended:
+				_final_scroll()
+			else:
+				_trigger_scroll()
 	
 
 func _trigger_scroll():
@@ -137,7 +149,7 @@ func _trigger_scroll():
 		_reset_post(next_post)
 		var tween = _move_posts(current_post, next_post)
 		await tween.finished
-		
+		_effect_stats()
 		if current_post_index + 1 < post_array.size() - 1:
 			_recycle_posts()
 		elif current_post_index + 1 == post_array.size() - 1:
@@ -355,8 +367,84 @@ func _json_decode(file_path: String) -> Array:
 		return data as Array
 		
 	push_error("Failed to parse JSON, or the root is not an Array.")
-	return []
+	return []	
+
+func _effect_stats():
+	var stats = _get_current_post_data().stats
 	
+	if stats.energy != 0:
+		_change_stat("energy", stats.energy)
+		await get_tree().create_timer(0.5).timeout
+		
+	if stats.health != 0:
+		_change_stat("health", stats.health)
+		await get_tree().create_timer(0.5).timeout
+		
+	if stats.followers != 0:
+		_change_stat("followers", stats.followers)
+		await get_tree().create_timer(0.5).timeout
+		
+	if stats.money != 0:
+		_change_stat("money", stats.money)
+		
+		
+		
+func _change_stat(stat : String, value : int):
+	var text : String
+	var colour: String
+	
+	match stat:
+		"energy":
+			colour = energy_colour
+			player._update_energy(player.energy + value)
+		"health":
+			colour = health_colour
+			player._update_health(player.health + value)
+		"followers":
+			colour = followers_colour
+			player._update_followers(player.followers + value)
+		"money":
+			colour = money_colour
+			player._update_money(player.money + value)
+	
+	if value < 0:
+		text = str("[color=", colour, "]", value, "[/color]")
+		_show_change_label(text)
+		await get_tree().create_timer(0.2).timeout
+		main._shake()
+	else:
+		text = str("[color=", colour, "]+", value, "[/color]")
+		_show_change_label(text)
+	
+func _show_change_label(text):
+	var label = _create_change_label()
+	label.text = text
+	await _animate_change_label(label).finished
+	label.visible = false
+	label.queue_free()
+
+func _create_change_label():
+	var instance = change_label_scene.instantiate()
+	instance.visible = false
+	instance.position = Vector2(172, 43)
+	add_child(instance)
+	return instance
+
+func _animate_change_label(label):
+	label.modulate.a = 0
+	label.position = Vector2(750, 450)
+	label.visible = true
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property(label, "position:y", -125, 0.3).as_relative()
+	tween.parallel().tween_property(label, "modulate:a", 1, 0.2)
+	tween.tween_property(label, "position:y", 125, 0.4).as_relative()
+	tween.parallel().tween_property(label, "modulate:a", 0, 0.4)
+	
+	return tween
 	
 	
 	

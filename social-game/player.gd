@@ -27,7 +27,10 @@ func _ready() -> void:
 		var card_instance = card_scene.instantiate()
 		deck.append(card_instance)
 		card_instance.get_node("CardBody/CardName").text = str("Card Name ", i)
-
+	_update_energy(100)
+	_update_health(100)
+	_update_followers(100)
+	_update_money(100)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

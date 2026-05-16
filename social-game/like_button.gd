@@ -36,6 +36,7 @@ func _press():
 	$Sprite2D.texture = load("res://assets/Like_Button_Liked.png")
 	pressed = true
 	feed.current_post_seed[0] = "1"
+	main._shake()
 	
 func _unpress():
 	$Sprite2D.texture = load("res://assets/Like_Button.png")
