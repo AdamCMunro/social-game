@@ -25,9 +25,18 @@ var played = false
 var last_stop = Vector2.ZERO
 
 var offset = Vector2.ZERO
+
+var id
+var title
+var description
+var stats
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	_prepare_drift()
+	
+	$CardBody/CardName.text = title
+	$CardBody/CardDescription.text = description
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

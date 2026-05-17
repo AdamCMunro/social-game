@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bjyqsa4nos8lq"]
+[gd_scene format=3 uid="uid://bjyqsa4nos8lq"]
 
 [ext_resource type="Texture2D" uid="uid://dxmjisppy1rye" path="res://assets/New_Post.png" id="1_kikvd"]
 [ext_resource type="Script" uid="uid://da23c0a8u4x6" path="res://card.gd" id="1_q5obu"]
@@ -7,21 +7,23 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(318, 570)
 
-[node name="Card" type="Node2D"]
+[node name="Card" type="Node2D" unique_id=310018081]
 z_index = 2
 script = ExtResource("1_q5obu")
 metadata/_edit_group_ = true
 
-[node name="CardBody" type="Area2D" parent="."]
+[node name="CardBody" type="Area2D" parent="." unique_id=1319995654]
 
-[node name="Sprite2D" type="Sprite2D" parent="CardBody"]
+[node name="Sprite2D" type="Sprite2D" parent="CardBody" unique_id=1665767449]
+texture_filter = 4
 texture = ExtResource("1_kikvd")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CardBody"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CardBody" unique_id=622186189]
 position = Vector2(1, 0)
 shape = SubResource("RectangleShape2D_rjlel")
 
-[node name="CardName" type="Label" parent="CardBody"]
+[node name="CardName" type="Label" parent="CardBody" unique_id=689630767]
+texture_filter = 3
 offset_left = -142.0
 offset_top = -269.0
 offset_right = -22.0
@@ -31,16 +33,18 @@ theme_override_fonts/font = ExtResource("2_rjlel")
 theme_override_font_sizes/font_size = 24
 text = "Card Name"
 
-[node name="CardDescription" type="Label" parent="CardBody"]
+[node name="CardDescription" type="Label" parent="CardBody" unique_id=1089125879]
+texture_filter = 3
 offset_left = -142.0
 offset_top = 95.0
-offset_right = -51.0
-offset_bottom = 118.0
+offset_right = 85.19998
+offset_bottom = 236.6
 scale = Vector2(1.25, 1.25)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2_rjlel")
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 18
 text = "Card description"
+autowrap_mode = 3
 
 [connection signal="input_event" from="CardBody" to="." method="_on_card_body_input_event"]
 [connection signal="mouse_entered" from="CardBody" to="." method="_on_card_body_mouse_entered"]

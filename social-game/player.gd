@@ -21,12 +21,16 @@ var current_money = 0
 
 var deck := []
 
+var cards_data
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	for i in range(6):
-		var card_instance = card_scene.instantiate()
-		deck.append(card_instance)
-		card_instance.get_node("CardBody/CardName").text = str("Card Name ", i)
+	var card_instance = card_scene.instantiate()
+	cards_data = _json_decode("res://posts/player_post_dict.json")
+	
+	deck.append(card_instance)
+	_populate_card_details(card_instance, cards_data[0])
+	
 	_update_energy(100)
 	_update_health(100)
 	_update_followers(100)
@@ -83,3 +87,20 @@ func _update_label(label, val):
 		label.text = str("[wave amp=11.0 freq=2.5 connected=0]0", val, "[/wave]")
 	else:
 		label.text = str("[wave amp=11.0 freq=2.5 connected=0]", val, "[/wave]")
+
+func _json_decode(file_path: String) -> Array:
+	var content = FileAccess.get_file_as_string(file_path)
+	var data = JSON.parse_string(content)
+	
+	if typeof(data) == TYPE_ARRAY:
+		return data as Array
+		
+	push_error("Failed to parse JSON, or the root is not an Array.")
+	return []
+	
+func _populate_card_details(card, data):
+	card.id = data.id
+	card.title = data.name
+	card.description = data.description
+	card.stats = data.stats
+	
