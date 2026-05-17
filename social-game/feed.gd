@@ -149,7 +149,7 @@ func _trigger_scroll():
 		_reset_post(next_post)
 		var tween = _move_posts(current_post, next_post)
 		await tween.finished
-		await _affect_stats()
+		await _affect_stats(_get_current_post_data().stats)
 		if current_post_index + 1 < post_array.size() - 1:
 			_recycle_posts()
 		elif current_post_index + 1 == post_array.size() - 1:
@@ -369,8 +369,7 @@ func _json_decode(file_path: String) -> Array:
 	push_error("Failed to parse JSON, or the root is not an Array.")
 	return []	
 
-func _affect_stats():
-	var stats = _get_current_post_data().stats
+func _affect_stats(stats):
 	
 	if stats.energy != 0:
 		_change_stat("energy", stats.energy)

@@ -10,6 +10,11 @@ extends Node2D
 
 var rng = RandomNumberGenerator.new()
 
+var money_colour = "#6bff6a"
+var health_colour = "#d0316c"
+var followers_colour = "#0072ff"
+var energy_colour = "#ece347"
+
 var card_scale
 var card_rotation
 var card_position
@@ -204,6 +209,7 @@ func _play_post():
 	played = true
 	_card_drift_reset()
 	_place_card_animation()
+	feed._affect_stats(stats)
 	z_index = 1
 	hand.card_pool.erase(self)
 	hand._hide_hand()
