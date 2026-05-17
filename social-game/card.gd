@@ -8,6 +8,9 @@ extends Node2D
 
 @onready var viewport_centre = get_viewport_rect().size / 2
 
+@onready var stats_left_pos = $StatsLeft/EnergyLabel.position
+@onready var stats_right_pos = $StatsRight/MoneyLabel.position
+
 var rng = RandomNumberGenerator.new()
 
 var money_colour = "#6bff6a"
@@ -40,9 +43,34 @@ var stats
 func _ready() -> void:
 	_prepare_drift()
 	
+	$StatsLeft/EnergyLabel.position.x = 0
+	$StatsLeft/HealthLabel.position.x = 0
+	$StatsRight/FollowersLabel.position.x = 0
+	$StatsRight/MoneyLabel.position.x = 0
+	
 	$CardBody/CardName.text = title
 	$CardBody/CardDescription.text = description
 	
+	if stats.energy >= 0:
+		$StatsLeft/EnergyLabel.text = str("[wave amp=11.0 freq=2.5 connected=0]Energy\n+", int(stats.energy), "[/wave]")
+	else:
+		$StatsLeft/EnergyLabel.text = str("[wave amp=11.0 freq=2.5 connected=0]Energy\n", int(stats.energy), "[/wave]")
+		
+	if stats.health >= 0:
+		$StatsLeft/HealthLabel.text = str("[wave amp=11.0 freq=2.5 connected=0]Health\n+", int(stats.health), "[/wave]")
+	else:
+		$StatsLeft/HealthLabel.text = str("[wave amp=11.0 freq=2.5 connected=0]Health\n", int(stats.health), "[/wave]")
+	
+	if stats.followers >= 0:
+		$StatsRight/FollowersLabel.text = str("[wave amp=11.0 freq=2.5 connected=0]Stalkers\n+", int(stats.followers), "[/wave]")
+	else:
+		$StatsRight/FollowersLabel.text = str("[wave amp=11.0 freq=2.5 connected=0]Stalkers\n", int(stats.followers), "[/wave]")	
+	
+	if stats.money >= 0:
+		$StatsRight/MoneyLabel.text = str("[wave amp=11.0 freq=2.5 connected=0]Money\n+", int(stats.money), "[/wave]")
+	else:
+		$StatsRight/MoneyLabel.text = str("[wave amp=11.0 freq=2.5 connected=0]Money\n", int(stats.money), "[/wave]")
+		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if not played:
@@ -140,6 +168,8 @@ func _view_card():
 	.set_trans(Tween.TRANS_SINE)\
 	.set_ease(Tween.EASE_IN_OUT)
 	
+	_show_stats()
+	
 	var hand_size = hand.get_children().size()
 	z_index += hand_size
 	
@@ -157,13 +187,55 @@ func _drop_card():
 	.set_trans(Tween.TRANS_SINE)\
 	.set_ease(Tween.EASE_IN_OUT)
 	
+	_hide_stats()
+	
 	await tween.finished
 	
 	viewing = false
 	picked_up = false
 	hovering = false
 	hand.card_hovered = false
+
+func _show_stats():
+	$StatsLeft.visible = true
+	$StatsRight.visible = true
 	
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property($StatsLeft/EnergyLabel, "position:x", stats_left_pos.x - 10, 0.1)
+	tween.parallel().tween_property($StatsLeft/HealthLabel, "position:x", stats_left_pos.x - 10, 0.1)
+	tween.parallel().tween_property($StatsRight/FollowersLabel, "position:x", stats_right_pos.x + 10, 0.1)
+	tween.parallel().tween_property($StatsRight/MoneyLabel, "position:x", stats_right_pos.x + 10, 0.1)
+	tween.tween_property($StatsLeft/EnergyLabel, "position:x", stats_left_pos.x, 0.2)
+	tween.parallel().tween_property($StatsLeft/HealthLabel, "position:x", stats_left_pos.x, 0.2)
+	tween.parallel().tween_property($StatsRight/FollowersLabel, "position:x", stats_right_pos.x, 0.2)
+	tween.parallel().tween_property($StatsRight/MoneyLabel, "position:x", stats_right_pos.x, 0.2)
+
+
+func _hide_stats():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property($StatsLeft/EnergyLabel, "position:x", stats_left_pos.x - 10, 0.05)
+	tween.parallel().tween_property($StatsLeft/HealthLabel, "position:x", stats_left_pos.x - 10, 0.05)
+	tween.parallel().tween_property($StatsRight/FollowersLabel, "position:x", stats_right_pos.x + 10, 0.05)
+	tween.parallel().tween_property($StatsRight/MoneyLabel, "position:x", stats_right_pos.x + 10, 0.05)
+	tween.tween_property($StatsLeft/EnergyLabel, "position:x", 0, 0.1)
+	tween.parallel().tween_property($StatsLeft/HealthLabel, "position:x", 0, 0.1)
+	tween.parallel().tween_property($StatsRight/FollowersLabel, "position:x", 0, 0.1)
+	tween.parallel().tween_property($StatsRight/MoneyLabel, "position:x", 0, 0.1)
+	
+	await tween.finished
+	
+	$StatsLeft.visible = false
+	$StatsRight.visible = false
+	
+
 func _pick_up_card():
 	
 	var tween = create_tween()
@@ -203,12 +275,14 @@ func _swap_card():
 
 func _play_post():
 	hand.card_pool.erase(self)
+	player.deck.erase(self)
 	feed.next_post = feed.current_post
 	feed.next_post.position = Vector2(feed.post_position.x, feed.post_position.y + feed.post_height)
 	feed.current_post = self
 	played = true
 	_card_drift_reset()
 	_place_card_animation()
+	main._shake()
 	feed._affect_stats(stats)
 	z_index = 1
 	hand.card_pool.erase(self)

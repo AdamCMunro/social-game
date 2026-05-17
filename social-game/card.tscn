@@ -13,6 +13,7 @@ script = ExtResource("1_q5obu")
 metadata/_edit_group_ = true
 
 [node name="CardBody" type="Area2D" parent="." unique_id=1319995654]
+z_index = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="CardBody" unique_id=1665767449]
 texture_filter = 4
@@ -45,6 +46,97 @@ theme_override_fonts/font = ExtResource("2_rjlel")
 theme_override_font_sizes/font_size = 18
 text = "Card description"
 autowrap_mode = 3
+
+[node name="StatsLeft" type="Area2D" parent="." unique_id=1767866928]
+visible = false
+
+[node name="EnergyLabel" type="RichTextLabel" parent="StatsLeft" unique_id=987089656]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -338.0
+offset_top = -96.5
+offset_right = -183.0
+offset_bottom = -3.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.9254902, 0.8901961, 0.2784314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/normal_font = ExtResource("2_rjlel")
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "[wave amp=11.0 freq=2.5 connected=0]Energy
+xx[/wave]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HealthLabel" type="RichTextLabel" parent="StatsLeft" unique_id=891038452]
+offset_left = -338.0
+offset_top = 5.0
+offset_right = -183.0
+offset_bottom = 98.0
+theme_override_colors/default_color = Color(0.8156863, 0.19215687, 0.42352942, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/normal_font = ExtResource("2_rjlel")
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "[wave amp=11.0 freq=2.5 connected=0]Health
+xx[/wave]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatsRight" type="Area2D" parent="." unique_id=1657604297]
+visible = false
+
+[node name="FollowersLabel" type="RichTextLabel" parent="StatsRight" unique_id=1564249275]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 183.0
+offset_top = -96.5
+offset_right = 338.0
+offset_bottom = -3.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0.44705883, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/normal_font = ExtResource("2_rjlel")
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "[wave amp=11.0 freq=2.5 connected=0]Stalkers
+xx[/wave]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MoneyLabel" type="RichTextLabel" parent="StatsRight" unique_id=1518548984]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 183.0
+offset_top = 5.0
+offset_right = 338.0
+offset_bottom = 98.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.41960785, 1, 0.41568628, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/normal_font = ExtResource("2_rjlel")
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "[wave amp=11.0 freq=2.5 connected=0]Money
+xx[/wave]"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="input_event" from="CardBody" to="." method="_on_card_body_input_event"]
 [connection signal="mouse_entered" from="CardBody" to="." method="_on_card_body_mouse_entered"]
