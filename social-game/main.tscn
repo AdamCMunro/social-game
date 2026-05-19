@@ -8,6 +8,8 @@
 [ext_resource type="Script" uid="uid://dhfkytmsipecp" path="res://delete_save_button_2.gd" id="6_272bh"]
 [ext_resource type="Script" uid="uid://wfvhgnvpmors" path="res://economy_button.gd" id="7_272bh"]
 [ext_resource type="PackedScene" uid="uid://ddjg0nnrhiinr" path="res://pause.tscn" id="8_5vw27"]
+[ext_resource type="Script" uid="uid://4yf6rm8q7dik" path="res://gradient_layer.gd" id="9_4c57u"]
+[ext_resource type="Shader" uid="uid://brh7qtvv8hscp" path="res://gradient.gdshader" id="9_kek77"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0xm2m"]
 shader = ExtResource("2_0xm2m")
@@ -33,6 +35,12 @@ shader_parameter/roll_speed = 0.010000000475
 shader_parameter/roll_strength = 0.0150000007125
 shader_parameter/glow_strength = 1.30000006175
 shader_parameter/glow_threshold = 0.30000001425
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4c57u"]
+shader = ExtResource("9_kek77")
+shader_parameter/border_color = Color(0.41960785, 1, 0.41568628, 1)
+shader_parameter/inner_radius = 0.2000000095
+shader_parameter/outer_radius = 1.6000000760000002
 
 [node name="Main" type="Node2D" unique_id=1804974650]
 script = ExtResource("1_1bvp3")
@@ -114,6 +122,19 @@ text = "Economy"
 script = ExtResource("7_272bh")
 
 [node name="Pause" parent="." unique_id=1004405613 instance=ExtResource("8_5vw27")]
+
+[node name="GradientLayer" type="CanvasLayer" parent="." unique_id=2083393980]
+visible = false
+script = ExtResource("9_4c57u")
+
+[node name="ColorRect" type="ColorRect" parent="GradientLayer" unique_id=244345859]
+material = SubResource("ShaderMaterial_4c57u")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [connection signal="pressed" from="FeedButton" to="FeedButton" method="_on_pressed"]
 [connection signal="pressed" from="MessengerButton" to="MessengerButton" method="_on_pressed"]

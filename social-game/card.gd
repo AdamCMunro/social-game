@@ -140,14 +140,14 @@ func _on_card_body_input_event(viewport: Node, event: InputEvent, shape_idx: int
 		if event.is_pressed() && not event.is_echo():
 			if hovering and not viewing and not picked_up and not played:
 				_view_card()
-			elif hovering and not picked_up:
+			elif hovering and not picked_up and not played:
 				_drop_card()
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed() && not event.is_echo():
 			if hovering and not viewing and not picked_up and not played:
 				_pick_up_card()
 		elif not event.is_echo():
-			if picked_up:
+			if picked_up and not viewing and not played:
 				if get_global_mouse_position().y < (viewport_centre.y * 0.75):
 					_play_post()
 				else:
@@ -276,6 +276,7 @@ func _swap_card():
 func _play_post():
 	hand.card_pool.erase(self)
 	player.deck.erase(self)
+	feed.current_post_index -= 1
 	feed.next_post = feed.current_post
 	feed.next_post.position = Vector2(feed.post_position.x, feed.post_position.y + feed.post_height)
 	feed.current_post = self

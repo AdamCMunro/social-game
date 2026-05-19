@@ -3,6 +3,7 @@ extends Node2D
 @onready var post_scene = preload("res://post.tscn")
 @onready var change_label_scene = preload("res://change_label.tscn")
 @onready var main = get_parent()
+@onready var gradient = main.get_node("GradientLayer")
 @onready var pause = main.get_node("Pause")
 @onready var player = main.get_node("Player")
 @onready var viewport_centre = get_viewport_rect().size / 2
@@ -11,6 +12,11 @@ var money_colour = "#6bff6a"
 var health_colour = "#d0316c"
 var followers_colour = "#0072ff"
 var energy_colour = "#ece347"
+
+var money_rgb = Color.from_rgba8(107, 255, 106)
+var health_rgb = Color.from_rgba8(255, 0, 121)
+var followers_rgb = Color.from_rgba8(0, 114, 255)
+var energy_rgb = Color.from_rgba8(236, 227, 71)
 
 var current_post_seed = "000" #where first character is binary liked, second is binary reposted and third is 0-3 indicating if a comment was made
 
@@ -373,39 +379,51 @@ func _affect_stats(stats):
 	
 	if stats.energy != 0:
 		_change_stat("energy", stats.energy)
+		gradient._show_energy()
 		await get_tree().create_timer(0.5).timeout
 		
 	if stats.health != 0:
 		_change_stat("health", stats.health)
+		gradient._show_health()
 		await get_tree().create_timer(0.5).timeout
 		
 	if stats.followers != 0:
 		_change_stat("followers", stats.followers)
+		gradient._show_followers()
 		await get_tree().create_timer(0.5).timeout
 		
 	if stats.money != 0:
+		gradient._show_money()
 		_change_stat("money", stats.money)
+		await get_tree().create_timer(0.5).timeout
 	
+	await gradient._reduce_visibility().finished
+	gradient.visible = false
 	return true
 		
 		
 		
 func _change_stat(stat : String, value : int):
 	var text : String
-	var colour: String
+	var colour : String
+	var rgb : Color
 	
 	match stat:
 		"energy":
 			colour = energy_colour
+			rgb = energy_rgb
 			player._update_energy(player.energy + value)
 		"health":
 			colour = health_colour
+			rgb = health_rgb
 			player._update_health(player.health + value)
 		"followers":
 			colour = followers_colour
+			rgb = followers_rgb
 			player._update_followers(player.followers + value)
 		"money":
 			colour = money_colour
+			rgb = money_rgb
 			player._update_money(player.money + value)
 	
 	if value < 0:
@@ -443,7 +461,7 @@ func _animate_change_label(label):
 	tween.tween_property(label, "position:y", -125, 0.3).as_relative()
 	tween.parallel().tween_property(label, "modulate:a", 1, 0.2)
 	tween.tween_property(label, "position:y", 125, 0.4).as_relative()
-	tween.parallel().tween_property(label, "modulate:a", 0, 0.4)
+	tween.parallel().tween_property(label, "modulate:a", 0, 0.2)
 	
 	return tween
 	
