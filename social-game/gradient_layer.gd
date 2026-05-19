@@ -45,11 +45,12 @@ func _pulse():
 	var tween = create_tween()
 	
 	tween.set_ease(Tween.EASE_IN_OUT)
-	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_loops()
 	
-	tween.tween_property($ColorRect.material, "shader_parameter/outer_radius", 1.4, 0.3)
-	tween.tween_property($ColorRect.material, "shader_parameter/outer_radius", 1.6, 0.3)
+	tween.tween_property($ColorRect.material, "shader_parameter/outer_radius", 1.7, 0.5)
+	tween.tween_property($ColorRect.material, "shader_parameter/outer_radius", 1.7, 0.5)
+	tween.tween_property($ColorRect.material, "shader_parameter/outer_radius", 2, 0.5)
+	tween.tween_property($ColorRect.material, "shader_parameter/outer_radius", 2, 0.5)
 
 func _reduce_visibility():
 	var tween = create_tween()

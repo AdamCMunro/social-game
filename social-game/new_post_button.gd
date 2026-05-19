@@ -2,6 +2,7 @@ extends Area2D
 
 var pressing = false
 var button_scale = Vector2.ZERO
+var disabled = false
 
 @onready var sprite = $Sprite2D
 @onready var main = get_parent().get_parent()
@@ -18,11 +19,13 @@ func _process(delta: float) -> void:
 
 
 func _on_mouse_entered() -> void:
-	sprite.texture = load("res://assets/New_Post_Button_Hover.png")
+	if not disabled:
+		sprite.texture = load("res://assets/New_Post_Button_Hover.png")
 
 
 func _on_mouse_exited() -> void:
-	sprite.texture = load("res://assets/New_Post_Button.png")
+	if not disabled:
+		sprite.texture = load("res://assets/New_Post_Button.png")
 
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -65,3 +68,8 @@ func _draw_hand():
 
 func _hide_hand():
 	main.get_node('Player')._hide_hand()
+	
+func _disable():
+	disabled = true
+	sprite.texture = load("res://assets/")
+	

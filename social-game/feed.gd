@@ -151,11 +151,10 @@ func _trigger_scroll():
 	if not main.in_hand:
 		is_scrolling = true
 		main._append_today_seed(current_post_seed)
-		current_post_seed = "000"
-		_reset_post(next_post)
 		var tween = _move_posts(current_post, next_post)
 		await tween.finished
-		await _affect_stats(_get_current_post_data().stats)
+		if current_post.get_name() != "Card":
+			await _affect_stats(_get_current_post_data().stats)
 		if current_post_index + 1 < post_array.size() - 1:
 			_recycle_posts()
 		elif current_post_index + 1 == post_array.size() - 1:
@@ -198,8 +197,10 @@ func _recycle_posts():
 	
 	_populate_comments()
 	
-	if current_post.get_name() == "Post":
+	if current_post.get_name() != "Card":
 		recycled_post = current_post
+		current_post_seed = "000"
+		_reset_post(current_post)
 	else:
 		current_post.queue_free()
 		recycled_post = _instaniate_post(_get_next_post_data())
@@ -222,11 +223,9 @@ func _reset_post(post):
 	var comment = post.get_node("PostBody/CommentButton")
 	var send = post.get_node("PostBody/SendButton")
 	
-	var button_arr = [like, comment, send]
-	
-	for b in button_arr:
-		if b and b.pressed:
-			b._unpress()
+	like._reset()
+	comment._unpress()
+	send._reset()
 	
 	comment.commented = false
 	
@@ -379,28 +378,26 @@ func _affect_stats(stats):
 	
 	if stats.energy != 0:
 		_change_stat("energy", stats.energy)
-		gradient._show_energy()
 		await get_tree().create_timer(0.5).timeout
 		
 	if stats.health != 0:
 		_change_stat("health", stats.health)
-		gradient._show_health()
 		await get_tree().create_timer(0.5).timeout
 		
 	if stats.followers != 0:
 		_change_stat("followers", stats.followers)
-		gradient._show_followers()
 		await get_tree().create_timer(0.5).timeout
 		
 	if stats.money != 0:
-		gradient._show_money()
 		_change_stat("money", stats.money)
 		await get_tree().create_timer(0.5).timeout
 	
-	await gradient._reduce_visibility().finished
-	gradient.visible = false
+	await _remove_gradient()
 	return true
-		
+	
+func _remove_gradient():
+		await gradient._reduce_visibility().finished
+		gradient.visible = false
 		
 		
 func _change_stat(stat : String, value : int):
@@ -413,23 +410,26 @@ func _change_stat(stat : String, value : int):
 			colour = energy_colour
 			rgb = energy_rgb
 			player._update_energy(player.energy + value)
+			gradient._show_energy()
 		"health":
 			colour = health_colour
 			rgb = health_rgb
 			player._update_health(player.health + value)
+			gradient._show_health()
 		"followers":
 			colour = followers_colour
 			rgb = followers_rgb
 			player._update_followers(player.followers + value)
+			gradient._show_followers()
 		"money":
 			colour = money_colour
 			rgb = money_rgb
 			player._update_money(player.money + value)
+			gradient._show_money()
 	
 	if value < 0:
 		text = str("[color=", colour, "]", value, "[/color]")
 		_show_change_label(text)
-		await get_tree().create_timer(0.2).timeout
 		main._shake()
 	else:
 		text = str("[color=", colour, "]+", value, "[/color]")
@@ -460,8 +460,8 @@ func _animate_change_label(label):
 	
 	tween.tween_property(label, "position:y", -125, 0.3).as_relative()
 	tween.parallel().tween_property(label, "modulate:a", 1, 0.2)
-	tween.tween_property(label, "position:y", 125, 0.4).as_relative()
-	tween.parallel().tween_property(label, "modulate:a", 0, 0.2)
+	tween.tween_property(label, "position:y", 125, 0.3).as_relative()
+	tween.parallel().tween_property(label, "modulate:a", 0, 0.3)
 	
 	return tween
 	

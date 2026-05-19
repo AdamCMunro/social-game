@@ -191,3 +191,6 @@ func _input(event: InputEvent):
 
 func _comment():
 	feed.current_post.get_node("PostBody/CommentButton").commented = true
+	feed._change_stat("energy", -10)
+	await get_tree().create_timer(0.3).timeout
+	feed._remove_gradient()

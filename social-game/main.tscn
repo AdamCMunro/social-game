@@ -40,7 +40,7 @@ shader_parameter/glow_threshold = 0.30000001425
 shader = ExtResource("9_kek77")
 shader_parameter/border_color = Color(0.41960785, 1, 0.41568628, 1)
 shader_parameter/inner_radius = 0.2000000095
-shader_parameter/outer_radius = 1.6000000760000002
+shader_parameter/outer_radius = 2.0
 
 [node name="Main" type="Node2D" unique_id=1804974650]
 script = ExtResource("1_1bvp3")

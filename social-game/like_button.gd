@@ -36,8 +36,19 @@ func _press():
 	$Sprite2D.texture = load("res://assets/Like_Button_Liked.png")
 	pressed = true
 	feed.current_post_seed[0] = "1"
+	feed._change_stat("energy", -5)
+	await get_tree().create_timer(0.3).timeout
+	feed._remove_gradient()
 	
 func _unpress():
 	$Sprite2D.texture = load("res://assets/Like_Button.png")
 	pressed = false
 	feed.current_post_seed[0] = "0"
+	feed._change_stat("energy", 5)
+	await get_tree().create_timer(0.3).timeout
+	feed._remove_gradient()
+	
+func _reset():
+	$Sprite2D.texture = load("res://assets/Like_Button.png")
+	pressed = false
+	
