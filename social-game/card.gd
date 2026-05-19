@@ -276,6 +276,10 @@ func _swap_card():
 func _play_post():
 	hand.card_pool.erase(self)
 	player.deck.erase(self)
+	
+	if player.deck.size() == 0:
+		feed.get_node("NewPostButton")._disable()
+	
 	feed.current_post_index -= 1
 	feed.next_post = feed.current_post
 	feed.next_post.position = Vector2(feed.post_position.x, feed.post_position.y + feed.post_height)

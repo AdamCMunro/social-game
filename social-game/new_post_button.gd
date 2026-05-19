@@ -21,30 +21,38 @@ func _process(delta: float) -> void:
 func _on_mouse_entered() -> void:
 	if not disabled:
 		sprite.texture = load("res://assets/New_Post_Button_Hover.png")
-
+	else:
+		sprite.texture = load("res://assets/New_Post_Button_Disabled_Hover.png")
+	
 
 func _on_mouse_exited() -> void:
 	if not disabled:
 		sprite.texture = load("res://assets/New_Post_Button.png")
+	else:
+		sprite.texture = load("res://assets/New_Post_Button_Disabled.png")
 
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed() && not event.is_echo():
-			if not pressing and not feed.feed_ended and main.get_node("Player").deck.size() > 0:
-				if not main.in_hand:
-					if feed.commenting:
-						feed.get_node("CommentBox")._cancel_comment()
-						feed.commenting = false
-						await get_tree().create_timer(0.25).timeout
-					_draw_hand()
+			if not pressing and not feed.feed_ended:
+				if not disabled:
+					if not main.in_hand:
+						if feed.commenting:
+							feed.get_node("CommentBox")._cancel_comment()
+							feed.commenting = false
+							await get_tree().create_timer(0.25).timeout
+						_draw_hand()
+					else:
+						_hide_hand()
+					pressing = true
+					await _press().finished
+					pressing = false
+					main.in_hand = _toggle(main.in_hand)
 				else:
-					_hide_hand()
-				pressing = true
-				var tween = _press()
-				await tween.finished
-				pressing = false
-				main.in_hand = _toggle(main.in_hand)
+					pressing = true
+					await _shake().finished
+					pressing = false
 				
 
 func _press():
@@ -71,5 +79,19 @@ func _hide_hand():
 	
 func _disable():
 	disabled = true
-	sprite.texture = load("res://assets/")
+	sprite.texture = load("res://assets/New_Post_Button_Disabled.png")
+	
+func _shake():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property(self, "position:x", -10, 0.05).as_relative()
+	tween.tween_property(self, "position:x", 15, 0.05).as_relative()
+	tween.tween_property(self, "position:x", -10, 0.05).as_relative()
+	tween.tween_property(self, "position:x", 5, 0.05).as_relative()
+	
+	return tween
+	
 	
