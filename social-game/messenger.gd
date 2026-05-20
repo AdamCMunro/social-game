@@ -64,7 +64,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	$Messages/Container.size.x = 561.5
+	$Messages/Container.size.x = 575
 	if not paused:
 		$Messages/Container.position.x = 299.25
 	

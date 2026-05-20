@@ -12,13 +12,13 @@
 [ext_resource type="Script" uid="uid://mvf0l8pkqr7b" path="res://contacts.gd" id="10_8waa5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qhwlu"]
-size = Vector2(467.5, 29.166656)
+size = Vector2(478.3333, 31.666603)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5uh8x"]
-size = Vector2(468.75, 30.833313)
+size = Vector2(478.3333, 31.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8wtml"]
-size = Vector2(467.9167, 30.833344)
+size = Vector2(478.3333, 31.166672)
 
 [node name="Messenger" type="Node2D" unique_id=563844369]
 script = ExtResource("1_1clpa")
@@ -38,9 +38,9 @@ texture = ExtResource("2_tpcxp")
 
 [node name="Recipient" type="Label" parent="MessengerBody" unique_id=1599201810]
 offset_left = -225.664
-offset_top = -268.0
+offset_top = -265.0
 offset_right = -115.664
-offset_bottom = -238.0
+offset_bottom = -235.0
 theme_override_fonts/font = ExtResource("4_dj5lq")
 theme_override_font_sizes/font_size = 24
 text = "Username"
@@ -67,10 +67,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -234.16666
-offset_top = -15.750061
-offset_right = 234.16666
-offset_bottom = 15.916595
+offset_left = -239.1665
+offset_top = -15.8335
+offset_right = 239.1665
+offset_bottom = 15.8335
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -82,16 +82,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -233.18587
-offset_top = -15.000008
-offset_right = 233.18587
-offset_bottom = 15.000008
+offset_left = -235.0
+offset_top = -15.0
+offset_right = 235.0
+offset_bottom = 15.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_dj5lq")
 theme_override_font_sizes/font_size = 24
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MessengerBody/Option3" unique_id=1637328924]
+position = Vector2(0, -0.41680908)
 shape = SubResource("RectangleShape2D_qhwlu")
 
 [node name="Option2" type="Area2D" parent="MessengerBody" unique_id=789330614]
@@ -105,10 +106,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -234.16666
-offset_top = -15.7500305
-offset_right = 234.16666
-offset_bottom = 15.916626
+offset_left = -239.1665
+offset_top = -15.8335
+offset_right = 239.1665
+offset_bottom = 15.8335
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -120,9 +121,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -232.30092
+offset_left = -235.0
 offset_top = -15.0
-offset_right = 232.30092
+offset_right = 235.0
 offset_bottom = 15.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -130,7 +131,7 @@ theme_override_fonts/font = ExtResource("4_dj5lq")
 theme_override_font_sizes/font_size = 24
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MessengerBody/Option2" unique_id=1229319885]
-position = Vector2(0.2083435, 0)
+position = Vector2(0, -0.2083435)
 shape = SubResource("RectangleShape2D_5uh8x")
 
 [node name="Option1" type="Area2D" parent="MessengerBody" unique_id=2073892545]
@@ -144,10 +145,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -234.16666
-offset_top = -15.75
-offset_right = 234.16666
-offset_bottom = 15.9166565
+offset_left = -239.16666
+offset_top = -15.833328
+offset_right = 239.16666
+offset_bottom = 15.833328
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -159,9 +160,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -230.97348
+offset_left = -235.0
 offset_top = -15.0
-offset_right = 230.97345
+offset_right = 235.0
 offset_bottom = 15.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -169,6 +170,7 @@ theme_override_fonts/font = ExtResource("4_dj5lq")
 theme_override_font_sizes/font_size = 24
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MessengerBody/Option1" unique_id=1519360124]
+position = Vector2(0, -0.1666565)
 shape = SubResource("RectangleShape2D_8wtml")
 
 [node name="Selection" type="Area2D" parent="MessengerBody" unique_id=2006294913]
@@ -181,9 +183,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -235.0
+offset_left = -240.0
 offset_top = -18.75
-offset_right = 235.0
+offset_right = 240.0
 offset_bottom = 18.75
 grow_horizontal = 2
 grow_vertical = 2
