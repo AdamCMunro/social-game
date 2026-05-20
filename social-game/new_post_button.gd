@@ -3,6 +3,7 @@ extends Area2D
 var pressing = false
 var button_scale = Vector2.ZERO
 var disabled = false
+var hovered = false
 
 @onready var sprite = $Sprite2D
 @onready var main = get_parent().get_parent()
@@ -19,6 +20,7 @@ func _process(delta: float) -> void:
 
 
 func _on_mouse_entered() -> void:
+	hovered = true
 	if not disabled:
 		sprite.texture = load("res://assets/New_Post_Button_Hover.png")
 	else:
@@ -26,6 +28,7 @@ func _on_mouse_entered() -> void:
 	
 
 func _on_mouse_exited() -> void:
+	hovered = false
 	if not disabled:
 		sprite.texture = load("res://assets/New_Post_Button.png")
 	else:
@@ -79,7 +82,18 @@ func _hide_hand():
 	
 func _disable():
 	disabled = true
-	sprite.texture = load("res://assets/New_Post_Button_Disabled.png")
+	if hovered:
+		sprite.texture = load("res://assets/New_Post_Button_Disabled_Hover.png")
+	else:
+		sprite.texture = load("res://assets/New_Post_Button_Disabled.png")
+	
+func _enable():
+	disabled = false
+	if hovered:
+		sprite.texture = load("res://assets/New_Post_Button_Hover.png")
+	else:
+		sprite.texture = load("res://assets/New_Post_Button.png")
+	
 	
 func _shake():
 	var tween = create_tween()

@@ -41,19 +41,25 @@ var stat_block_pos
 var background_width
 var end_label_pos
 var continue_button_pos
+var start_label_pos
 
 var is_scrolling = false
 var paused = false
 var commenting = false
 var prepared_for_play = false
 var feed_ended = false
+var feed_started = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	post_array = _json_decode(str("res://daily_files/", main.current_day, "/posts.json"))
 	post_data = _json_decode("res://posts/post_dict.json")
 	
+	$NewPostButton._disable()
+	
 	$FeedBackground.position = viewport_centre
+	
+	start_label_pos = $StartLabel.position
 	
 	background_pos = $FeedBackground/Texture.position
 	background_width = $FeedBackground/Texture.size.x
@@ -85,6 +91,7 @@ func _ready() -> void:
 	post_height = current_post.get_node("PostBody/Sprite2D").get_rect().size.y * current_post.scale.y
 	
 	next_post.position.y = post_position.y + post_height
+	current_post.position.y = post_position.y + post_height
 
 	new_post_button_pos = $NewPostButton.position
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -129,22 +136,36 @@ func _input(event):
 	if is_scrolling or commenting:
 		return
 
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed and not feed_ended:
-			_trigger_scroll()
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed and feed_ended:
-			_final_scroll()
-	elif event is InputEventPanGesture:
-		if event.delta.y > 0.5 and not feed_ended: 
-			_trigger_scroll()
-		elif event.delta.y > 0.5 and feed_ended:
-			_final_scroll()
-	elif event is InputEventKey and event.pressed:
-		if event.keycode == KEY_DOWN and not event.is_echo():
-			if feed_ended:
-				_final_scroll()
-			else:
+	if feed_started and not feed_ended:
+		if event is InputEventMouseButton:
+			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
 				_trigger_scroll()
+		elif event is InputEventPanGesture:
+			if event.delta.y > 0.5: 
+				_trigger_scroll()
+		elif event is InputEventKey and event.pressed:
+			if event.keycode == KEY_DOWN and not event.is_echo():
+				_trigger_scroll()
+	elif feed_ended and not is_scrolling:
+		if event is InputEventMouseButton:
+			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
+				_final_scroll()
+		elif event is InputEventPanGesture:
+			if event.delta.y > 0.5: 
+				_final_scroll()
+		elif event is InputEventKey and event.pressed:
+			if event.keycode == KEY_DOWN and not event.is_echo():
+				_final_scroll()
+	elif not feed_started:
+		if event is InputEventMouseButton:
+			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
+				_first_scroll()
+		elif event is InputEventPanGesture:
+			if event.delta.y > 0.5: 
+				_first_scroll()
+		elif event is InputEventKey and event.pressed:
+			if event.keycode == KEY_DOWN and not event.is_echo():
+				_first_scroll()
 	
 
 func _trigger_scroll():
@@ -154,7 +175,7 @@ func _trigger_scroll():
 		var tween = _move_posts(current_post, next_post)
 		await tween.finished
 		if current_post.get_name() != "Card":
-			await _affect_stats(_get_current_post_data().stats)
+			await _affect_stats(_get_next_post_data().stats)
 		if current_post_index + 1 < post_array.size() - 1:
 			_recycle_posts()
 		elif current_post_index + 1 == post_array.size() - 1:
@@ -179,6 +200,25 @@ func _final_scroll():
 	await tween.finished
 	
 	is_scrolling = false
+	
+func _first_scroll():
+	is_scrolling = true
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property($StartLabel, "position:y", 10, 0.2).as_relative()
+	tween.tween_property(current_post, "position", viewport_centre, 0.5)
+	tween.parallel().tween_property($StartLabel, "position:y", -post_height, 0.5).as_relative()
+		
+	await tween.finished
+	
+	await _affect_stats(_get_current_post_data().stats)
+	is_scrolling = false
+	feed_started = true
+	$NewPostButton._enable()
+	
 
 func _move_posts(post, post2):
 	var tween = create_tween()
@@ -246,8 +286,10 @@ func _hide_for_pause():
 		tween.tween_property($CommentBox, "position:y", comment_box_pos.y - 20, 0.05)
 		tween.tween_property($CommentBox, "position:y", 1000, 0.05)
 		
-	if not feed_ended:
+	if not feed_ended and feed_started:
 		tween.tween_property(current_post, "position:y", post_position.y - 20, 0.05)
+	elif not feed_ended and not feed_started:
+		tween.tween_property($StartLabel, "position:y", start_label_pos.y + 20, 0.05)
 	else:
 		tween.tween_property($ContinueButton, "position:y", continue_button_pos.y - 20, 0.05)
 		tween.parallel().tween_property($EndLabel, "position:y", end_label_pos.y - 20, 0.05)
@@ -256,11 +298,14 @@ func _hide_for_pause():
 	tween.parallel().tween_property(player.get_node("StatBlock"), "position:x", stat_block_pos.x + 20, 0.05)
 	tween.parallel().tween_property($FeedBackground/Texture, "size:x", background_width - 40, 0.08)
 	
-	if not feed_ended:
+	if not feed_ended and feed_started:
 		tween.tween_property(current_post, "position:y", 1000, 0.08)
+	elif not feed_ended and not feed_started:
+		tween.tween_property($StartLabel, "position:y", -1000, 0.08)
 	else:
 		tween.tween_property($ContinueButton, "position:y", 1000, 0.05)
 		tween.parallel().tween_property($EndLabel, "position:y", 1000, 0.05)
+	
 	
 	
 	tween.parallel().tween_property($NewPostButton, "position:y", -100, 0.08)
@@ -276,8 +321,10 @@ func _show_for_resume():
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_SINE)
 	
-	if not feed_ended:
-		tween.tween_property(current_post, "position:y", post_position.y + 20, 0.05)
+	if not feed_ended and feed_started:
+		tween.tween_property(current_post, "position:y", post_position.y - 20, 0.05)
+	elif not feed_ended and not feed_started:
+		tween.tween_property($StartLabel, "position:y", post_position.y + 20, 0.05)
 	else:
 		tween.tween_property($ContinueButton, "position:y", continue_button_pos.y + 20, 0.05)
 		tween.parallel().tween_property($EndLabel, "position:y", end_label_pos.y + 20, 0.05)
@@ -287,8 +334,10 @@ func _show_for_resume():
 	tween.parallel().tween_property($FeedBackground/Texture, "size:x", background_width, 0.05)
 	tween.parallel().tween_property($FeedBackground/Texture, "position:x", background_pos.x, 0.05)
 	
-	if not feed_ended:
+	if not feed_ended and feed_started:
 		tween.tween_property(current_post, "position:y", post_position.y, 0.08)
+	elif not feed_ended and not feed_started:
+		tween.tween_property($StartLabel, "position:y", start_label_pos.y, 0.05)
 	else:
 		tween.tween_property($ContinueButton, "position:y", continue_button_pos.y, 0.05)
 		tween.parallel().tween_property($EndLabel, "position:y", end_label_pos.y, 0.05)

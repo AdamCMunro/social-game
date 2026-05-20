@@ -1,6 +1,7 @@
 extends Node2D
 
 @onready var viewport_centre = get_viewport_rect().size / 2
+@onready var main = get_parent()
 @onready var option1 = $MessengerBody/Option1
 @onready var option2 = $MessengerBody/Option2
 @onready var option3 = $MessengerBody/Option3
@@ -313,8 +314,8 @@ func _animate_messages_clear():
 	
 
 func _retrieve_messages(name):
-	var history_file = str("user://chat_logs/history/", name, ".json")
-	var message_file = str("res://daily_files/", get_parent().current_day, "/chat_logs/", name, ".json")
+	var history_file = str("user://", main.current_day,"/chat_logs/history/", name, ".json")
+	var message_file = str("res://daily_files/", main.current_day, "/chat_logs/", name, ".json")
 	var height = 0
 	
 	message_history_arr = _json_decode(history_file)
