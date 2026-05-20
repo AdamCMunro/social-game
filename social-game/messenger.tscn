@@ -15,7 +15,7 @@
 size = Vector2(467.5, 29.166656)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5uh8x"]
-size = Vector2(466.6667, 30.833313)
+size = Vector2(468.75, 30.833313)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8wtml"]
 size = Vector2(467.9167, 30.833344)
@@ -95,7 +95,7 @@ theme_override_font_sizes/font_size = 24
 shape = SubResource("RectangleShape2D_qhwlu")
 
 [node name="Option2" type="Area2D" parent="MessengerBody" unique_id=789330614]
-position = Vector2(0, 216)
+position = Vector2(0, 216.25)
 script = ExtResource("6_5uh8x")
 metadata/_edit_group_ = true
 
@@ -130,6 +130,7 @@ theme_override_fonts/font = ExtResource("4_dj5lq")
 theme_override_font_sizes/font_size = 24
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MessengerBody/Option2" unique_id=1229319885]
+position = Vector2(0.2083435, 0)
 shape = SubResource("RectangleShape2D_5uh8x")
 
 [node name="Option1" type="Area2D" parent="MessengerBody" unique_id=2073892545]

@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var selection = get_parent().get_node("Selection")
 @onready var messenger = get_parent().get_parent()
+@onready var main = messenger.get_parent()
 
 var contact_scale
 var contact_position
@@ -100,8 +101,8 @@ func _deselect():
 	selected = false
 	
 func _progress_chat():
-	var history_path = str("user://", messenger.main.current_day, "chat_logs/history/", contact_name, ".json")
-	var messages_path = str("res://daily_files/", messenger.get_parent().current_day, "/chat_logs/", contact_name, ".json")
+	var history_path = str("user://", main.current_day, "/chat_logs/history/", contact_name, ".json")
+	var messages_path = str("res://daily_files/", main.current_day, "/chat_logs/", contact_name, ".json")
 	var history = _json_decode(history_path)
 	var messages = _json_decode(messages_path)
 	var start = _get_start_point(history)

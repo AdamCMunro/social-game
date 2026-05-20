@@ -145,10 +145,10 @@ func _input(event: InputEvent):
 				await get_tree().create_timer(0.5).timeout
 				for n in $Contacts.contacts:
 					if n.contact_name == sender_name:
-						message_history_arr = _json_decode(str("user://chat_logs/history/", sender_name, ".json"))
+						message_history_arr = _json_decode(str("user://", main.current_day, "/chat_logs/history/", sender_name, ".json"))
 						var seed = str(message_history_arr[message_history_arr.size() - 1].seed, new_seed_value)
 						message_history_arr.append({"sender":"player", "body":sending_text.text, "choice":false, "seed":seed})
-						n._save_json(str("user://chat_logs/history/", sender_name, ".json"), message_history_arr)
+						n._save_json(str("user://", main.current_day, "/chat_logs/history/", sender_name, ".json"), message_history_arr)
 						n._progress_chat()
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
