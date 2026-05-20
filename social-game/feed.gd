@@ -31,6 +31,7 @@ var post_position
 
 var post_array
 var post_data
+var seed_array := []
 var current_post_index = 0
 
 var new_post_button_pos
@@ -175,6 +176,9 @@ func _trigger_scroll():
 		var tween = _move_posts(current_post, next_post)
 		await tween.finished
 		if current_post.get_name() != "Card":
+			seed_array.append({"id":int(_get_current_post_data().id),
+							"seed":current_post_seed})
+			_save_json(str("user://", main.current_day, "/feed_seeds.json"), seed_array)
 			await _affect_stats(_get_next_post_data().stats)
 		if current_post_index + 1 < post_array.size() - 1:
 			_recycle_posts()
@@ -187,6 +191,11 @@ func _trigger_scroll():
 func _final_scroll():
 	var tween = create_tween()
 	is_scrolling = true
+	
+	if current_post.get_name() != "Card":
+		seed_array.append({"id":int(_get_current_post_data().id),
+						"seed":current_post_seed})
+		_save_json(str("user://", main.current_day, "/feed_seeds.json"), seed_array)
 	
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_SINE)
@@ -421,7 +430,16 @@ func _json_decode(file_path: String) -> Array:
 		return data as Array
 		
 	push_error("Failed to parse JSON, or the root is not an Array.")
-	return []	
+	return []
+	
+func _save_json(file_path: String, data_array: Array) -> void:
+	var json_string: String = JSON.stringify(data_array, "\t")
+	var file: FileAccess = FileAccess.open(file_path, FileAccess.WRITE)
+	
+	if file:
+		file.store_string(json_string)
+		
+		file.close()
 
 func _affect_stats(stats):
 	
@@ -452,27 +470,22 @@ func _remove_gradient():
 func _change_stat(stat : String, value : int):
 	var text : String
 	var colour : String
-	var rgb : Color
 	
 	match stat:
 		"energy":
 			colour = energy_colour
-			rgb = energy_rgb
 			player._update_energy(player.energy + value)
 			gradient._show_energy()
 		"health":
 			colour = health_colour
-			rgb = health_rgb
 			player._update_health(player.health + value)
 			gradient._show_health()
 		"followers":
 			colour = followers_colour
-			rgb = followers_rgb
 			player._update_followers(player.followers + value)
 			gradient._show_followers()
 		"money":
 			colour = money_colour
-			rgb = money_rgb
 			player._update_money(player.money + value)
 			gradient._show_money()
 	
