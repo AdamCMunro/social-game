@@ -1,8 +1,10 @@
 extends Node2D
 
-@onready var hand = get_parent()
-@onready var player = hand.get_parent()
-@onready var main = player.get_parent()
+@onready var main = get_tree().root.get_child(0)
+
+@onready var player = main.get_node("Player")
+@onready var hand = player.get_node("Hand")
+
 @onready var feed = main.get_node("Feed")
 @onready var post_scale = feed.get_node("Post").scale
 
@@ -29,6 +31,7 @@ var mouse_over = false
 var viewing = false
 var picked_up = false
 var played = false
+var intangible = false
 
 var last_stop = Vector2.ZERO
 
@@ -73,7 +76,7 @@ func _ready() -> void:
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if not played:
+	if not played and not intangible:
 		if mouse_over:
 			_on_card_body_mouse_entered()
 		
@@ -95,6 +98,9 @@ func _process(delta: float) -> void:
 
 
 func _on_card_body_mouse_entered() -> void:
+	if intangible:
+		return
+	
 	mouse_over = true
 	if not hovering and not hand.card_hovered and not viewing and not picked_up and not played:
 		hovering = true
@@ -116,6 +122,10 @@ func _on_card_body_mouse_entered() -> void:
 		self.z_index += hand_size
 		
 func _on_card_body_mouse_exited() -> void:
+	if intangible:
+		return
+	
+	
 	mouse_over = false
 	if hovering and not viewing and not played:
 		hovering = false
@@ -136,6 +146,10 @@ func _on_card_body_mouse_exited() -> void:
 
 
 func _on_card_body_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	
+	if intangible:
+		return
+	
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
 		if event.is_pressed() && not event.is_echo():
 			if hovering and not viewing and not picked_up and not played:
@@ -274,6 +288,7 @@ func _swap_card():
 		hand._move_card(current_index, swap_index)
 
 func _play_post():
+	set_name("Card")
 	hand.card_pool.erase(self)
 	player.deck.erase(self)
 	

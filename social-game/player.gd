@@ -25,11 +25,9 @@ var cards_data
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var card_instance = card_scene.instantiate()
 	cards_data = _json_decode("res://posts/player_post_dict.json")
 	
-	deck.append(card_instance)
-	_populate_card_details(card_instance, cards_data[0])
+	_add_to_deck(0)
 	
 	_update_energy(100)
 	_update_health(100)
@@ -103,4 +101,10 @@ func _populate_card_details(card, data):
 	card.title = data.name
 	card.description = data.description
 	card.stats = data.stats
+	
+func _add_to_deck(id):
+	var card_instance = card_scene.instantiate()
+	
+	deck.append(card_instance)
+	_populate_card_details(card_instance, cards_data[id])
 	

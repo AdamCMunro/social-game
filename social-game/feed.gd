@@ -1,6 +1,7 @@
 extends Node2D
 
 @onready var post_scene = preload("res://post.tscn")
+@onready var card_scene = preload("res://card.tscn")
 @onready var change_label_scene = preload("res://change_label.tscn")
 @onready var main = get_parent()
 @onready var gradient = main.get_node("GradientLayer")
@@ -31,6 +32,7 @@ var post_position
 
 var post_array
 var post_data
+var history_array
 var seed_array := []
 var current_post_index = 0
 
@@ -51,10 +53,18 @@ var prepared_for_play = false
 var feed_ended = false
 var feed_started = false
 
-# Called when the node enters the scene tree for the first time.
+
+
 func _ready() -> void:
 	post_array = _json_decode(str("res://daily_files/", main.current_day, "/posts.json"))
 	post_data = _json_decode("res://posts/post_dict.json")
+	
+	history_array = _json_decode(str("user://", main.current_day, "/feed_seeds.json"))
+	if history_array.size() > 0:
+		for n in history_array:
+			seed_array.append(n)
+		current_post_index = seed_array.size()
+		
 	
 	$NewPostButton._disable()
 	
@@ -95,7 +105,7 @@ func _ready() -> void:
 	current_post.position.y = post_position.y + post_height
 
 	new_post_button_pos = $NewPostButton.position
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+
 func _process(delta: float) -> void:
 	$FeedBackground.position = viewport_centre
 	
@@ -166,8 +176,7 @@ func _input(event):
 				_first_scroll()
 		elif event is InputEventKey and event.pressed:
 			if event.keycode == KEY_DOWN and not event.is_echo():
-				_first_scroll()
-	
+				_first_scroll()	
 
 func _trigger_scroll():
 	if not main.in_hand:
@@ -227,7 +236,6 @@ func _first_scroll():
 	is_scrolling = false
 	feed_started = true
 	$NewPostButton._enable()
-	
 
 func _move_posts(post, post2):
 	var tween = create_tween()
@@ -246,7 +254,7 @@ func _recycle_posts():
 	
 	_populate_comments()
 	
-	if current_post.get_name() != "Card":
+	if not current_post.get_name().begins_with("Card"):
 		recycled_post = current_post
 		current_post_seed = "000"
 		_reset_post(current_post)
@@ -375,7 +383,6 @@ func _show_comment_box():
 	tween.tween_property($CommentBox, "position:y", comment_box_pos.y - 20, 0.2)
 	tween.tween_property($CommentBox, "position:y", comment_box_pos.y, 0.2)
 	
-	
 func _hide_comment_box():
 	var tween = create_tween()
 	
@@ -411,7 +418,6 @@ func _prepare_for_play():
 	
 	tween.tween_property(current_post, "position:y", post_position.y - 10, 0.05)
 	tween.tween_property(current_post, "position:y", post_position.y + post_height, 0.05)
-
 	
 func _unprepare_for_play():
 	var tween = create_tween()
@@ -465,8 +471,7 @@ func _affect_stats(stats):
 func _remove_gradient():
 		await gradient._reduce_visibility().finished
 		gradient.visible = false
-		
-		
+			
 func _change_stat(stat : String, value : int):
 	var text : String
 	var colour : String
@@ -526,6 +531,49 @@ func _animate_change_label(label):
 	tween.parallel().tween_property(label, "modulate:a", 0, 0.3)
 	
 	return tween
+	
+func _repost():
+	var cardID = _get_current_post_data().cardID
+	var card = player.cards_data[cardID]
+	
+	var card_for_animation = card_scene.instantiate()
+	
+	card_for_animation.title = card.name
+	card_for_animation.description = card.description
+	card_for_animation.stats = card.stats
+	card_for_animation.position = viewport_centre
+	card_for_animation.intangible = true
+	add_child(card_for_animation)
+	
+	await _animate_repost(card_for_animation).finished
+
+	card_for_animation.queue_free()
+		
+	player._add_to_deck(cardID)
+	
+func _animate_repost(card):
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property(card, "scale", card.scale * 1.05, 0.2)
+	tween.parallel().tween_property(card, "position", Vector2(5,5), 0.2).as_relative()
+	tween.tween_property(card, "position:x", -10, 0.2).as_relative()
+	tween.tween_property(card, "position:x", 1000, 0.2).as_relative()
+	tween.parallel().tween_property(card, "scale", Vector2(0.3, 0.3), 0.2)
+	
+	return tween
+	
+func _undo_repost():
+	var targetID = _get_current_post_data().cardID
+	
+	for n in player.deck:
+		if n.id == targetID:
+			player.deck.erase(n)
+			break
+			
+	
 	
 	
 	

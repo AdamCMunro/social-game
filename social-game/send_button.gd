@@ -5,6 +5,7 @@ extends Area2D
 @onready var feed = get_parent().get_parent().get_parent()
 
 var pressed = false
+var reposted = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -17,11 +18,17 @@ func _process(delta: float) -> void:
 
 
 func _on_mouse_entered() -> void:
+	if reposted:
+		return
+		
 	if not main.in_hand and not feed.commenting:
 		selection.visible = true
 		selection.global_position = global_position
 
 func _on_mouse_exited() -> void:
+	if reposted:
+		return
+	
 	selection.visible = false
 
 
@@ -36,16 +43,24 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 func _press():
 	$Sprite2D.texture = load("res://assets/Send_Button_Pressed.png")
 	pressed = true
+	selection.visible = false
 	feed.current_post_seed[1] = "1"
 	feed._change_stat("energy", -5)
+	feed._repost()
+	reposted = true
 	await get_tree().create_timer(0.3).timeout
 	feed._remove_gradient()
 	
+	
 func _unpress():
+	if reposted:
+		return
+		
 	$Sprite2D.texture = load("res://assets/Send_Button.png")
 	pressed = false
 	feed.current_post_seed[1] = "0"
 	feed._change_stat("energy", 5)
+	feed._undo_repost()
 	await get_tree().create_timer(0.3).timeout
 	feed._remove_gradient()
 	
