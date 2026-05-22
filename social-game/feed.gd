@@ -550,6 +550,7 @@ func _repost():
 	card_for_animation.queue_free()
 		
 	player._add_to_deck(cardID)
+	$NewPostButton._enable()
 	
 func _animate_repost(card):
 	var tween = create_tween()

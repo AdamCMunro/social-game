@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://ctc4ge36faivp"]
+
+[ext_resource type="Texture2D" uid="uid://wdetlss0c3ti" path="res://assets/Messenger_Background.png" id="1_rlgu1"]
+[ext_resource type="Script" uid="uid://ddpvkwentj7jq" path="res://dream.gd" id="1_t4ffh"]
+[ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="2_t4ffh"]
+
+[node name="Dream" type="Node2D" unique_id=241079545]
+script = ExtResource("1_t4ffh")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1527310001]
+position = Vector2(972.00006, 554)
+scale = Vector2(2.011, 2.0340314)
+texture = ExtResource("1_rlgu1")
+
+[node name="Label" type="Area2D" parent="." unique_id=1233738047]
+
+[node name="RedLabel" type="RichTextLabel" parent="Label" unique_id=1284487255]
+texture_filter = 4
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -499.0
+offset_top = -58.0
+offset_right = 501.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.8156863, 0.19215687, 0.42352942, 1)
+theme_override_fonts/normal_font = ExtResource("2_t4ffh")
+theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
+text = "[wave amp=11.0 freq=2.5 connected=0]What's up? My man!!!! What's pooping?[/wave]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="YellowLabel" type="RichTextLabel" parent="Label" unique_id=1434436325]
+texture_filter = 4
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -501.0
+offset_top = -60.0
+offset_right = 499.0
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.9254902, 0.8901961, 0.2784314, 1)
+theme_override_fonts/normal_font = ExtResource("2_t4ffh")
+theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
+text = "[wave amp=11.0 freq=2.5 connected=0]What's up? My man!!!! What's pooping?[/wave]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MainLabel" type="RichTextLabel" parent="Label" unique_id=53645501]
+texture_filter = 4
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -59.0
+offset_right = 500.0
+offset_bottom = 59.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("2_t4ffh")
+theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
+text = "[wave amp=11.0 freq=2.5 connected=0]What's up? My man!!!! What's pooping?[/wave]"
+horizontal_alignment = 1
+vertical_alignment = 1
