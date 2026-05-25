@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://djrw57m5yd1q1" path="res://hand.gd" id="4_sweqy"]
 
 [node name="Player" type="Node2D" unique_id=1827458889]
+z_index = 2
 script = ExtResource("1_hqtel")
 
 [node name="StatBlock" type="Area2D" parent="." unique_id=656760276]

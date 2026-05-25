@@ -6,7 +6,6 @@ extends Node2D
 @onready var hand = player.get_node("Hand")
 
 @onready var feed = main.get_node("Feed")
-@onready var post_scale = feed.get_node("Post").scale
 
 @onready var viewport_centre = get_viewport_rect().size / 2
 
@@ -19,6 +18,8 @@ var money_colour = "#6bff6a"
 var health_colour = "#d0316c"
 var followers_colour = "#0072ff"
 var energy_colour = "#ece347"
+
+var post_scale : Vector2
 
 var card_scale
 var card_rotation
@@ -45,6 +46,9 @@ var stats
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	_prepare_drift()
+	
+	if main.current_screen == "feed":
+		post_scale = feed.get_node("Post").scale
 	
 	$StatsLeft/EnergyLabel.position.x = 0
 	$StatsLeft/HealthLabel.position.x = 0
@@ -85,13 +89,16 @@ func _process(delta: float) -> void:
 			if abs(last_stop.x - global_position.x) > 125:
 				_swap_card()
 				last_stop = global_position
-				
-			if get_global_mouse_position().y < (viewport_centre.y * 0.75) and not feed.prepared_for_play:
-				feed.prepared_for_play = true
-				feed._prepare_for_play()
-			elif get_global_mouse_position().y >= (viewport_centre.y * 0.75) and feed.prepared_for_play:
-				feed.prepared_for_play = false
-				feed._unprepare_for_play()
+			
+			if main.current_screen == "feed":
+				if get_global_mouse_position().y < (viewport_centre.y * 0.75) and not feed.prepared_for_play:
+					feed.prepared_for_play = true
+					feed._prepare_for_play()
+				elif get_global_mouse_position().y >= (viewport_centre.y * 0.75) and feed.prepared_for_play:
+					feed.prepared_for_play = false
+					feed._unprepare_for_play()
+			elif main.current_screen == "dream":
+				pass
 		
 
 		_card_drift(delta)

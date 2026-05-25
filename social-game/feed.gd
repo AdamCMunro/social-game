@@ -200,6 +200,7 @@ func _trigger_scroll():
 func _final_scroll():
 	var tween = create_tween()
 	is_scrolling = true
+	$NewPostButton._disable()
 	
 	if current_post.get_name() != "Card":
 		seed_array.append({"id":int(_get_current_post_data().id),

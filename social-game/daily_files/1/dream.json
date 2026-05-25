@@ -1,6 +1,12 @@
 [{"delay":5,
-"text":"..."},
+"text":"...",
+"choice":false},
 {"delay":0,
-"text":"hello"},
+"text":"hello",
+"choice":false},
 {"delay":0,
-"text":"I'm very proud of you"}]
+"text":"I'm very proud of you",
+"choice":false},
+{"delay": 0.5,
+"text":"Sacrifice a card, if you dare.",
+"choice":true},]

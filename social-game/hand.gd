@@ -32,19 +32,19 @@ func _populate(cards):
 		card_pool[i].z_index = i + 2
 		card_pool[i].card_z = i + 2
 		
-		card_pool[i].position.y = 525
+		card_pool[i].position.y = 600
 		card_pool[i].position.x = 2000
 		
 		var tween = create_tween()
 		
-		tween.tween_property(card_pool[i], "position", Vector2(viewport_centre.x + (125 * diff), 525 + abs(30 * diff)), 0.09)\
+		tween.tween_property(card_pool[i], "position", Vector2(viewport_centre.x + (125 * diff), 600 + abs(30 * diff)), 0.09)\
 			.set_trans(Tween.TRANS_SINE)\
 			.set_ease(Tween.EASE_IN_OUT)
 		tween.tween_property(card_pool[i], "rotation", 0.15 * diff, 0.09)\
 			.set_trans(Tween.TRANS_SINE)\
 			.set_ease(Tween.EASE_IN_OUT)
 		
-		card_pool[i].card_position = Vector2(575 + (125 * diff), 525 + abs(30 * diff))
+		card_pool[i].card_position = Vector2(575 + (125 * diff), 600 + abs(30 * diff))
 		card_pool[i].card_rotation = 0.15 * diff
 		
 		var delay_tween = create_tween()
@@ -60,7 +60,7 @@ func _hide_hand():
 			
 		var tween = create_tween()
 		
-		tween.tween_property(card_pool[i], "position", Vector2(-2000, 525), 0.09)\
+		tween.tween_property(card_pool[i], "position", Vector2(-2000, 600), 0.09)\
 			.set_trans(Tween.TRANS_SINE)\
 			.set_ease(Tween.EASE_IN_OUT)
 		tween.tween_property(card_pool[i], "rotation", 0, 0.12)\
@@ -93,7 +93,7 @@ func _realign_cards():
 		var diff = i - midpoint
 		
 		var target_x = viewport_centre.x + (125 * diff)
-		var target_y = 525 + abs(30 * diff)
+		var target_y = 600 + abs(30 * diff)
 		var target_rot = 0.15 * diff
 		
 		card.card_position = Vector2(target_x, target_y)

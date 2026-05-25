@@ -2,22 +2,31 @@ extends Node2D
 
 @onready var viewport_centre = get_viewport_rect().size / 2
 @onready var main = get_parent()
+@onready var player = main.get_node("Player")
 
 var dream_data := []
 var message_index = 0
 var tween : Tween
 var hint_tween : Tween
+var hint_y
 
 var message_visible = false
 var hint_delay = 5000
 var last_message_time
 
+var choosing = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	dream_data = _json_decode(str("res://daily_files/",main.current_day ,"/dream.json"))
+	
+	player.visible = true
+	player.get_node("StatBlock").visible = false
+	
 	$Label.position = viewport_centre
 	$Hint.position = viewport_centre
 	$Hint.position.y += 100
+	hint_y = $Hint.position.y
 	_populate_labels(dream_data[message_index].text)
 	_clear_labels()
 	await get_tree().create_timer(dream_data[message_index].delay).timeout
@@ -31,6 +40,9 @@ func _process(delta: float) -> void:
 		if $Label/MainLabel.visible_ratio == 1:
 			message_index += 1
 			_clear_labels()
+			if dream_data[message_index].choice:
+				choosing = true
+				_show_hand()
 			_populate_labels(dream_data[message_index].text)
 			await get_tree().create_timer(dream_data[message_index].delay).timeout
 			_progress_text()
@@ -46,7 +58,7 @@ func _process(delta: float) -> void:
 	elif $Label/MainLabel.visible_ratio != 1:
 		message_visible = false
 		
-	if message_visible and Time.get_ticks_msec() - last_message_time >= hint_delay and not $Hint.visible:
+	if message_visible and Time.get_ticks_msec() - last_message_time >= hint_delay and not $Hint.visible and not choosing:
 		_pulse_hint()
 		
 	
@@ -63,6 +75,15 @@ func _progress_text():
 	
 	for n in $Label.get_children():
 		tween.parallel().tween_property(n, "visible_ratio", 1, timing)
+
+func _show_hand():
+	
+	$Hint.position.y = hint_y - 350
+	$Label.position.y = viewport_centre.y - 300
+	
+	await get_tree().create_timer(2).timeout
+	
+	player._populate_hand()
 
 func _clear_labels():
 	for n in $Label.get_children():

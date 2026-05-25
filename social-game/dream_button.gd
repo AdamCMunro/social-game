@@ -16,7 +16,6 @@ func _on_pressed() -> void:
 	var instance = dream.instantiate()
 	get_parent().add_child(instance)
 	get_parent().get_node('DeleteSaveButton').visible = false
-	get_parent().get_node('Player').visible = false
 	get_parent().get_node('FeedButton').visible = false
 	get_parent().get_node('MessengerButton').visible = false
 	get_parent().get_node('EconomyButton').visible = false

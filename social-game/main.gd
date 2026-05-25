@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var buttons = [$FeedButton, $MessengerButton, $DeleteSaveButton, $EconomyButton]
+@onready var buttons = [$FeedButton, $MessengerButton, $DeleteSaveButton, $EconomyButton, $DreamButton]
 
 var in_hand = false
 var today_seed = ""

@@ -108,3 +108,7 @@ func _add_to_deck(id):
 	deck.append(card_instance)
 	_populate_card_details(card_instance, cards_data[id])
 	
+func _remove_from_deck(card):
+	deck.erase(card)
+	$Hand.card_pool.erase(card)
+	

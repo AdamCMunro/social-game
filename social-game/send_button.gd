@@ -67,4 +67,5 @@ func _unpress():
 func _reset():
 	$Sprite2D.texture = load("res://assets/Send_Button.png")
 	pressed = false
+	reposted = false
 	
