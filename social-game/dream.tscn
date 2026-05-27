@@ -3,6 +3,10 @@
 [ext_resource type="Texture2D" uid="uid://wdetlss0c3ti" path="res://assets/Messenger_Background.png" id="1_rlgu1"]
 [ext_resource type="Script" uid="uid://ddpvkwentj7jq" path="res://dream.gd" id="1_t4ffh"]
 [ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="2_t4ffh"]
+[ext_resource type="Texture2D" uid="uid://b5ixm8e00h8on" path="res://assets/Card_Remove_Template.png" id="4_l6w86"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l6w86"]
+size = Vector2(240, 430)
 
 [node name="Dream" type="Node2D" unique_id=241079545]
 script = ExtResource("1_t4ffh")
@@ -94,3 +98,13 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("2_t4ffh")
 text = "Click to continue"
+
+[node name="CardRemovalTemplate" type="Area2D" parent="." unique_id=1329693630]
+visible = false
+
+[node name="Sprite2D" type="Sprite2D" parent="CardRemovalTemplate" unique_id=317586264]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("4_l6w86")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CardRemovalTemplate" unique_id=504298766]
+shape = SubResource("RectangleShape2D_l6w86")

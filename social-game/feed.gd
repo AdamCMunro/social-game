@@ -65,6 +65,8 @@ func _ready() -> void:
 			seed_array.append(n)
 		current_post_index = seed_array.size()
 		
+	player.visible = true
+	player.get_node("StatBlock").visible = true
 	
 	$NewPostButton._disable()
 	
@@ -297,7 +299,7 @@ func _hide_for_pause():
 	if main.in_hand:
 		var hand = player.get_node("Hand")
 		hand_pos = hand.position
-		tween.tween_property(hand, "position:y", hand_pos.y - 20, 0.05)
+		tween.tween_property(hand, "position:y", hand_pos.y - 20, 0.1)
 		tween.tween_property(hand, "position:y", 1000, 0.05)
 	
 	if commenting:
@@ -365,7 +367,7 @@ func _show_for_resume():
 	
 	if main.in_hand:
 		var hand = player.get_node("Hand")
-		tween.tween_property(hand, "position:y", hand_pos.y - 20, 0.05)
+		tween.tween_property(hand, "position:y", hand_pos.y - 20, 0.1)
 		tween.tween_property(hand, "position:y", hand_pos.y, 0.05)
 	
 	if commenting:

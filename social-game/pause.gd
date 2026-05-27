@@ -131,7 +131,7 @@ func _quit():
 		if n.name == "Feed":
 			main.get_node("Player/StatBlock").position = n.stat_block_pos
 			n.queue_free()
-		elif n.name == "Messenger" or n.name == "Economy":
+		elif n.name == "Messenger" or n.name == "Economy" or n.name == "Dream":
 			n.queue_free()
 	
 	for n in main.buttons:
@@ -154,6 +154,9 @@ func _resume():
 		"economy":
 			main.get_node("Economy")._show_for_resume()
 			main.get_node("Economy").paused = false
+		"dream":
+			main.get_node("Dream")._show_for_resume()
+			main.get_node("Dream").paused = false
 	
 	
 func _select(button):

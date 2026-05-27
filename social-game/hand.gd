@@ -24,6 +24,9 @@ func _populate(cards):
 	
 	for i in range(card_pool.size()):
 		
+		if card_pool[i].removal_submitted:
+			continue
+		
 		add_child(card_pool[i])
 		diff = i - midpoint
 		
@@ -56,6 +59,9 @@ func _populate(cards):
 func _hide_hand():
 	for i in card_pool.size():
 		if card_pool and i >= card_pool.size():
+			continue
+			
+		if card_pool[i].removal_submitted:
 			continue
 			
 		var tween = create_tween()

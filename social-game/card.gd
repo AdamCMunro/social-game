@@ -12,6 +12,8 @@ extends Node2D
 @onready var stats_left_pos = $StatsLeft/EnergyLabel.position
 @onready var stats_right_pos = $StatsRight/MoneyLabel.position
 
+var dream
+
 var rng = RandomNumberGenerator.new()
 
 var money_colour = "#6bff6a"
@@ -33,6 +35,8 @@ var viewing = false
 var picked_up = false
 var played = false
 var intangible = false
+var removal_hover = false
+var removal_submitted = false
 
 var last_stop = Vector2.ZERO
 
@@ -49,6 +53,9 @@ func _ready() -> void:
 	
 	if main.current_screen == "feed":
 		post_scale = feed.get_node("Post").scale
+	elif main.current_screen == "dream":
+		dream = main.get_node("Dream")
+		
 	
 	$StatsLeft/EnergyLabel.position.x = 0
 	$StatsLeft/HealthLabel.position.x = 0
@@ -80,7 +87,7 @@ func _ready() -> void:
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if not played and not intangible:
+	if not played and not intangible and not removal_submitted:
 		if mouse_over:
 			_on_card_body_mouse_entered()
 		
@@ -97,10 +104,7 @@ func _process(delta: float) -> void:
 				elif get_global_mouse_position().y >= (viewport_centre.y * 0.75) and feed.prepared_for_play:
 					feed.prepared_for_play = false
 					feed._unprepare_for_play()
-			elif main.current_screen == "dream":
-				pass
-		
-
+				
 		_card_drift(delta)
 
 
@@ -109,7 +113,7 @@ func _on_card_body_mouse_entered() -> void:
 		return
 	
 	mouse_over = true
-	if not hovering and not hand.card_hovered and not viewing and not picked_up and not played:
+	if not hovering and not hand.card_hovered and not viewing and not picked_up and not played and not removal_submitted:
 		hovering = true
 		hand.card_hovered = true
 		
@@ -134,7 +138,7 @@ func _on_card_body_mouse_exited() -> void:
 	
 	
 	mouse_over = false
-	if hovering and not viewing and not played:
+	if hovering and not viewing and not played and not removal_submitted:
 		hovering = false
 		hand.card_hovered = false
 		
@@ -159,20 +163,29 @@ func _on_card_body_input_event(viewport: Node, event: InputEvent, shape_idx: int
 	
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
 		if event.is_pressed() && not event.is_echo():
-			if hovering and not viewing and not picked_up and not played:
+			if hovering and not viewing and not picked_up and not played and not removal_submitted:
 				_view_card()
-			elif hovering and not picked_up and not played:
+			elif hovering and not picked_up and not played and not removal_submitted:
 				_drop_card()
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed() && not event.is_echo():
 			if hovering and not viewing and not picked_up and not played:
+				if removal_submitted:
+					player._populate_hand()
 				_pick_up_card()
 		elif not event.is_echo():
-			if picked_up and not viewing and not played:
-				if get_global_mouse_position().y < (viewport_centre.y * 0.75):
+			if picked_up and not viewing and not played and not removal_hover:
+				if get_global_mouse_position().y < (viewport_centre.y * 0.75) and main.current_screen == "feed":
 					_play_post()
 				else:
 					_drop_card()
+			elif picked_up and not viewing and not played and removal_hover:
+				viewing = false
+				picked_up = false
+				hand.card_hovered = false
+				removal_submitted = true
+				_card_drift_reset()
+				dream._snap_for_remove(self)
 			
 
 func _view_card():
@@ -211,6 +224,9 @@ func _drop_card():
 	_hide_stats()
 	
 	await tween.finished
+	
+	if main.current_screen == "dream":
+		dream.picked_up_card = null
 	
 	viewing = false
 	picked_up = false
@@ -262,7 +278,11 @@ func _pick_up_card():
 	var tween = create_tween()
 	
 	picked_up = true
+	removal_submitted = false
 	offset = global_position - get_global_mouse_position()
+	
+	if main.current_screen == "dream":
+		dream.picked_up_card = self
 	
 	tween.tween_property(self, "scale", card_scale * 1.1, 0.15)\
 	.set_trans(Tween.TRANS_SINE)\
@@ -318,6 +338,9 @@ func _play_post():
 	hand.card_hovered = false
 	hand.remove_child(self)
 	feed.add_child(self)
+
+func _submit_card_for_removal():
+	pass
 	
 func _place_card_animation():
 	var tween = create_tween()
@@ -366,4 +389,23 @@ func _card_drift_reset():
 	tween.parallel().tween_property($CardBody, "rotation", 0, 0.01)\
 	.set_trans(Tween.TRANS_SINE)\
 	.set_ease(Tween.EASE_IN_OUT)
+	
+func _destroy_card():
+	var tween = create_tween()
+	var shader_mat = material as ShaderMaterial
+	if not shader_mat:
+		return
+		
+	shader_mat.set_shader_parameter("progress", 0.0)
+	
+	tween = create_tween()
+	
+	tween.tween_property(shader_mat, "shader_parameter/progress", 1.0, 1.5)\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_OUT)
+		
+	await tween.finished
+	
+	player._remove_from_deck(self)
+	hand.remove_child(self)
 	

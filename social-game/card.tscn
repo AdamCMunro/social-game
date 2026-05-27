@@ -1,14 +1,19 @@
 [gd_scene format=3 uid="uid://bjyqsa4nos8lq"]
 
+[ext_resource type="Shader" uid="uid://bca4jn6uy7lrh" path="res://card_remove.gdshader" id="1_e484p"]
 [ext_resource type="Texture2D" uid="uid://dxmjisppy1rye" path="res://assets/New_Post.png" id="1_kikvd"]
 [ext_resource type="Script" uid="uid://da23c0a8u4x6" path="res://card.gd" id="1_q5obu"]
 [ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="2_rjlel"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fpac0"]
+shader = ExtResource("1_e484p")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(318, 570)
 
 [node name="Card" type="Node2D" unique_id=310018081]
 z_index = 2
+material = SubResource("ShaderMaterial_fpac0")
 script = ExtResource("1_q5obu")
 metadata/_edit_group_ = true
 

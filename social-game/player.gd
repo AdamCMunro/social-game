@@ -28,6 +28,8 @@ func _ready() -> void:
 	cards_data = _json_decode("res://posts/player_post_dict.json")
 	
 	_add_to_deck(0)
+	_add_to_deck(0)
+	_add_to_deck(0)
 	
 	_update_energy(100)
 	_update_health(100)
