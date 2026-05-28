@@ -5,6 +5,8 @@ extends Node2D
 @onready var pause = main.get_node("Pause")
 @onready var player = main.get_node("Player")
 @onready var hand = player.get_node("Hand")
+@onready var gradient = main.get_node("GradientLayer")
+@onready var change_label_scene = preload("res://change_label.tscn")
 
 var dream_data := []
 var message_index = 0
@@ -19,6 +21,8 @@ var choosing_hint_y
 
 var picked_up_card
 
+var chosen_card
+
 var paused = false
 var message_visible = false
 var hint_delay = 5000
@@ -32,6 +36,9 @@ func _ready() -> void:
 	
 	player.visible = true
 	player.get_node("StatBlock").visible = false
+	
+	$ConfirmButton.position = viewport_centre
+	$ConfirmButton.position.y += 250
 	
 	$CardRemovalTemplate.position = viewport_centre
 	
@@ -55,22 +62,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("advance_dream") and not choosing and not paused:
-		$Hint.visible = false
-		if $Label/MainLabel.visible_ratio == 1:
-			message_index += 1
-			_clear_labels()
-			if dream_data[message_index].choice:
-				choosing = true
-				_show_hand()
-				_show_card_remove()
-			_populate_labels(dream_data[message_index].text)
-			await get_tree().create_timer(dream_data[message_index].delay).timeout
-			_progress_text()
-		else:
-			if text_tween and text_tween.is_running():
-				text_tween.kill()
-			for n in $Label.get_children():
-				n.visible_ratio = 1
+		_advance_dream()
 	
 	if Input.is_action_just_pressed("pause"):
 		if not paused:
@@ -90,7 +82,24 @@ func _process(delta: float) -> void:
 		
 	if message_visible and Time.get_ticks_msec() - last_message_time >= hint_delay and not $Hint.visible and not choosing:
 		_pulse_hint()
-		
+
+func _advance_dream():
+	$Hint.visible = false
+	if $Label/MainLabel.visible_ratio == 1:
+		message_index += 1
+		_clear_labels()
+		if dream_data[message_index].choice:
+			choosing = true
+			_show_hand()
+			_show_card_remove()
+		_populate_labels(dream_data[message_index].text)
+		await get_tree().create_timer(dream_data[message_index].delay).timeout
+		_progress_text()
+	else:
+		if text_tween and text_tween.is_running():
+			text_tween.kill()
+		for n in $Label.get_children():
+			n.visible_ratio = 1
 	
 func _progress_text():
 	if text_tween and text_tween.is_running():
@@ -114,6 +123,17 @@ func _show_hand():
 	await get_tree().create_timer(2).timeout
 	
 	player._populate_hand()
+
+func _end_sacrifice():
+	$Hint.position.y = hint_y
+	$Label.position.y = text_y
+	
+	_hide_confirm_button()
+	_hide_card_remove()
+	
+	await get_tree().create_timer(0.5).timeout
+	
+	_advance_dream()
 
 func _clear_labels():
 	for n in $Label.get_children():
@@ -175,10 +195,25 @@ func _show_card_remove():
 	card_remove_tween.tween_property(sprite, "modulate:a", 0.6, 1)
 	card_remove_tween.tween_property(sprite, "modulate:a", 0.6, 1)
 
+func _hide_card_remove():
+	card_remove_tween.kill()
+	
+	var sprite = $CardRemovalTemplate/Sprite2D
+	
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	
+	tween.tween_property(sprite, "modulate:a", 0, 1)
+	
+	await tween.finished
+	
+	$CardRemovalTemplate.visible = false
+
 func _physics_process(delta: float) -> void:
 	for area in $CardRemovalTemplate.get_overlapping_areas():
 		var card = area.get_parent()
-		if card.get_name().begins_with("Card") and picked_up_card and card == picked_up_card:
+		if picked_up_card and card == picked_up_card:
 			var x_diff = abs(card.position.x - $CardRemovalTemplate.position.x)
 			var y_diff = abs(card.position.y - $CardRemovalTemplate.position.y)
 			
@@ -216,7 +251,45 @@ func _snap_for_remove(card):
 	tween.tween_property(card, "position", Vector2(viewport_centre.x + x_offset, viewport_centre.y + y_offset), 0.2)
 	tween.tween_property(card, "position", viewport_centre, 0.15)
 	
+	card_remove_tween.kill()
+	tween.tween_property($CardRemovalTemplate/Sprite2D, "modulate:a", 1, 0.15)
+	
+	chosen_card = card
 	player._hide_hand()
+	
+	await get_tree().create_timer(0.6).timeout
+	
+	_show_confirm_button()
+	
+func _show_confirm_button():
+	var sprite = $ConfirmButton/Sprite2D
+	var label = $ConfirmButton/Label
+	
+	sprite.modulate.a = 0
+	label.modulate.a = 0
+	$ConfirmButton.visible = true
+	
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	
+	tween.tween_property(sprite, "modulate:a", 1, 1)
+	tween.parallel().tween_property(label, "modulate:a", 1, 1)
+	
+func _hide_confirm_button():
+	var sprite = $ConfirmButton/Sprite2D
+	var label = $ConfirmButton/Label
+	
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	
+	tween.tween_property(sprite, "modulate:a", 0, 1)
+	tween.parallel().tween_property(label, "modulate:a", 0, 1)
+	
+	await tween.finished
+	
+	$ConfirmButton.visible = false
 	
 
 func _hide_for_pause():
@@ -231,6 +304,8 @@ func _hide_for_pause():
 		
 		card_remove_tween.kill()
 		tween.parallel().tween_property($CardRemovalTemplate/Sprite2D, "modulate:a", 0, 0.3)
+		tween.parallel().tween_property($ConfirmButton/Sprite2D, "modulate:a", 0, 0.3)
+		tween.parallel().tween_property($ConfirmButton/Label, "modulate:a", 0, 0.3)
 		
 		tween.parallel().tween_property($Label, "position:y", choosing_text_y + 20, 0.05)
 		tween.parallel().tween_property($Hint, "position:y", choosing_hint_y + 20, 0.05)
@@ -257,6 +332,7 @@ func _show_for_resume():
 		tween.parallel().tween_property($Hint, "position:y", choosing_hint_y + 20, 0.05)
 		
 		_show_card_remove()
+		_show_confirm_button()
 		
 		tween.tween_property($Label, "position:y", choosing_text_y, 0.05)
 		tween.parallel().tween_property($Hint, "position:y", choosing_hint_y, 0.05)
@@ -269,5 +345,49 @@ func _show_for_resume():
 		
 		tween.tween_property($Label, "position:y", text_y, 0.05)
 		tween.parallel().tween_property($Hint, "position:y", hint_y, 0.05)
+	
+	return tween
+	
+func _take_health(value : int):
+	var text : String
+	
+	player._update_health(player.health + value)
+	gradient._show_health()
+	
+	if value < 0:
+		text = str("[color=#d0316c]", value, "[/color]")
+		_show_change_label(text)
+		main._shake()
+	else:
+		text = str("[color=#d0316c]+", value, "[/color]")
+		_show_change_label(text)
+	
+func _show_change_label(text):
+	var label = _create_change_label()
+	label.text = text
+	await _animate_change_label(label).finished
+	label.visible = false
+	label.queue_free()
+
+func _create_change_label():
+	var instance = change_label_scene.instantiate()
+	instance.visible = false
+	instance.position = Vector2(172, 43)
+	add_child(instance)
+	return instance
+
+func _animate_change_label(label):
+	label.modulate.a = 0
+	label.position = Vector2(750, 450)
+	label.visible = true
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property(label, "position:y", -125, 0.3).as_relative()
+	tween.parallel().tween_property(label, "modulate:a", 1, 0.2)
+	tween.tween_property(label, "position:y", 125, 0.3).as_relative()
+	tween.parallel().tween_property(label, "modulate:a", 0, 0.3)
 	
 	return tween

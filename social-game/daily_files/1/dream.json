@@ -9,4 +9,7 @@
 "choice":false},
 {"delay": 0.5,
 "text":"Sacrifice a card, if you dare.",
-"choice":true},]
+"choice":true},
+{"delay":0.2,
+"text":"Very good.",
+"choice":false}]

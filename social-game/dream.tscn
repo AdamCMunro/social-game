@@ -4,9 +4,14 @@
 [ext_resource type="Script" uid="uid://ddpvkwentj7jq" path="res://dream.gd" id="1_t4ffh"]
 [ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="2_t4ffh"]
 [ext_resource type="Texture2D" uid="uid://b5ixm8e00h8on" path="res://assets/Card_Remove_Template.png" id="4_l6w86"]
+[ext_resource type="Texture2D" uid="uid://dhc6rc8afnmn4" path="res://assets/Button.png" id="5_dhyxt"]
+[ext_resource type="Script" uid="uid://bbnx7ghxk8oik" path="res://confirm_button.gd" id="5_pu4yq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l6w86"]
 size = Vector2(240, 430)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dhyxt"]
+size = Vector2(214, 48)
 
 [node name="Dream" type="Node2D" unique_id=241079545]
 script = ExtResource("1_t4ffh")
@@ -108,3 +113,53 @@ texture = ExtResource("4_l6w86")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CardRemovalTemplate" unique_id=504298766]
 shape = SubResource("RectangleShape2D_l6w86")
+
+[node name="ConfirmButton" type="Area2D" parent="." unique_id=724318579]
+visible = false
+script = ExtResource("5_pu4yq")
+
+[node name="Sprite2D" type="Sprite2D" parent="ConfirmButton" unique_id=158731249]
+modulate = Color(0.8156863, 0.19215687, 0.42352942, 1)
+texture = ExtResource("5_dhyxt")
+
+[node name="ColorRect" type="ColorRect" parent="ConfirmButton" unique_id=377830313]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -107.0
+offset_top = -24.0
+offset_right = 107.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.8156863, 0.19215687, 0.42352942, 1)
+
+[node name="Label" type="Label" parent="ConfirmButton" unique_id=421791040]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.5
+offset_top = -11.5
+offset_right = 32.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.8156863, 0.19215687, 0.42352942, 1)
+theme_override_fonts/font = ExtResource("2_t4ffh")
+theme_override_font_sizes/font_size = 24
+text = "Sacrifice"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ConfirmButton" unique_id=2082764092]
+shape = SubResource("RectangleShape2D_dhyxt")
+
+[connection signal="input_event" from="ConfirmButton" to="ConfirmButton" method="_on_input_event"]
+[connection signal="mouse_entered" from="ConfirmButton" to="ConfirmButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="ConfirmButton" to="ConfirmButton" method="_on_mouse_exited"]
