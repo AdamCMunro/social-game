@@ -131,8 +131,6 @@ func _end_sacrifice():
 	_hide_confirm_button()
 	_hide_card_remove()
 	
-	await get_tree().create_timer(0.5).timeout
-	
 	_advance_dream()
 
 func _clear_labels():

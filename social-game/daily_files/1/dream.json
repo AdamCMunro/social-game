@@ -10,6 +10,6 @@
 {"delay": 0.5,
 "text":"Sacrifice a card, if you dare.",
 "choice":true},
-{"delay":0.2,
+{"delay":1.75,
 "text":"Very good.",
 "choice":false}]
