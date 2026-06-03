@@ -172,7 +172,8 @@ func _on_card_body_input_event(viewport: Node, event: InputEvent, shape_idx: int
 			if hovering and not viewing and not picked_up and not played:
 				if removal_submitted:
 					player._populate_hand()
-					dream._hide_confirm_button()
+					dream._deactivate_confirm_button()
+					dream.chosen_card = null
 				_pick_up_card()
 		elif not event.is_echo():
 			if picked_up and not viewing and not played and not removal_hover:

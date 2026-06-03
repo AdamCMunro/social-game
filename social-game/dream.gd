@@ -38,7 +38,10 @@ func _ready() -> void:
 	player.get_node("StatBlock").visible = false
 	
 	$ConfirmButton.position = viewport_centre
-	$ConfirmButton.position.y += 250
+	$ConfirmButton.position.x += 250
+	
+	$CancelButton.position = viewport_centre
+	$CancelButton.position.x -= 250
 	
 	$CardRemovalTemplate.position = viewport_centre
 	
@@ -67,12 +70,19 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause"):
 		if not paused:
 			await _hide_for_pause().finished
+			$ConfirmButton.visible = false
+			$CancelButton.visible = false
 			paused = true
 			pause._show_pause()
 		else:
 			await pause._hide_pause().finished
-			_show_for_resume()
 			paused = false
+			await _show_for_resume().finished
+			print(" uhuh")
+			if chosen_card:
+				print("chosen")
+				_activate_confirm_button()
+			
 				
 	if $Label/MainLabel.visible_ratio == 1 and not message_visible:
 		message_visible = true
@@ -129,6 +139,7 @@ func _end_sacrifice():
 	$Label.position.y = text_y
 	
 	_hide_confirm_button()
+	_hide_cancel_button()
 	_hide_card_remove()
 	
 	_advance_dream()
@@ -192,6 +203,9 @@ func _show_card_remove():
 	card_remove_tween.tween_property(sprite, "modulate:a", 1, 0.9)
 	card_remove_tween.tween_property(sprite, "modulate:a", 0.6, 1)
 	card_remove_tween.tween_property(sprite, "modulate:a", 0.6, 1)
+	
+	_show_cancel_button()
+	_show_confirm_button()
 
 func _hide_card_remove():
 	card_remove_tween.kill()
@@ -255,9 +269,8 @@ func _snap_for_remove(card):
 	chosen_card = card
 	player._hide_hand()
 	
-	await get_tree().create_timer(0.6).timeout
+	_activate_confirm_button()
 	
-	_show_confirm_button()
 	
 func _show_confirm_button():
 	var sprite = $ConfirmButton/Sprite2D
@@ -271,8 +284,52 @@ func _show_confirm_button():
 	
 	tween.set_ease(Tween.EASE_IN_OUT)
 	
+	tween.tween_property(sprite, "modulate:a", 0.5, 0.5)
+	tween.parallel().tween_property(label, "modulate:a", 0.5, 0.5)
+	
+func _activate_confirm_button():
+	var sprite = $ConfirmButton/Sprite2D
+	var label = $ConfirmButton/Label
+	
+	sprite.modulate.a = 1
+	label.modulate.a = 1
+	
+func _deactivate_confirm_button():
+	var sprite = $ConfirmButton/Sprite2D
+	var label = $ConfirmButton/Label
+	
+	sprite.modulate.a = 0.5
+	label.modulate.a = 0.5
+
+func _show_cancel_button():
+	var sprite = $CancelButton/Sprite2D
+	var label = $CancelButton/Label
+	
+	sprite.modulate.a = 0
+	label.modulate.a = 0
+	$CancelButton.visible = true
+	
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	
 	tween.tween_property(sprite, "modulate:a", 1, 1)
 	tween.parallel().tween_property(label, "modulate:a", 1, 1)
+	
+func _hide_cancel_button():
+	var sprite = $CancelButton/Sprite2D
+	var label = $CancelButton/Label
+	
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	
+	tween.tween_property(sprite, "modulate:a", 0, 1)
+	tween.parallel().tween_property(label, "modulate:a", 0, 1)
+	
+	await tween.finished
+	
+	$CancelButton.visible = false
 	
 func _hide_confirm_button():
 	var sprite = $ConfirmButton/Sprite2D
@@ -304,6 +361,8 @@ func _hide_for_pause():
 		tween.parallel().tween_property($CardRemovalTemplate/Sprite2D, "modulate:a", 0, 0.3)
 		tween.parallel().tween_property($ConfirmButton/Sprite2D, "modulate:a", 0, 0.3)
 		tween.parallel().tween_property($ConfirmButton/Label, "modulate:a", 0, 0.3)
+		tween.parallel().tween_property($CancelButton/Sprite2D, "modulate:a", 0, 0.3)
+		tween.parallel().tween_property($CancelButton/Label, "modulate:a", 0, 0.3)
 		
 		tween.parallel().tween_property($Label, "position:y", choosing_text_y + 20, 0.05)
 		tween.parallel().tween_property($Hint, "position:y", choosing_hint_y + 20, 0.05)
@@ -331,6 +390,8 @@ func _show_for_resume():
 		
 		_show_card_remove()
 		_show_confirm_button()
+		_show_cancel_button()
+		
 		
 		tween.tween_property($Label, "position:y", choosing_text_y, 0.05)
 		tween.parallel().tween_property($Hint, "position:y", choosing_hint_y, 0.05)
@@ -351,6 +412,8 @@ func _take_health(value : int):
 	
 	player._update_health(player.health + value)
 	gradient._show_health()
+	
+	gradient._reduce_visibility()
 	
 	if value < 0:
 		text = str("[color=#d0316c]", value, "[/color]")

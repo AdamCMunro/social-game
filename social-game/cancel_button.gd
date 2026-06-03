@@ -16,20 +16,15 @@ func _process(delta: float) -> void:
 
 
 func _on_mouse_entered() -> void:
-	if dream.chosen_card:
-		$ColorRect.visible = true
-		$Label.set("theme_override_colors/font_color",black)
+	$ColorRect.visible = true
+	$Label.set("theme_override_colors/font_color",black)
 
 func _on_mouse_exited() -> void:
-	if dream.chosen_card:
-		$ColorRect.visible = false
-		$Label.set("theme_override_colors/font_color",red)
+	$ColorRect.visible = false
+	$Label.set("theme_override_colors/font_color",red)
 
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed() && not event.is_echo():
-			if dream.chosen_card:
-				dream.chosen_card._destroy_card()
-				dream._take_health(-20)
-				dream._end_sacrifice()
+			pass
