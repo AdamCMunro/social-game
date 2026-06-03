@@ -452,3 +452,63 @@ func _animate_change_label(label):
 	tween.parallel().tween_property(label, "modulate:a", 0, 0.3)
 	
 	return tween
+	
+func _transition_out():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	if choosing:
+		tween.tween_property(hand, "position:y", hand_pos.y - 20, 0.1)
+		tween.tween_property(hand, "position:y", 1000, 0.1)
+		
+		card_remove_tween.kill()
+		tween.parallel().tween_property($CardRemovalTemplate/Sprite2D, "modulate:a", 0, 0.6)
+		tween.parallel().tween_property($ConfirmButton/Sprite2D, "modulate:a", 0, 0.6)
+		tween.parallel().tween_property($ConfirmButton/Label, "modulate:a", 0, 0.6)
+		tween.parallel().tween_property($CancelButton/Sprite2D, "modulate:a", 0, 0.6)
+		tween.parallel().tween_property($CancelButton/Label, "modulate:a", 0, 0.6)
+		
+		tween.parallel().tween_property($Label, "position:y", choosing_text_y + 20, 0.1)
+		tween.parallel().tween_property($Hint, "position:y", choosing_hint_y + 20, 0.1)
+		
+		tween.tween_property($Label, "position:y", -100, 0.1)
+		tween.parallel().tween_property($Hint, "position:y", -100, 0.1)
+	else:
+		tween.tween_property($Label, "position:y", text_y + 20, 0.1)
+		tween.parallel().tween_property($Hint, "position:y", hint_y - 20, 0.1)
+		
+		tween.tween_property($Label, "position:y", -100, 0.1)
+		tween.parallel().tween_property($Hint, "position:y", 1000, 0.1)
+	
+	return tween
+	
+func _transition_in():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	if choosing:
+		tween.tween_property($Label, "position:y", choosing_text_y + 20, 0.1)
+		tween.parallel().tween_property($Hint, "position:y", choosing_hint_y + 20, 0.1)
+		
+		_show_card_remove()
+		_show_confirm_button()
+		_show_cancel_button()
+		
+		
+		tween.tween_property($Label, "position:y", choosing_text_y, 0.1)
+		tween.parallel().tween_property($Hint, "position:y", choosing_hint_y, 0.1)
+		
+		tween.tween_property(hand, "position:y", hand_pos.y - 20, 0.1)
+		tween.tween_property(hand, "position:y", hand_pos.y, 0.1)
+	else:
+		tween.tween_property($Label, "position:y", text_y + 20, 0.1)
+		tween.parallel().tween_property($Hint, "position:y", hint_y - 20, 0.1)
+		
+		tween.tween_property($Label, "position:y", text_y, 0.1)
+		tween.parallel().tween_property($Hint, "position:y", hint_y, 0.1)
+	
+	return tween

@@ -411,6 +411,42 @@ func _show_for_resume():
 	
 	paused = false
 	
+func _transition_out():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property($Contacts, "position:x", contacts_pos.x + 10, 0.1)
+	tween.parallel().tween_property($MessengerBody, "position:x", messenger_body_pos.x - 10, 0.1)
+	tween.parallel().tween_property($Messages, "position:x", messages_pos.x - 10, 0.1)
+	tween.parallel().tween_property($Messages/Container, "position:x", 289.25, 0.1)
+	
+	tween.tween_property($Contacts, "position:x", -300, 0.1)
+	tween.parallel().tween_property($MessengerBody, "position:x", 1500, 0.1)
+	tween.parallel().tween_property($Messages, "position:x", 1500, 0.1)
+	tween.parallel().tween_property($Messages/Container, "position:x", 1500, 0.1)
+	
+	return tween
+
+func _transition_in():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	tween.tween_property($Contacts, "position:x", contacts_pos.x + 10, 0.1)
+	tween.parallel().tween_property($MessengerBody, "position:x", messenger_body_pos.x - 10, 0.1)
+	tween.parallel().tween_property($Messages, "position:x", messages_pos.x - 10, 0.1)
+	tween.parallel().tween_property($Messages/Container, "position:x", 289.25, 0.1)
+	
+	tween.tween_property($Contacts, "position:x", contacts_pos.x, 0.1)
+	tween.parallel().tween_property($MessengerBody, "position:x", messenger_body_pos.x, 0.1)
+	tween.parallel().tween_property($Messages, "position:x", messages_pos.x, 0.1)
+	tween.parallel().tween_property($Messages/Container, "position:x", 299.25, 0.1)
+	
+	return tween
+	
 	
 	
 	

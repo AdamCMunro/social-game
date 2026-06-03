@@ -273,3 +273,54 @@ func _show_for_resume():
 		tween.parallel().tween_property($Income, "position:y", income_pos.y, 0.05)
 		tween.parallel().tween_property($IncomeBox, "position:y", income_box_pos.y, 0.05)
 		tween.parallel().tween_property($Button, "position:y", button_pos.y, 0.05)
+		
+func _transition_out():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	if button_pressed:
+		tween.tween_property($Money, "position:y", money_pos.y + 20, 0.1)
+		tween.parallel().tween_property($BuyableBox, "position:y", buyable_box_pos.y - 20, 0.1)
+		
+		tween.tween_property($Money, "position:y", -100, 0.1)
+		tween.parallel().tween_property($BuyableBox, "position:y", 700, 0.1)
+	else:
+		tween.tween_property($Money, "position:y", money_pos.y - 20, 0.1)
+		tween.parallel().tween_property($Income, "position:y", income_pos.y + 20, 0.1)
+		tween.parallel().tween_property($IncomeBox, "position:y", income_box_pos.y + 20, 0.1)
+		tween.parallel().tween_property($Button, "position:y", button_pos.y - 20, 0.1)
+		
+		tween.tween_property($Money, "position:y", 800, 0.1)
+		tween.parallel().tween_property($Income, "position:y", -100, 0.1)
+		tween.parallel().tween_property($IncomeBox, "position:y", -100, 0.1)
+		tween.parallel().tween_property($Button, "position:y", 800, 0.1)
+		
+	return tween
+	
+func _transition_in():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	if button_pressed:
+		tween.tween_property($Money, "position:y", money_pos.y + 20, 0.1)
+		tween.parallel().tween_property($BuyableBox, "position:y", buyable_box_pos.y - 20, 0.1)
+		
+		tween.tween_property($Money, "position:y", money_pos.y, 0.1)
+		tween.parallel().tween_property($BuyableBox, "position:y", buyable_box_pos.y, 0.1)
+	else:
+		tween.tween_property($Money, "position:y", money_pos.y - 20, 0.1)
+		tween.parallel().tween_property($Income, "position:y", income_pos.y + 20, 0.1)
+		tween.parallel().tween_property($IncomeBox, "position:y", income_box_pos.y + 20, 0.1)
+		tween.parallel().tween_property($Button, "position:y", button_pos.y - 20, 0.1)
+		
+		tween.tween_property($Money, "position:y", money_pos.y, 0.1)
+		tween.parallel().tween_property($Income, "position:y", income_pos.y, 0.1)
+		tween.parallel().tween_property($IncomeBox, "position:y", income_box_pos.y, 0.1)
+		tween.parallel().tween_property($Button, "position:y", button_pos.y, 0.1)
+		
+	return tween
+	

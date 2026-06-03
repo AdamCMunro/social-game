@@ -576,8 +576,91 @@ func _undo_repost():
 		if n.id == targetID:
 			player.deck.erase(n)
 			break
-			
+
+func _transition_out():
+	var tween = create_tween()
 	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	
+	if main.in_hand:
+		var hand = player.get_node("Hand")
+		hand_pos = hand.position
+		tween.tween_property(hand, "position:y", hand_pos.y - 20, 0.2)
+		tween.tween_property(hand, "position:y", 1000, 0.1)
+	
+	if commenting:
+		tween.tween_property($CommentBox, "position:y", comment_box_pos.y - 20, 0.1)
+		tween.tween_property($CommentBox, "position:y", 1000, 0.1)
+		
+	if not feed_ended and feed_started:
+		tween.tween_property(current_post, "position:y", post_position.y - 20, 0.1)
+	elif not feed_ended and not feed_started:
+		tween.tween_property($StartLabel, "position:y", start_label_pos.y + 20, 0.1)
+	else:
+		tween.tween_property($ContinueButton, "position:y", continue_button_pos.y - 20, 0.1)
+		tween.parallel().tween_property($EndLabel, "position:y", end_label_pos.y - 20, 0.1)
+
+	tween.parallel().tween_property($NewPostButton, "position:y", new_post_button_pos.y + 20, 0.1)
+	tween.parallel().tween_property(player.get_node("StatBlock"), "position:x", stat_block_pos.x + 20, 0.1)
+	tween.parallel().tween_property($FeedBackground/Texture, "size:x", background_width - 40, 0.16)
+	
+	if not feed_ended and feed_started:
+		tween.tween_property(current_post, "position:y", 1000, 0.16)
+	elif not feed_ended and not feed_started:
+		tween.tween_property($StartLabel, "position:y", -1000, 0.16)
+	else:
+		tween.tween_property($ContinueButton, "position:y", 1000, 0.1)
+		tween.parallel().tween_property($EndLabel, "position:y", 1000, 0.1)
+	
+	
+	
+	tween.parallel().tween_property($NewPostButton, "position:y", -100, 0.16)
+	tween.parallel().tween_property(player.get_node("StatBlock"), "position:x", -200, 0.16)
+	tween.parallel().tween_property($FeedBackground/Texture, "size:x", 3000, 0.2)
+	tween.parallel().tween_property($FeedBackground/Texture, "position:x", -1500, 0.2)
+	
+	return tween
+
+func _transition_in():
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	if not feed_ended and feed_started:
+		tween.tween_property(current_post, "position:y", post_position.y - 20, 0.1)
+	elif not feed_ended and not feed_started:
+		tween.tween_property($StartLabel, "position:y", post_position.y + 20, 0.1)
+	else:
+		tween.tween_property($ContinueButton, "position:y", continue_button_pos.y + 20, 0.1)
+		tween.parallel().tween_property($EndLabel, "position:y", end_label_pos.y + 20, 0.1)
+	
+	tween.parallel().tween_property($NewPostButton, "position:y", new_post_button_pos.y + 20, 0.1)
+	tween.parallel().tween_property(player.get_node("StatBlock"), "position:x", stat_block_pos.x + 20, 0.1)
+	tween.parallel().tween_property($FeedBackground/Texture, "size:x", background_width, 0.1)
+	tween.parallel().tween_property($FeedBackground/Texture, "position:x", background_pos.x, 0.1)
+	
+	if not feed_ended and feed_started:
+		tween.tween_property(current_post, "position:y", post_position.y, 0.16)
+	elif not feed_ended and not feed_started:
+		tween.tween_property($StartLabel, "position:y", start_label_pos.y, 0.1)
+	else:
+		tween.tween_property($ContinueButton, "position:y", continue_button_pos.y, 0.1)
+		tween.parallel().tween_property($EndLabel, "position:y", end_label_pos.y, 0.1)
+	
+	tween.parallel().tween_property($NewPostButton, "position:y", new_post_button_pos.y, 0.1)
+	tween.parallel().tween_property(player.get_node("StatBlock"), "position:x", stat_block_pos.x, 0.1)
+	
+	if main.in_hand:
+		var hand = player.get_node("Hand")
+		tween.tween_property(hand, "position:y", hand_pos.y - 20, 0.2)
+		tween.tween_property(hand, "position:y", hand_pos.y, 0.1)
+	
+	if commenting:
+		tween.tween_property($CommentBox, "position:y", comment_box_pos.y - 20, 0.1)
+		tween.tween_property($CommentBox, "position:y", comment_box_pos.y, 0.1)
 	
 	
 	
