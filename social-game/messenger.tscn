@@ -37,13 +37,13 @@ scale = Vector2(1.2, 1.2)
 texture = ExtResource("2_tpcxp")
 
 [node name="Recipient" type="Label" parent="MessengerBody" unique_id=1599201810]
-offset_left = -225.664
-offset_top = -265.0
-offset_right = -115.664
-offset_bottom = -235.0
+offset_left = -235.0
+offset_top = -263.0
+offset_right = -125.0
+offset_bottom = -233.0
 theme_override_fonts/font = ExtResource("4_dj5lq")
 theme_override_font_sizes/font_size = 24
-text = "Username"
+vertical_alignment = 1
 
 [node name="SendingText" type="Label" parent="MessengerBody" unique_id=1923035371]
 visible = false

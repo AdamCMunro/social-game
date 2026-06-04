@@ -109,16 +109,11 @@ func _progress_chat():
 	var messages = _json_decode(messages_path)
 	var start = _get_start_point(history)
 	var choice = false
-	
-	if start == messages.size() - 1:
-		finished = true
-		contacts._check_finished()
 
 	for i in range(start, messages.size()):
 		options.clear()
-		choice = false
-		if _check_repetition(messages[i].body, history):
-			continue
+		#if _check_repetition(messages[i].body, history):
+			#continue
 		if messages[i].seed.has("") or messages[i].seed.has(history[history.size() - 1].seed):
 			await get_tree().create_timer(messages[i].delay).timeout
 			typing = true
@@ -143,9 +138,10 @@ func _progress_chat():
 					messenger._show_options(options)
 				break
 			await get_tree().create_timer(0.5).timeout
-		else:
-			finished = true
-			contacts._check_finished()
+		
+	if not choice:
+		finished = true
+		contacts._check_finished()
 				
 func _get_start_point(arr):
 	var count = 0

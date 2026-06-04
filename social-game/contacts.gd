@@ -15,8 +15,6 @@ func _ready() -> void:
 		new_contact.position.y = -200 + (50 * i)
 		contacts.append(new_contact)
 		$ContactBody.add_child(new_contact)
-	await get_tree().create_timer(3).timeout
-	_check_finished()
 	
 		
 
