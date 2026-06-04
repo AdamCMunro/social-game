@@ -453,6 +453,16 @@ func _transition_in():
 	
 	return tween
 	
+func _show_continue_button():
+	
+	continue_button.modulate.a = 0
+	continue_button.visible = true
+	
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	
+	tween.tween_property(continue_button, "modulate:a", 1, 0.5)
 	
 	
 	

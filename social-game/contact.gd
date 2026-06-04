@@ -1,6 +1,7 @@
 extends Node2D
 
 @onready var selection = get_parent().get_node("Selection")
+@onready var contacts = get_parent().get_parent()
 @onready var messenger = get_parent().get_parent().get_parent()
 @onready var main = messenger.get_parent()
 
@@ -13,6 +14,7 @@ var hovered = false
 var pending = 0
 var typing = false
 var repeat = false
+var finished = false
 
 var options = []
 var contact_name
@@ -108,6 +110,9 @@ func _progress_chat():
 	var start = _get_start_point(history)
 	var choice = false
 	
+	if start == messages.size() - 1:
+		finished = true
+		contacts._check_finished()
 
 	for i in range(start, messages.size()):
 		options.clear()
@@ -138,6 +143,9 @@ func _progress_chat():
 					messenger._show_options(options)
 				break
 			await get_tree().create_timer(0.5).timeout
+		else:
+			finished = true
+			contacts._check_finished()
 				
 func _get_start_point(arr):
 	var count = 0

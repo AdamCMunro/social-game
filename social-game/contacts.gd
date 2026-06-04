@@ -15,8 +15,8 @@ func _ready() -> void:
 		new_contact.position.y = -200 + (50 * i)
 		contacts.append(new_contact)
 		$ContactBody.add_child(new_contact)
-		
-	
+	await get_tree().create_timer(3).timeout
+	_check_finished()
 	
 		
 
@@ -25,6 +25,20 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	_drift(delta)
 	
+
+func _check_finished():
+	var finished = true
+	
+	for c in contacts:
+		if not c.finished or c.pending > 0:
+			finished = false
+			break
+	
+	if finished:
+		get_parent().main = get_parent().get_parent()
+		get_parent().continue_button = get_parent().main.get_node("ContinueButton")
+		get_parent()._show_continue_button()
+			
 
 #drift stuff
 

@@ -134,6 +134,8 @@ func _quit():
 		elif n.name == "Messenger" or n.name == "Economy" or n.name == "Dream":
 			n.queue_free()
 	
+	main.get_node("ContinueButton").visible = false
+	
 	for n in main.buttons:
 		n.visible = true
 		
