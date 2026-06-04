@@ -68,6 +68,9 @@ func _select():
 	$ContactBody/Sprite2D.texture = preload("res://assets/Contact_Selected.png")
 	$ContactBody/Label.set("theme_override_colors/font_color",black)
 	
+	finished = true
+	contacts._check_finished()
+	
 	var tween = create_tween()
 	
 	tween.set_ease(Tween.EASE_IN_OUT)
@@ -91,9 +94,11 @@ func _select():
 	messenger.sender_name = contact_name
 	
 	messenger._transition_recipient(contact_name)
+	messenger.get_node("Messages/TypingIndicator").visible = false
 	await messenger._clear_chats()
 	messenger._retrieve_messages(contact_name)
 	messenger.get_node("Messages/TypingIndicator").text = str("[wave amp=9.0 freq=4 connected=0]", contact_name, " is typing...[/wave]")
+	messenger.get_node("Messages/TypingIndicator").visible = true
 	await get_tree().create_timer(0.75).timeout
 				
 func _deselect():
