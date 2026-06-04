@@ -1,7 +1,7 @@
 extends Node2D
 
 @onready var selection = get_parent().get_node("Selection")
-@onready var messenger = get_parent().get_parent()
+@onready var messenger = get_parent().get_parent().get_parent()
 @onready var main = messenger.get_parent()
 
 var contact_scale

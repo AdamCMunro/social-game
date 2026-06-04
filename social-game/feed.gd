@@ -4,6 +4,7 @@ extends Node2D
 @onready var card_scene = preload("res://card.tscn")
 @onready var change_label_scene = preload("res://change_label.tscn")
 @onready var main = get_parent()
+@onready var continue_button = main.get_node("ContinueButton")
 @onready var gradient = main.get_node("GradientLayer")
 @onready var pause = main.get_node("Pause")
 @onready var player = main.get_node("Player")
@@ -82,8 +83,9 @@ func _ready() -> void:
 	
 	$EndLabel.position.y = 1000
 	
-	$ContinueButton.position = viewport_centre
-	$ContinueButton.position.y = 1000
+	continue_button.position = viewport_centre
+	continue_button.position.y = 1000
+	continue_button.visible = true
 	
 	end_label_pos = Vector2($EndLabel.position.x, 250)
 	
@@ -214,9 +216,9 @@ func _final_scroll():
 	
 	tween.tween_property(next_post, "position:y", viewport_centre.y - post_height, 0.5)
 	tween.parallel().tween_property($EndLabel, "position:y", end_label_pos.y - 15, 0.5)
-	tween.parallel().tween_property($ContinueButton, "position:y", continue_button_pos.y - 15, 0.5)
+	tween.parallel().tween_property(continue_button, "position:y", continue_button_pos.y - 15, 0.5)
 	tween.tween_property($EndLabel, "position:y", end_label_pos.y, 0.3)
-	tween.parallel().tween_property($ContinueButton, "position:y", continue_button_pos.y, 0.3)
+	tween.parallel().tween_property(continue_button, "position:y", continue_button_pos.y, 0.3)
 	
 	await tween.finished
 	
@@ -311,7 +313,7 @@ func _hide_for_pause():
 	elif not feed_ended and not feed_started:
 		tween.tween_property($StartLabel, "position:y", start_label_pos.y + 20, 0.05)
 	else:
-		tween.tween_property($ContinueButton, "position:y", continue_button_pos.y - 20, 0.05)
+		tween.tween_property(continue_button, "position:y", continue_button_pos.y - 20, 0.05)
 		tween.parallel().tween_property($EndLabel, "position:y", end_label_pos.y - 20, 0.05)
 
 	tween.parallel().tween_property($NewPostButton, "position:y", new_post_button_pos.y + 20, 0.05)
@@ -323,7 +325,7 @@ func _hide_for_pause():
 	elif not feed_ended and not feed_started:
 		tween.tween_property($StartLabel, "position:y", -1000, 0.08)
 	else:
-		tween.tween_property($ContinueButton, "position:y", 1000, 0.05)
+		tween.tween_property(continue_button, "position:y", 1000, 0.05)
 		tween.parallel().tween_property($EndLabel, "position:y", 1000, 0.05)
 	
 	
@@ -346,7 +348,7 @@ func _show_for_resume():
 	elif not feed_ended and not feed_started:
 		tween.tween_property($StartLabel, "position:y", post_position.y + 20, 0.05)
 	else:
-		tween.tween_property($ContinueButton, "position:y", continue_button_pos.y + 20, 0.05)
+		tween.tween_property(continue_button, "position:y", continue_button_pos.y + 20, 0.05)
 		tween.parallel().tween_property($EndLabel, "position:y", end_label_pos.y + 20, 0.05)
 	
 	tween.parallel().tween_property($NewPostButton, "position:y", new_post_button_pos.y + 20, 0.05)
@@ -359,7 +361,7 @@ func _show_for_resume():
 	elif not feed_ended and not feed_started:
 		tween.tween_property($StartLabel, "position:y", start_label_pos.y, 0.05)
 	else:
-		tween.tween_property($ContinueButton, "position:y", continue_button_pos.y, 0.05)
+		tween.tween_property(continue_button, "position:y", continue_button_pos.y, 0.05)
 		tween.parallel().tween_property($EndLabel, "position:y", end_label_pos.y, 0.05)
 	
 	tween.parallel().tween_property($NewPostButton, "position:y", new_post_button_pos.y, 0.05)
@@ -599,7 +601,7 @@ func _transition_out():
 	elif not feed_ended and not feed_started:
 		tween.tween_property($StartLabel, "position:y", start_label_pos.y + 20, 0.1)
 	else:
-		tween.tween_property($ContinueButton, "position:y", continue_button_pos.y - 20, 0.1)
+		tween.tween_property(continue_button, "position:y", continue_button_pos.y - 20, 0.1)
 		tween.parallel().tween_property($EndLabel, "position:y", end_label_pos.y - 20, 0.1)
 
 	tween.parallel().tween_property($NewPostButton, "position:y", new_post_button_pos.y + 20, 0.1)
@@ -611,7 +613,7 @@ func _transition_out():
 	elif not feed_ended and not feed_started:
 		tween.tween_property($StartLabel, "position:y", -1000, 0.16)
 	else:
-		tween.tween_property($ContinueButton, "position:y", 1000, 0.1)
+		tween.tween_property(continue_button, "position:y", 1000, 0.1)
 		tween.parallel().tween_property($EndLabel, "position:y", 1000, 0.1)
 	
 	

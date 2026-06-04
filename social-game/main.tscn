@@ -40,6 +40,21 @@ shader_parameter/roll_strength = 0.0150000007125
 shader_parameter/glow_strength = 1.30000006175
 shader_parameter/glow_threshold = 0.30000001425
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w48qg"]
+bg_color = Color(0.3565649, 0.35656494, 0.3565648, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vivmo"]
+bg_color = Color(0.35686275, 0.35686275, 0.35686275, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2cqfq"]
+bg_color = Color(0.35686275, 0.35686275, 0.35686275, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yaehf"]
+bg_color = Color(0.35686275, 0.35686275, 0.35686275, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_074og"]
+bg_color = Color(0.35686275, 0.35686275, 0.35686275, 1)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4c57u"]
 shader = ExtResource("9_kek77")
 shader_parameter/border_color = Color(0.41960785, 1, 0.41568628, 1)
@@ -51,6 +66,13 @@ size = Vector2(214, 48)
 
 [node name="Main" type="Node2D" unique_id=1804974650]
 script = ExtResource("1_1bvp3")
+
+[node name="Background" type="ColorRect" parent="." unique_id=638727531]
+z_index = -2
+offset_right = 1923.0
+offset_bottom = 1087.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
 
 [node name="CRTFilterLayer" type="CanvasLayer" parent="." unique_id=402968258]
 
@@ -80,6 +102,7 @@ offset_right = 300.0
 offset_bottom = 150.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_w48qg")
 text = "Feed"
 script = ExtResource("5_lquwl")
 
@@ -95,6 +118,7 @@ offset_right = 300.0
 offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_vivmo")
 text = "Messenger"
 script = ExtResource("6_7mycd")
 
@@ -110,6 +134,7 @@ offset_right = 300.0
 offset_bottom = 350.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_2cqfq")
 text = "Delete Save"
 script = ExtResource("6_272bh")
 
@@ -125,6 +150,7 @@ offset_right = 300.0
 offset_bottom = 450.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_yaehf")
 text = "Economy"
 script = ExtResource("7_272bh")
 
@@ -140,6 +166,7 @@ offset_right = 300.0
 offset_bottom = 550.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_074og")
 text = "Dream"
 script = ExtResource("8_efxa6")
 
@@ -160,6 +187,8 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="ContinueButton" type="Area2D" parent="." unique_id=551278545]
+visible = false
+z_index = 4
 script = ExtResource("12_w48qg")
 
 [node name="Sprite2D" type="Sprite2D" parent="ContinueButton" unique_id=1381391890]

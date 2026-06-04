@@ -14,7 +14,10 @@ func _ready() -> void:
 		new_contact.get_node("ContactBody/Label").text = contact_names[i]
 		new_contact.position.y = -200 + (50 * i)
 		contacts.append(new_contact)
-		add_child(new_contact)
+		$ContactBody.add_child(new_contact)
+		
+	
+	
 		
 
 
@@ -28,8 +31,8 @@ func _process(delta: float) -> void:
 var noise = FastNoiseLite.new()
 var time = 0.0
 
-var speed = 1.75
-var amplitude = 6.0 # How far it drifts
+var speed = 1
+var amplitude = 4.0 # How far it drifts
 var rotation_amplitude = 0.75 # How much it tilts
 
 func _prepare_drift():
@@ -43,5 +46,5 @@ func _drift(delta):
 	var oy = noise.get_noise_1d(time + 100) * amplitude
 	var ang = noise.get_noise_1d(time + 200) * rotation_amplitude
 
-	$Sprite2D.position = Vector2(ox, oy)
-	$Sprite2D.rotation_degrees = ang
+	$ContactBody.position = Vector2(ox, oy)
+	$ContactBody.rotation_degrees = ang

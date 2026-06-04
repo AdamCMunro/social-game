@@ -9,7 +9,9 @@ extends Node2D
 @onready var sending_text = $MessengerBody/SendingText
 @onready var container_position = $Messages/Container.position
 @onready var current_container_position = $Messages/Container.position
-@onready var pause = get_parent().get_node("Pause")
+@onready var pause = main.get_node("Pause")
+@onready var continue_button = main.get_node("ContinueButton")
+
 
 @onready var player_message_scene = preload("res://player_message.tscn")
 @onready var message_scene = preload("res://message.tscn")
@@ -48,6 +50,7 @@ var sender_name
 var contacts_pos :Vector2
 var messenger_body_pos :Vector2
 var messages_pos :Vector2
+var continue_button_pos :Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -61,6 +64,9 @@ func _ready() -> void:
 	for n in option_arr:
 		option_position.append(n.position)
 		n.visible = false
+		
+	continue_button.position = Vector2(145, 600)
+	continue_button_pos = continue_button.position
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

@@ -9,16 +9,12 @@
 [ext_resource type="Script" uid="uid://vfxileolvehy" path="res://comment_box.gd" id="6_fqlfk"]
 [ext_resource type="FontFile" uid="uid://colsx08shwr3g" path="res://fonts/windows-bold[1].ttf" id="7_ogxe3"]
 [ext_resource type="Texture2D" uid="uid://bv7kp8r2220md" path="res://assets/Square_Selection.png" id="8_fqlfk"]
-[ext_resource type="Texture2D" uid="uid://dhc6rc8afnmn4" path="res://assets/Button.png" id="10_tlspd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_insad"]
 size = Vector2(128, 128)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fqlfk"]
 size = Vector2(460, 45)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_w50hx"]
-size = Vector2(214, 48)
 
 [node name="Feed" type="Node2D" unique_id=1879761602]
 script = ExtResource("1_j7o2i")
@@ -294,41 +290,6 @@ theme_override_fonts/normal_font = ExtResource("7_ogxe3")
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
 text = "[wave amp=11.0 freq=2.5 connected=0]You're all caught up. Good for you.[/wave]"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ContinueButton" type="Area2D" parent="." unique_id=162895652]
-z_index = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="ContinueButton" unique_id=1583316746]
-texture = ExtResource("10_tlspd")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ContinueButton" unique_id=1732777522]
-shape = SubResource("RectangleShape2D_w50hx")
-
-[node name="ColorRect" type="ColorRect" parent="ContinueButton" unique_id=1315371696]
-visible = false
-offset_left = -107.0
-offset_top = -24.0
-offset_right = 107.0
-offset_bottom = 24.0
-mouse_filter = 2
-
-[node name="Label" type="RichTextLabel" parent="ContinueButton" unique_id=789800433]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -105.0
-offset_top = -20.0
-offset_right = 105.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_fonts/normal_font = ExtResource("7_ogxe3")
-theme_override_font_sizes/normal_font_size = 24
-text = "Continue"
 horizontal_alignment = 1
 vertical_alignment = 1
 
