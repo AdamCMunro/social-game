@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var pause = get_parent().get_node("Pause")
 @onready var player = get_parent().get_node("Player")
+@onready var continue_button = get_parent().get_node("ContinueButton")
 @onready var viewport_centre = get_viewport_rect().size / 2
 
 @onready var change_label_scene = preload("res://change_label.tscn")
@@ -21,11 +22,17 @@ var buyable_box_pos :Vector2
 var income_box_pos :Vector2
 var income_pos :Vector2
 var button_pos :Vector2
+var continue_button_pos :Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	_get_player_info()
 	_get_change_label_scene()
+	
+	continue_button.visible = false
+	continue_button.position = viewport_centre
+	continue_button.position.y += 300
+	continue_button_pos = continue_button.position
 	
 	$Money.position = viewport_centre
 	$Money.position.y += 200
@@ -180,6 +187,8 @@ func _on_button_input_event(viewport: Node, event: InputEvent, shape_idx: int) -
 				button_pressed = true
 				_animate_button_press()
 				_move_to_buyables()
+				await get_tree().create_timer(2).timeout
+				_show_continue_button()
 
 func _animate_button_press():
 	var tween = create_tween()
@@ -190,7 +199,17 @@ func _animate_button_press():
 	
 	tween.tween_property($Button, "scale", starting_scale * 0.85, 0.15)
 	tween.tween_property($Button, "scale", starting_scale * 0.9, 0.2)
+
+func _show_continue_button():
+	continue_button.modulate.a = 0
+	continue_button.visible = true
 	
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	
+	tween.tween_property(continue_button, "modulate:a", 1, 0.5)
+
 func _move_to_buyables():
 	for n in $BuyableBox.get_children():
 		n.moving = true
@@ -283,9 +302,12 @@ func _transition_out():
 	if button_pressed:
 		tween.tween_property($Money, "position:y", money_pos.y + 20, 0.1)
 		tween.parallel().tween_property($BuyableBox, "position:y", buyable_box_pos.y - 20, 0.1)
+		tween.parallel().tween_property(continue_button, "position:y", continue_button_pos.y - 20, 0.1)
 		
 		tween.tween_property($Money, "position:y", -100, 0.1)
 		tween.parallel().tween_property($BuyableBox, "position:y", 700, 0.1)
+		tween.parallel().tween_property(continue_button, "position:y", 700, 0.1)
+		
 	else:
 		tween.tween_property($Money, "position:y", money_pos.y - 20, 0.1)
 		tween.parallel().tween_property($Income, "position:y", income_pos.y + 20, 0.1)

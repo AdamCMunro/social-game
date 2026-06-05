@@ -427,11 +427,13 @@ func _transition_out():
 	tween.parallel().tween_property($MessengerBody, "position:x", messenger_body_pos.x - 10, 0.1)
 	tween.parallel().tween_property($Messages, "position:x", messages_pos.x - 10, 0.1)
 	tween.parallel().tween_property($Messages/Container, "position:x", 289.25, 0.1)
+	tween.parallel().tween_property(continue_button, "position:x", continue_button_pos.x + 10, 0.1)
 	
 	tween.tween_property($Contacts, "position:x", -300, 0.1)
 	tween.parallel().tween_property($MessengerBody, "position:x", 1500, 0.1)
 	tween.parallel().tween_property($Messages, "position:x", 1500, 0.1)
 	tween.parallel().tween_property($Messages/Container, "position:x", 1500, 0.1)
+	tween.parallel().tween_property(continue_button, "position:x", -300, 0.1)
 	
 	return tween
 

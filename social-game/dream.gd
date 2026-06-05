@@ -6,6 +6,7 @@ extends Node2D
 @onready var player = main.get_node("Player")
 @onready var hand = player.get_node("Hand")
 @onready var gradient = main.get_node("GradientLayer")
+@onready var continue_button = main.get_node("ContinueButton")
 @onready var change_label_scene = preload("res://change_label.tscn")
 
 var dream_data := []
@@ -25,6 +26,7 @@ var chosen_card
 
 var paused = false
 var message_visible = false
+var finished = false
 var hint_delay = 5000
 var last_message_time
 
@@ -36,6 +38,9 @@ func _ready() -> void:
 	
 	player.visible = true
 	player.get_node("StatBlock").visible = false
+	
+	continue_button.visible = false
+	continue_button.position = viewport_centre
 	
 	$ConfirmButton.position = viewport_centre
 	$ConfirmButton.position.x += 250
@@ -64,7 +69,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("advance_dream") and not choosing and not paused:
+	if Input.is_action_just_pressed("advance_dream") and not choosing and not paused and not finished:
 		_advance_dream()
 	
 	if Input.is_action_just_pressed("pause"):
@@ -95,16 +100,23 @@ func _process(delta: float) -> void:
 
 func _advance_dream():
 	$Hint.visible = false
+	choosing = false
 	if $Label/MainLabel.visible_ratio == 1:
 		message_index += 1
 		_clear_labels()
-		if dream_data[message_index].choice:
-			choosing = true
-			_show_hand()
-			_show_card_remove()
-		_populate_labels(dream_data[message_index].text)
-		await get_tree().create_timer(dream_data[message_index].delay).timeout
-		_progress_text()
+		if message_index < dream_data.size():
+			if dream_data[message_index].choice:
+				choosing = true
+				_show_hand()
+				_show_card_remove()
+			_populate_labels(dream_data[message_index].text)
+			await get_tree().create_timer(dream_data[message_index].delay).timeout
+			_progress_text()
+		else:
+			_clear_labels()
+			await get_tree().create_timer(0.8).timeout
+			finished = true
+			_show_continue_button()
 	else:
 		if text_tween and text_tween.is_running():
 			text_tween.kill()
@@ -369,12 +381,15 @@ func _hide_for_pause():
 		
 		tween.tween_property($Label, "position:y", -100, 0.05)
 		tween.parallel().tween_property($Hint, "position:y", -100, 0.05)
-	else:
+	elif not finished:
 		tween.tween_property($Label, "position:y", text_y + 20, 0.05)
 		tween.parallel().tween_property($Hint, "position:y", hint_y - 20, 0.05)
 		
 		tween.tween_property($Label, "position:y", -100, 0.05)
 		tween.parallel().tween_property($Hint, "position:y", 1000, 0.05)
+	else:
+		tween.tween_property(continue_button, "position:y", viewport_centre.y - 20, 0.05)
+		tween.tween_property(continue_button, "position:y", 1000, 0.05)
 	
 	return tween
 	
@@ -398,12 +413,15 @@ func _show_for_resume():
 		
 		tween.tween_property(hand, "position:y", hand_pos.y - 20, 0.1)
 		tween.tween_property(hand, "position:y", hand_pos.y, 0.05)
-	else:
+	elif not finished:
 		tween.tween_property($Label, "position:y", text_y + 20, 0.05)
 		tween.parallel().tween_property($Hint, "position:y", hint_y - 20, 0.05)
 		
 		tween.tween_property($Label, "position:y", text_y, 0.05)
 		tween.parallel().tween_property($Hint, "position:y", hint_y, 0.05)
+	else:
+		tween.tween_property(continue_button, "position:y", viewport_centre.y - 20, 0.05)
+		tween.tween_property(continue_button, "position:y", viewport_centre.y, 0.05)
 	
 	return tween
 	
@@ -478,9 +496,11 @@ func _transition_out():
 	else:
 		tween.tween_property($Label, "position:y", text_y + 20, 0.1)
 		tween.parallel().tween_property($Hint, "position:y", hint_y - 20, 0.1)
+		tween.parallel().tween_property(continue_button, "position:y", viewport_centre.y - 20, 0.1)
 		
 		tween.tween_property($Label, "position:y", -100, 0.1)
 		tween.parallel().tween_property($Hint, "position:y", 1000, 0.1)
+		tween.parallel().tween_property(continue_button, "position:y", 1000, 0.1)
 	
 	return tween
 	
@@ -512,3 +532,14 @@ func _transition_in():
 		tween.parallel().tween_property($Hint, "position:y", hint_y, 0.1)
 	
 	return tween
+
+
+func _show_continue_button():
+	continue_button.modulate.a = 0
+	continue_button.visible = true
+	
+	var tween = create_tween()
+	
+	tween.set_ease(Tween.EASE_IN_OUT)
+	
+	tween.tween_property(continue_button, "modulate:a", 1, 0.5)

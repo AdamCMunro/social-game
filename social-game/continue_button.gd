@@ -5,6 +5,7 @@ extends Area2D
 @onready var messenger_scene = preload("res://messenger.tscn")
 @onready var economy_scene = preload("res://economy.tscn")
 @onready var dream_scene = preload("res://dream.tscn")
+@onready var day_transition_scene = preload("res://day_transition.tscn")
 
 var black = Color(0,0,0,1)
 var white = Color(1,1,1,1)
@@ -69,4 +70,8 @@ func _transition_screen():
 			instance.visible = true
 			instance._transition_in()
 		"dream":
-			pass
+			await main.get_node("Dream")._transition_out().finished
+			main.get_node("Dream").queue_free()
+			var instance = day_transition_scene.instantiate()
+			main.add_child(instance)
+			main.current_screen = "day trans"
