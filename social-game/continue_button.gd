@@ -75,3 +75,8 @@ func _transition_screen():
 			var instance = day_transition_scene.instantiate()
 			main.add_child(instance)
 			main.current_screen = "day trans"
+		"day trans":
+			main.get_node("DayTransition").queue_free()
+			var instance = feed_scene.instantiate()
+			main.add_child(instance)
+			main.current_screen = "feed"
