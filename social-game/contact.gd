@@ -95,10 +95,9 @@ func _select():
 	
 	messenger._transition_recipient(contact_name)
 	messenger.get_node("Messages/TypingIndicator").visible = false
+	messenger.get_node("Messages/TypingIndicator").text = str("[wave amp=9.0 freq=4 connected=0]", contact_name, " is typing...[/wave]")
 	await messenger._clear_chats()
 	messenger._retrieve_messages(contact_name)
-	messenger.get_node("Messages/TypingIndicator").text = str("[wave amp=9.0 freq=4 connected=0]", contact_name, " is typing...[/wave]")
-	messenger.get_node("Messages/TypingIndicator").visible = true
 	await get_tree().create_timer(0.75).timeout
 				
 func _deselect():
