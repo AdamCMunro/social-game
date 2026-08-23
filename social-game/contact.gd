@@ -116,9 +116,9 @@ func _progress_chat():
 
 	for i in range(start, messages.size()):
 		options.clear()
-		#if _check_repetition(messages[i].body, history):
-			#continue
-		if messages[i].seed.has("") or messages[i].seed.has(history[history.size() - 1].seed):
+		if _check_repetition(messages[i].body, history):
+			continue
+		if messages[i].seed.has("") or _check_seed(history[history.size() - 1].seed, messages[i].seed):
 			await get_tree().create_timer(messages[i].delay).timeout
 			typing = true
 			if selected:
@@ -146,7 +146,37 @@ func _progress_chat():
 	if not choice:
 		finished = true
 		contacts._check_finished()
-				
+
+func _check_seed(user_seed, msg_seeds):
+	var match_found
+	
+	print("user seed: ", user_seed)
+	print("seed length: ", user_seed.length())
+	
+	for seed in msg_seeds:
+		print("msg seed: ", seed)
+		print("seed length: ", seed.length())
+		match_found = true
+		if seed == "":
+			break
+			
+		if user_seed.length() != seed.length():
+			match_found = false
+			continue
+			
+		for i in range(seed.length()):
+			if user_seed[i] != seed[i] and seed[i] != "0":
+				match_found = false
+				break
+		
+		if match_found:
+			return match_found
+	
+	return match_found
+		
+		
+		
+
 func _get_start_point(arr):
 	var count = 0
 	
@@ -162,8 +192,6 @@ func _check_repetition(text, arr):
 	while index >= 0:
 		if arr[index].body == text:
 			return true
-		elif arr[index].sender == "player":
-			return false
 		index -= 1
 	return false
 		

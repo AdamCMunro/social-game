@@ -284,6 +284,7 @@ func _pick_up_card():
 	offset = global_position - get_global_mouse_position()
 	
 	if main.current_screen == "dream":
+		dream = main.get_node("Dream")
 		dream.picked_up_card = self
 	
 	tween.tween_property(self, "scale", card_scale * 1.1, 0.15)\

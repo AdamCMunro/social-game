@@ -15,7 +15,7 @@ func _process(delta: float) -> void:
 
 func _on_pressed() -> void:
 	DirAccess.remove_absolute(str("user://1/chat_logs/history/desmond.json"))
-	DirAccess.remove_absolute(str("user://1/chat_logs/history/angela.json"))
-	DirAccess.remove_absolute(str("user://1/chat_logs/history/james.json"))
+	DirAccess.remove_absolute(str("user://1/chat_logs/history/iso.json"))
+	DirAccess.remove_absolute(str("user://1/chat_logs/history/yana.json"))
 	DirAccess.remove_absolute(str("user://1/chat_logs/history/test.json"))
 	DirAccess.remove_absolute(str("user://1/feed_seeds.json"))

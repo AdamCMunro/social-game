@@ -40,6 +40,7 @@ func _transition_screen():
 	match current_screen:
 		"feed":
 			await main.get_node("Feed")._transition_out().finished
+			visible = false
 			main.get_node("Player").visible = false
 			main.get_node("Feed").queue_free()
 			var instance = messenger_scene.instantiate()

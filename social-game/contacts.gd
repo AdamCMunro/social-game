@@ -1,7 +1,7 @@
 extends Area2D
 
 var contacts = []
-var contact_names = ["Desmond", "Angela", "James", "Test"]
+var contact_names = ["Desmond", "Iso", "Yana", "Test"]
 
 @onready var contact_scene = preload("res://contact.tscn")
 
