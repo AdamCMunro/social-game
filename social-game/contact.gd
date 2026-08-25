@@ -165,7 +165,7 @@ func _check_seed(user_seed, msg_seeds):
 			continue
 			
 		for i in range(seed.length()):
-			if user_seed[i] != seed[i] and seed[i] != "0":
+			if user_seed[i] != seed[i] and seed[i] != "x":
 				match_found = false
 				break
 		
