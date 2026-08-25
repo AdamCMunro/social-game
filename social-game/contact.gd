@@ -68,7 +68,6 @@ func _select():
 	$ContactBody/Sprite2D.texture = preload("res://assets/Contact_Selected.png")
 	$ContactBody/Label.set("theme_override_colors/font_color",black)
 	
-	finished = true
 	contacts._check_finished()
 	
 	var tween = create_tween()

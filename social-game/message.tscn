@@ -46,7 +46,6 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_d72jl")
 theme_override_font_sizes/font_size = 12
 text = "Message..."
-horizontal_alignment = 2
 vertical_alignment = 1
 autowrap_mode = 3
 script = ExtResource("4_8yew3")

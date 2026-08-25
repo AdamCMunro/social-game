@@ -223,7 +223,7 @@ func _recieve_message(message):
 		prev_message.get_node("Sprite").visible = false
 		prev_message.get_node("RepeatSprite").visible = true
 		repeat = false
-	await _animate_messages(new_message.size.y + 3)
+	await _animate_messages(new_message.size.y * 1.07)
 	prev_message_type = "recieved"
 	prev_message = new_message
 	return true
